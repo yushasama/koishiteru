@@ -1,113 +1,108 @@
+import leetcodeIcon from '../public/simple-icons_leetcode.svg'
+import gitHubIcon from '../public/akar-icons_github-fill.svg'
+import linkedinIcon from '../public/mdi_linkedin.svg'
+import emailIcon from '../public/ic_outline-email.svg'
+import { Interests } from '@/components/Interests'
 import Image from 'next/image'
+import useSWR  from 'swr'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+  <main className='flex flex-col my-24 mx-[420px] items-center justify-center'>
+    <section id='introduction'>
+      <div className='flex flex-row w-full justify-between'>
+        <div className='text-4xl font-heebo'>Leon Do</div>
+        <div className='flex text-right text-xl text-viral pt-3'>・Currently listening to WEBSITE IS WIP - Leon Do</div>
+      </div>
+      <div className='pt-4 pb-12'>
+        <div className='text-2xl font-thin'>19y/o aspiring software engineer pursuing CS with a minor in Pure Mathematics at California State University of Long Beach. Driven by curiosity and passion, I am always eager to learn and create.</div>
+      </div>
+      <div className='flex flex-row space-x-8 w-full justify-start items-start mb-[72px]'>
+        <a href='https://github.com/yushasama' className='w-min px-6 py-2 h-min border-fuschia border rounded-md flex flex-row justify-center items-center space-x-2'>
+          <Image src={gitHubIcon} alt='github icon'/>
+          <div className='text-fuchsia-50'>yushasama</div>
+        </a>
+        <a href='https://leetcode.com/heretik' className='w-min px-6 py-2 h-min border-orange-300 border rounded-md flex flex-row justify-center items-center space-x-2'>
+          <Image src={leetcodeIcon} alt='leetcode icon'/>
+          <div className='text-orange-300'>heretik</div>
+        </a>
+        <a href='https://www.linkedin.com/in/leon-do-682003156/' className='w-min px-6 py-2 h-min border-blue-300 border rounded-md flex flex-row justify-center items-center space-x-2 whitespace-nowrap'>
+          <Image src={linkedinIcon} alt='linkedin icon'/>
+          <div className='text-blue-300'>Leon Do</div>
+        </a>
+        <a href='/#' className='w-min px-6 py-2 h-min border-teal-200  border rounded-md flex flex-row justify-center items-center space-x-2'>
+          <Image src={emailIcon} alt='email icon'/>
+          <div className='text-teal-200 '>leon.do@koishite.ru</div>
+        </a>
+      </div>
+    </section>
+    <section id='interests' className='flex flex-col justify-start items-start w-full mb-[72px] font-heebo'>
+      <div className='text-4xl'>Recent Interests</div>
+      <div className='flex flex-row flex-wrap'>
+        <Interests text='Real Analysis'/>
+        <Interests text='Leetcode'/>
+        <Interests text='Trading'/>
+        <Interests text='German Automobiles'/>
+        <Interests text='Filipino Cuisine'/>
+        <Interests text='Data Structures'/>
+        <Interests text='Bayesian Statistics'/>
+        <Interests text='NextJS'/>
+        <Interests text='Python'/>
+        <Interests text='Elfensjon'/>
+        <Interests text='Release Hallucination'/>
+      </div>
+    </section>
+    <section id='experience' className='flex flex-col justify-start w-full mb-[72px]'>
+      <div className='text-4xl pb-4 font-heebo'>Experience</div>
+      <div className='text-2xl pb-2'>
+        <div className=' flex flex-row text-2xl font-thin w-full justify-between pb-2'>
+          <div>Infiniti Trading・Web Developer</div>
+          <div>9/2022 - 11/22</div>
+        </div>
+        <div className='font-thin text-sm'>
+          <div>Designed and prototyped the Infiniti Trading website using Figma, ensuring a user-friendly interface and seamless user experience. Developed and launched <a href='https://infiniti-site-9xmirage.vercel.app/' className='text-blue-400'>https://infinititrading.io/</a> {'retired'} using NextJS. Incorporated TailwindCSS to implement responsive and modern styling, enhancing the website{"'"}s visual appeal across multiple devices.</div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+    </section>
+    <section id='projects' className='flex flex-col justify-start w-full'>
+      <div className='text-4xl pb-4 font-heebo'>Projects & Ventures</div>
+      <div className='text-2xl pb-10'>
+          <div className=' flex flex-row text-2xl font-thin w-full justify-between pb-4'>
+            <div>Rias Software・Founder, SWE</div>
+            <div>8/2021 - 6/2022</div>
+          </div>
+          <div className='font-thin text-sm'>
+            <div>Crafted alternative investment strategies in Retail and Cryptocurrency and executed them through software, generating $30,000 in 2021-2022. Developed applications for automated interactions with Ethereum and Terra Luna blockchains, streamlining processes. Enhanced data acquisition through reverse-engineering of APIs, site flows, and advanced data scraping via HTML requests.</div>
+          </div>
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className='text-2xl pb-10'>
+          <div className=' flex flex-row text-2xl font-thin w-full justify-between pb-4'>
+            <div>Desktop Application for Sorting Manga Work</div>
+            <div>6/2023 - 6/2023</div>
+          </div>
+          <div className='font-thin text-sm'>
+            <div>Developed a custom user interface that seamlessly integrated the scraped data into a raindrop.io database, allowing for efficient categorization and management of manga works. Automated data extraction of manga title, description, genres, and covers from websites for comprehensive collection. Created a Windows application using ElectronJS, JavaScript, HTML, and CSS to automate the categorization of manga works. Integrated scraped data seamlessly into the database via a custom-built user interface.</div>
+          </div>
       </div>
-    </main>
+      <div className='text-2xl pb-10'>
+          <div className=' flex flex-row text-2xl font-thin w-full justify-between pb-4'>
+            <div>Chipotle Rewards Claimer</div>
+            <div>11/2022 - 12/2022</div>
+          </div>
+          <div className='font-thin text-sm'>
+            <div>Created a system in JavaScript to automatically find and redeem free Chipotle Entree codes via SMS. Continuously scanned for free Chipotle codes from various sources. Used a VOIP service and CLI to send mass SMS messages to Chipotle{"'"}s number, 888222. Sent collected codes to Chipotle{"'"}s number for successful redemption. Achieved automated and reliable free Chipotle Entree code redemption.</div>
+          </div>
+      </div>
+      <div className='text-2xl pb-10'>
+          <div className=' flex flex-row text-2xl font-thin w-full justify-between pb-4'>
+            <div>Vanity Ethereum Address Generator</div>
+            <div>5/2022 - 6/2022</div>
+          </div>
+          <div className='font-thin text-sm'>
+            <div>Developed a Javascript application that allows users to specify a custom prefix for their Ethereum {'(ETH)'} wallet address. The application generates wallet addresses iteratively until a matching address with the user{"'"}s specified prefix is found. Provided users with the ability to obtain ETH wallet addresses that align with their chosen prefix, enhancing the personalization and usability of their cryptocurrency wallets.</div>
+          </div>
+      </div>
+    </section>
+ </main>
   )
 }

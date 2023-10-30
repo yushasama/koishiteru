@@ -1,3 +1,4 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
@@ -9,9 +10,17 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'yuushasama': "url('../public/yuushasama.png')"
+      },
+      fontFamily: {
+        heebo: ['Heebo', 'sans-serif'],
+        sans: ['Noto Sans', ...defaultTheme.fontFamily.sans],
+        gothic: ['Noto Sans Gothic', 'sans-serif']
+      },
+      colors: {
+        dusk: '#070707',
+        fuschia: '#FFE7FF',
+        viral: '#00A984'
       },
     },
   },

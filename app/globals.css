@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .zoomie {
+    @apply bg-gradient-to-r scale-125 from-pink-500 to-rose-700 border border-rose-400
+  } 
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,11 +23,24 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: #FFFFFF
+}
+
+body::-webkit-scrollbar {
+    background-color: #101015;
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #101015;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #FB4E7C;
+    border-radius: 8px;
+    border: 2px solid #101015;
+}
+
+body::-webkit-scrollbar-button {
+    display:none;
 }
