@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='bg-yuushasama bg-no-repeat bg-cover'>
+    <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-yuushasama bg-no-repeat bg-cover bg-dusk'>
       <body>{children}</body>
     </html>
   )
