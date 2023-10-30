@@ -1,9 +1,14 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
-export const metadata: Metadata = {
+type CustomMetadata = Metadata & {
+  image: string;
+}
+
+export const metadata: CustomMetadata = {
   title: '恋してる',
-  description: 'Built by Leon, an aspiring SWE from Orange County,California. Created using',
+  description: 'Built by Leon, an aspiring SWE from Orange County, California. Created using NextJS, TailwindCSS, & Vercel',
+  image: '/public/yuushasama.png',
 }
 
 export default function RootLayout({
