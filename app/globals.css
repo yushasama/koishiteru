@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .zoomie {
-    @apply bg-gradient-to-r scale-125 from-pink-500 to-rose-700 border border-rose-400
-  } 
-}
-
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
