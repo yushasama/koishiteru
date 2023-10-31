@@ -1,39 +1,51 @@
-import leetcodeIcon from '../public/simple-icons_leetcode.svg'
+'use client'
+import leetCodeIcon from '../public/simple-icons_leetcode.svg'
 import gitHubIcon from '../public/akar-icons_github-fill.svg'
-import linkedinIcon from '../public/mdi_linkedin.svg'
 import emailIcon from '../public/ic_outline-email.svg'
+import linkedinIcon from '../public/mdi_linkedin.svg'
 import { Interests } from '@/components/Interests'
+import React, {useEffect, useState} from 'react'
 import { Socials } from '@/components/Socials'
-import Image from 'next/image'
 
 export default function Home() {
+  const [currentSong, setCurrentSong] = useState({ title: '', artist: '' });
+
+  const fetchCurrentSong = async () => {
+    try {
+      const res = await fetch('/api/spotify');
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentSong(data);
+
+        console.log(data)
+        console.log(currentSong)
+      } else {
+        console.error('Failed to fetch current song');
+      }
+    } catch (error) {
+      console.error('Error fetching current song', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentSong();
+  }, []);
+  
   return (
   <main className='flex flex-col my-24 mx-[10%] md:mx-[20%] items-center justify-center'>
     <section id='introduction' className='pb-4 w-full'>
       <div className='flex flex-col justify-between md:flex-row'>
         <div className='text-2xl xl:text-3xl 2xl:text-4xl font-heebo'>Leon Do</div>
-        <div className='text-sm md:text-base xl:text-lg 2xl:text-xl text-viral pt-1 md:pt-3 font-light font-gothic'>・Currently listening to Ashes of Rouge - Elfensjón</div>
+        <div className='text-sm md:text-base xl:text-lg 2xl:text-xl text-viral pt-1 md:pt-3 font-light font-gothic'>・Currently listening to ${currentSong.title} - ${currentSong.artist}</div>
       </div>
       <div className='pt-4 pb-12'>
         <div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>19 years old aspiring software engineer pursuing CS with a minor in Pure Mathematics at California State University of Long Beach. Driven by curiosity and passion, I am always eager to learn and create.</div>
       </div>
-      <div className='flex flex-row flex-wrap w-full space-y-2 md:space-y-0 justify-start items-start mb-[72px] space-x-4'>
-        <a href='https://github.com/yushasama' className='w-min px-6 py-2 h-min border-fuschia border rounded-md flex flex-row justify-center items-center space-x-2 transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-105'>
-          <Image src={gitHubIcon} alt='github icon'/>
-          <div className='text-fuchsia-50'>yushasama</div>
-        </a>
-        <a href='https://leetcode.com/heretik' className='w-min px-6 py-2 h-min border-orange-300 border rounded-md flex flex-row justify-center items-center space-x-2 transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-105'>
-          <Image src={leetcodeIcon} alt='leetcode icon'/>
-          <div className='text-orange-300'>heretik</div>
-        </a>
-        <a href='https://www.linkedin.com/in/leon-do-682003156/' className='w-min px-6 py-2 h-min border-blue-300 border rounded-md flex flex-row justify-center items-center space-x-2 whitespace-nowrap transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-105'>
-          <Image src={linkedinIcon} alt='linkedin icon'/>
-          <div className='text-blue-300'>Leon Do</div>
-        </a>
-        <a href='/#' className='w-min px-6 py-2 h-min border-teal-200  border rounded-md flex flex-row justify-center items-center space-x-2 transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-105'>
-          <Image src={emailIcon} alt='email icon'/>
-          <div className='text-teal-200 '>leon.do@koishite.ru</div>
-        </a>
+      <div className='flex flex-row flex-wrap w-full justify-start items-start mb-[72px]'>
+        <Socials icon={gitHubIcon} link='https://github.com/yushasama' text='yushasama' color='fuschia'/>
+        <Socials icon={leetCodeIcon} link='https://leetcode.com/heretik' text='heretik' color='orange'/>
+        <Socials icon={linkedinIcon} link='https://www.linkedin.com/in/leon-do-682003156/' text='Leon Do' color='blue'/>
+        <Socials icon={emailIcon} link='/' text='leontdo2004@gmail.com' color='teal'/>
       </div>
     </section>
     <section id='interests' className='flex flex-col justify-start items-start w-full mb-[72px]'>
@@ -103,7 +115,7 @@ export default function Home() {
           </div>
       </div>
     </section>
-    <footer　className='mt-20 flex flex-col w-full justify-center items-center font-thin'>
+    <footer className='mt-20 flex flex-col w-full justify-center items-center font-thin'>
       <div>koishiteru・恋してる</div>
       <div>falling in love {'<'}3</div>
     </footer>

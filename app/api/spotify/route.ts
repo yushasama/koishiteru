@@ -1,0 +1,21 @@
+import axios from 'axios'
+
+const apiKey = process.env.api_key
+const userName = process.env.user_name
+
+export async function GET(){
+  try {
+    const response = await axios.get(
+      `https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${userName}&api_key=${apiKey}&limit=1&nowplaying=true&format=json`
+    );
+
+    const mostRecentSong = {
+      'title': response.data.recenttracks.track[0].name,
+      'artist': response.data.recenttracks.track[0].artist['#text']
+    }
+
+    return Response.json(mostRecentSong)
+  } catch (error) {
+    console.error(error)
+  }
+}
