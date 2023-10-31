@@ -7,6 +7,13 @@ import { Interests } from '@/components/Interests'
 import React, {useEffect, useState} from 'react'
 import { Socials } from '@/components/Socials'
 
+// export async function getServerSideProps() {
+//   const res = await fetch('/api/spotify')
+//   const data = await res.json()
+
+//   return { props: {data}}
+// }
+
 export default function Home() {
   const [currentSong, setCurrentSong] = useState({ title: '', artist: '' });
 

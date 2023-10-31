@@ -12,7 +12,7 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+}): JSX.Element {
   return (
     <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-yuushasama bg-no-repeat bg-cover bg-dusk'>
       <body>{children}</body>

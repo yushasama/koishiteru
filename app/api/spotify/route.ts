@@ -1,9 +1,12 @@
+
 import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic'
 import axios from 'axios'
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY
 const userName = process.env.NEXT_PUBLIC_USER_NAME
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function GET(){
   try {
     const response = await axios.get(
