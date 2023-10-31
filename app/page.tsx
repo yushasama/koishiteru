@@ -14,6 +14,7 @@ import { Socials } from '@/components/Socials'
 //   return { props: {data}}
 // }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function Home() {
   const [currentSong, setCurrentSong] = useState({ title: '', artist: '' });
 
