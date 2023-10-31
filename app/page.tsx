@@ -36,7 +36,7 @@ export default function Home() {
     <section id='introduction' className='pb-4 w-full'>
       <div className='flex flex-col justify-between md:flex-row'>
         <div className='text-2xl xl:text-3xl 2xl:text-4xl font-heebo'>Leon Do</div>
-        <div className='text-sm md:text-base xl:text-lg 2xl:text-xl text-viral pt-1 md:pt-3 font-light font-gothic'>・Currently listening to ${currentSong.title} - ${currentSong.artist}</div>
+        <div className='text-sm md:text-base xl:text-lg 2xl:text-xl text-viral pt-1 md:pt-3 font-light font-gothic'>・Currently listening to {currentSong.title} - {currentSong.artist}</div>
       </div>
       <div className='pt-4 pb-12'>
         <div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>19 years old aspiring software engineer pursuing CS with a minor in Pure Mathematics at California State University of Long Beach. Driven by curiosity and passion, I am always eager to learn and create.</div>
