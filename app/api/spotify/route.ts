@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const apiKey = process.env.api_key
-const userName = process.env.user_name
+const apiKey = process.env.NEXT_PUBLIC_API_KEY
+const userName = process.env.NEXT_PUBLIC_USER_NAME
 
 export async function GET(){
   try {
