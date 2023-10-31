@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import axios from 'axios'
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY
@@ -14,7 +15,7 @@ export async function GET(){
       'artist': response.data.recenttracks.track[0].artist['#text']
     }
 
-    return Response.json(mostRecentSong)
+    return NextResponse.json(mostRecentSong)
   } catch (error) {
     console.error(error)
   }
