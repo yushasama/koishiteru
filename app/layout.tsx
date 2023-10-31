@@ -2,14 +2,10 @@ import type { Metadata } from 'next'
 import React from 'react';
 import './globals.css'
 
-type CustomMetadata = Metadata & {
-  image: string;
-}
 
-export const metadata: CustomMetadata = {
+export const metadata:Metadata = {
   title: '恋してる',
   description: 'Built by Leon, an aspiring SWE from Orange County, California. Created using NextJS, TailwindCSS, & Vercel',
-  image: '/public/yuushasama.png',
 }
 
 export default function RootLayout({

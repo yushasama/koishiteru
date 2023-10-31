@@ -69,7 +69,7 @@ export default function Home() {
       <div className='text-base md:text-xl 2xl:text-2xl pb-2'>
         <div className='flex flex-col md:flex-row font-thin w-full justify-between pb-2'>
           <div>Infiniti Trading・Web Developer</div>
-          <div>9/2022 - 11/22</div>
+          <div>9/2022 - 11/2022</div>
         </div>
         <div className='font-thin text-xs md:text-sm'>
           <div>Designed and prototyped the Infiniti Trading website using Figma, ensuring a user-friendly interface and seamless user experience. Developed and launched <a href='https://infiniti-site-9xmirage.vercel.app/' className='text-blue-400'>https://infinititrading.io/</a> {'retired'} using NextJS. Incorporated TailwindCSS to implement responsive and modern styling, enhancing the website{"'"}s visual appeal across multiple devices.</div>
