@@ -51,7 +51,7 @@ export default function Home() {
       </div>
       <div className='flex flex-row flex-wrap w-full justify-start items-start mb-[72px]'>
         <Socials icon={gitHubIcon} link='https://github.com/yushasama' text='yushasama' color='fuschia'/>
-        <Socials icon={leetCodeIcon} link='https://leetcode.com/heretik' text='heretik' color='orange'/>
+        {/* <Socials icon={leetCodeIcon} link='https://leetcode.com/heretik' text='heretik' color='orange'/> */}
         <Socials icon={linkedinIcon} link='https://www.linkedin.com/in/leon-do-682003156/' text='Leon Do' color='blue'/>
         <Socials icon={emailIcon} link='/' text='leontdo2004@gmail.com' color='teal'/>
       </div>
