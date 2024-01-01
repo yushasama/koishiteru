@@ -1,5 +1,5 @@
 'use client'
-// import leetCodeIcon from '../public/simple-icons_leetcode.svg'
+import leetCodeIcon from '../public/simple-icons_leetcode.svg'
 import gitHubIcon from '../public/akar-icons_github-fill.svg'
 import emailIcon from '../public/ic_outline-email.svg'
 import linkedinIcon from '../public/mdi_linkedin.svg'
@@ -51,7 +51,7 @@ export default function Home() {
       </div>
       <div className='flex flex-row flex-wrap w-full justify-start items-start mb-[72px]'>
         <Socials icon={gitHubIcon} link='https://github.com/yushasama' text='yushasama' color='fuschia'/>
-        {/* <Socials icon={leetCodeIcon} link='https://leetcode.com/heretik' text='heretik' color='orange'/> */}
+        <Socials icon={leetCodeIcon} link='https://leetcode.com/heretik' text='heretik' color='orange'/>
         <Socials icon={linkedinIcon} link='https://www.linkedin.com/in/leon-do-682003156/' text='Leon Do' color='blue'/>
         <Socials icon={emailIcon} link='/' text='leontdo2004@gmail.com' color='teal'/>
       </div>
@@ -59,17 +59,21 @@ export default function Home() {
     <section id='interests' className='flex flex-col justify-start items-start w-full mb-[72px]'>
       <div className='text-2xl xl:text-3xl 2xl:text-4xl font-heebo'>Recent Interests</div>
       <div className='flex flex-row flex-wrap'>
-        <Interests text='Real Analysis'/>
-        <Interests text='Leetcode'/>
-        <Interests text='Trading'/>
+        {/* <Interests text='Real Analysis'/> */}
+        {/* <Interests text='Leetcode'/> */}
+        {/* <Interests text='Trading'/> */}
         <Interests text='German Automobiles'/>
-        <Interests text='Filipino Cuisine'/>
-        <Interests text='Data Structures'/>
-        <Interests text='Bayesian Statistics'/>
+        {/* <Interests text='Filipino Cuisine'/> */}
+        {/* <Interests text='Data Structures'/> */}
+        {/* <Interests text='Bayesian Statistics'/> */}
+        <Interests text='Liquidity Provision'/>
+        <Interests text='Korean BBQ'/>
+        <Interests text='NeoVim'/>
         <Interests text='NextJS'/>
         <Interests text='Python'/>
-        <Interests text='Elfensjon'/>
+        <Interests text='Golang'/>
         <Interests text='Release Hallucination'/>
+        <Interests text='Elfensjon'/>
       </div>
     </section>
     <section id='experience' className='flex flex-col justify-start w-full mb-[72px]'>
@@ -121,6 +125,15 @@ export default function Home() {
           <div className='font-thin text-xs md:text-sm'>
             <div>Developed a Javascript application that allows users to specify a custom prefix for their Ethereum {'(ETH)'} wallet address. The application generates wallet addresses iteratively until a matching address with the user{"'"}s specified prefix is found. Provided users with the ability to obtain ETH wallet addresses that align with their chosen prefix, enhancing the personalization and usability of their cryptocurrency wallets.</div>
           </div>
+          <div className='md:text-xl 2xl:text-2xl pb-10'>
+          <div className='flex flex-col md:flex-row font-thin w-full justify-between pb-4'>
+            <div>Golang Malware Development</div>
+            <div>3/2023 - 6/2023</div>
+          </div>
+          <div className='font-thin text-xs md:text-sm'>
+            <div>Developed functional malware in Golang, a language with no prior experience in. Showcasing rapid self-learning and programming proficiency.Remodified and improved an open-source project, highlighting adaptability and collaborative coding skills.</div>
+          </div>
+      </div>
       </div>
     </section>
     <footer className='mt-20 flex flex-col w-full justify-center items-center font-thin'>
