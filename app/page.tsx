@@ -126,6 +126,9 @@ export default function Home() {
             <div>Developed a Javascript application that allows users to specify a custom prefix for their Ethereum {'(ETH)'} wallet address. The application generates wallet addresses iteratively until a matching address with the user{"'"}s specified prefix is found. Provided users with the ability to obtain ETH wallet addresses that align with their chosen prefix, enhancing the personalization and usability of their cryptocurrency wallets.</div>
           </div>
           <div className='md:text-xl 2xl:text-2xl pb-10'>
+      </div>
+      </div>
+      <div className='md:text-xl 2xl:text-2xl pb-10'>
           <div className='flex flex-col md:flex-row font-thin w-full justify-between pb-4'>
             <div>Golang Malware Development</div>
             <div>3/2023 - 6/2023</div>
@@ -133,7 +136,6 @@ export default function Home() {
           <div className='font-thin text-xs md:text-sm'>
             <div>Developed functional malware in Golang, a language with no prior experience in. Showcasing rapid self-learning and programming proficiency.Remodified and improved an open-source project, highlighting adaptability and collaborative coding skills.</div>
           </div>
-      </div>
       </div>
     </section>
     <footer className='mt-20 flex flex-col w-full justify-center items-center font-thin'>
