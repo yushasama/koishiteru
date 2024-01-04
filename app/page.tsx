@@ -125,8 +125,6 @@ export default function Home() {
           <div className='font-thin text-xs md:text-sm'>
             <div>Developed a Javascript application that allows users to specify a custom prefix for their Ethereum {'(ETH)'} wallet address. The application generates wallet addresses iteratively until a matching address with the user{"'"}s specified prefix is found. Provided users with the ability to obtain ETH wallet addresses that align with their chosen prefix, enhancing the personalization and usability of their cryptocurrency wallets.</div>
           </div>
-          <div className='md:text-xl 2xl:text-2xl pb-10'>
-      </div>
       </div>
       <div className='md:text-xl 2xl:text-2xl pb-10'>
           <div className='flex flex-col md:flex-row font-thin w-full justify-between pb-4'>
