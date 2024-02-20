@@ -1,5 +1,5 @@
 'use client'
-import leetCodeIcon from '../public/simple-icons_leetcode.svg'
+// import leetCodeIcon from '../public/simple-icons_leetcode.svg'
 import gitHubIcon from '../public/akar-icons_github-fill.svg'
 import emailIcon from '../public/ic_outline-email.svg'
 import linkedinIcon from '../public/mdi_linkedin.svg'
