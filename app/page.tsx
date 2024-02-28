@@ -103,7 +103,7 @@ export default function Home() {
             <div>8/2021 - 6/2022</div>
           </div>
           <div className='font-thin text-xs md:text-sm'>
-            <div>Crafted investment strategies based on non traditional security markets such as Cryptocurrency and Non Fungible Tokens. Accrument of these securities were executed through the assistance of software both partially and entirely. Software assisted investment strategies made $20,000 profit with a $30,000 revenue in 2021-2022. Created applications for automated interactions with Ethereum & Terra Luna’s blockchain network, saving time spent on manual actions by 90%. Reverse-engineered rest APIs, site flows, and engineered a system for scraping and processing thousands of lines of data.</div>
+            <div>Crafted investment strategies based on non traditional security markets such as Cryptocurrency and Non Fungible Tokens. Accrument of these securities were executed through the assistance of software both partially and entirely. Software assisted investment strategies made $20,000 profit with a $30,000 revenue in 2021-2022. Developed a Javascript application for automated interactions with Ethereum & Terra Luna’s blockchain network, saving time spent on manual actions by 90%. Reverse-engineered rest APIs, site flows, and engineered a system for scraping and processing thousands of lines of data.</div>
           </div>
       </div>
       <div className='md:text-xl 2xl:text-2xl pb-10'>
