@@ -112,7 +112,7 @@ export default function Home() {
             <div>6/2023 - 6/2023</div>
           </div>
           <div className='font-thin text-xs md:text-sm'>
-            <div>Developed a custom user interface that seamlessly integrated the scraped data into a raindrop.io database, allowing for efficient categorization and management of manga works. Automated data extraction of manga title, description, genres, and covers from websites for comprehensive collection. Created a Windows application using ElectronJS, JavaScript, HTML, and CSS to automate the categorization of manga works. Integrated scraped data seamlessly into the database via a custom-built user interface.</div>
+            <div>Developed a custom application that seamlessly integrated the scraped data into a raindrop.io database, allowing for efficient categorization and management of manga works. Automated data extraction of manga title, description, genres, and covers from websites for comprehensive collection. Optimizing operation time by an estimated 97% Created a custom Windows application using ElectronJS, JavaScript, HTML, and CSS to automate the categorization of manga works. Integrated scraped data seamlessly into the database via a custom application.</div>
           </div>
       </div>
       <div className='md:text-xl 2xl:text-2xl pb-10'>
@@ -121,7 +121,7 @@ export default function Home() {
             <div>11/2022 - 12/2022</div>
           </div>
           <div className='font-thin text-xs md:text-sm'>
-            <div>Created a system in JavaScript to automatically find and redeem free Chipotle Entree codes via SMS. Continuously scanned for free Chipotle codes from various sources. Used a VOIP service and CLI to send mass SMS messages to Chipotle{"'"}s number, 888222. Sent collected codes to Chipotle{"'"}s number for successful redemption. Achieved automated and reliable free Chipotle Entree code redemption.</div>
+            <div>Created an application in JavaScript to automatically find and redeem free Chipotle Entree codes via SMS. Continuously scanned for free Chipotle codes from various websites or platforms using their APIs. Sent and redeemed 100s of collected codes to Chipotle through a VOIP service for successful redemption. Accumulated 4 figures worth of chipotle codes, turning them into profit.</div>
           </div>
       </div>
       <div className='md:text-xl 2xl:text-2xl pb-10'>
