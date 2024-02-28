@@ -22,6 +22,9 @@ const config: Config = {
         fuschia: '#FFE7FF',
         viral: '#00A984'
       },
+      animation: {
+        border: 'background ease infinite'
+      },
     },
   },
   plugins: [],

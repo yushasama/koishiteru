@@ -27,6 +27,7 @@ export default function Home() {
 
         console.log(data)
         console.log(currentSong)
+
       } else {
         console.error('Failed to fetch current song');
       }
@@ -36,9 +37,13 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchCurrentSong();
+    fetchCurrentSong()
+    const interval = setInterval(() => fetchCurrentSong(), 5000);
+    return () => {
+      clearInterval(interval)
+    }
   }, []);
-  
+
   return (
   <main className='flex flex-col my-24 mx-[10%] md:mx-[20%] items-center justify-center'>
     <section id='introduction' className='pb-4 w-full'>
@@ -66,11 +71,13 @@ export default function Home() {
         {/* <Interests text='Filipino Cuisine'/> */}
         {/* <Interests text='Data Structures'/> */}
         {/* <Interests text='Bayesian Statistics'/> */}
-        <Interests text='Liquidity Provision'/>
+        <Interests text='Algorithmic Trading'/>
         <Interests text='Korean BBQ'/>
         <Interests text='NeoVim'/>
         <Interests text='NextJS'/>
+        <Interests text='Computational Finance'/>
         <Interests text='Python'/>
+        <Interests text='Machine Learning'/>
         <Interests text='Golang'/>
         <Interests text='Release Hallucination'/>
         <Interests text='Elfensjon'/>
@@ -96,7 +103,7 @@ export default function Home() {
             <div>8/2021 - 6/2022</div>
           </div>
           <div className='font-thin text-xs md:text-sm'>
-            <div>Crafted alternative investment strategies in Retail and Cryptocurrency and executed them through software, generating $30,000 in 2021-2022. Developed applications for automated interactions with Ethereum and Terra Luna blockchains, streamlining processes. Enhanced data acquisition through reverse-engineering of APIs, site flows, and advanced data scraping via HTML requests.</div>
+            <div>Crafted investment strategies based on non traditional security markets such as Cryptocurrency and Non Fungible Tokens. Accrument of these securities were executed  through the assistance of software both partially and entirely , generating $20,000 profit in 2021-2022 based on a $30,000 revenue. Developed applications for automated interactions with Ethereum and Terra Luna blockchains, streamlining processes. Enhanced data acquisition through reverse-engineering of APIs, site flows, and advanced data scraping via HTML requests.</div>
           </div>
       </div>
       <div className='md:text-xl 2xl:text-2xl pb-10'>
@@ -132,7 +139,7 @@ export default function Home() {
             <div>12/2023 - 1/2024</div>
           </div>
           <div className='font-thin text-xs md:text-sm'>
-            <div>Developed functional malware in Golang, a language with no prior experience in. Showcasing rapid self-learning and programming proficiency.Remodified and improved an open-source project, highlighting adaptability and collaborative coding skills.</div>
+            <div>Developed functional malware as a starter project to learn Golang and system security. Used an open source project and fine tuned it to personal preferences. </div>
           </div>
           <div className='md:text-xl 2xl:text-2xl pb-10'>
       </div>

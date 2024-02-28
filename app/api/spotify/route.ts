@@ -17,7 +17,6 @@ export async function GET(){
       'title': response.data.recenttracks.track[0].name,
       'artist': response.data.recenttracks.track[0].artist['#text']
     }
-
     return NextResponse.json(mostRecentSong)
   } catch (error) {
     console.error(error)
