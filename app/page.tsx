@@ -91,7 +91,7 @@ export default function Home() {
           <div>9/2022 - 11/2022</div>
         </div>
         <div className='font-thin text-xs md:text-sm'>
-          <div>Designed and prototyped the Infiniti Trading website using Figma, ensuring a user-friendly interface and seamless user experience. Developed and launched <a href='https://infiniti-site-9xmirage.vercel.app/' className='text-blue-400'>https://infinititrading.io/</a> {'retired'} using NextJS. Incorporated TailwindCSS to implement responsive and modern styling, enhancing the website{"'"}s visual appeal across multiple devices.</div>
+          <div>Designed and prototyped the Infiniti Trading website using Figma, ensuring a user-friendly interface and seamless user experience. Developed and launched <a href='https://infiniti-site-9xmirage.vercel.app/' className='text-blue-400'>https://infinititrading.io/</a> {'business no longer active'} using NextJS. Incorporated TailwindCSS to implement responsive and modern styling, enhancing the website{"'"}s visual appeal across multiple devices.</div>
         </div>
       </div>
     </section>
@@ -103,7 +103,7 @@ export default function Home() {
             <div>8/2021 - 6/2022</div>
           </div>
           <div className='font-thin text-xs md:text-sm'>
-            <div>Crafted investment strategies based on non traditional security markets such as Cryptocurrency and Non Fungible Tokens. Accrument of these securities were executed  through the assistance of software both partially and entirely , generating $20,000 profit in 2021-2022 based on a $30,000 revenue. Developed applications for automated interactions with Ethereum and Terra Luna blockchains, streamlining processes. Enhanced data acquisition through reverse-engineering of APIs, site flows, and advanced data scraping via HTML requests.</div>
+            <div>Crafted investment strategies based on non traditional security markets such as Cryptocurrency and Non Fungible Tokens. Accrument of these securities were executed through the assistance of software both partially and entirely. Software assisted investment strategies made $20,000 profit with a $30,000 revenue in 2021-2022. Developed applications for automated interactions with Ethereum and Terra Luna blockchains, streamlining processes. Enhanced data acquisition through reverse-engineering of APIs, site flows, and advanced data scraping via HTML requests.</div>
           </div>
       </div>
       <div className='md:text-xl 2xl:text-2xl pb-10'>
