@@ -7,8 +7,7 @@ interface InterestProps {
 }
 
 export const Interests: React.FC<InterestProps> = ({icon='', text}) => {
-    const isHeartIcon = icon.src == '/_next/static/media/solar_heart-broken.73022f8f.svg'
-    console.log(typeof icon.src)
+    const isHeartIcon = icon == '/_next/static/media/solar_heart-broken.73022f8f.svg'
 
     const borderGradient = isHeartIcon
     ? 'from-pink-500 to-rose-700 hover:border-rose-400'
