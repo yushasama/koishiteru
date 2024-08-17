@@ -9,6 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        wave: {
+          '0%, 100%': { transform: 'scaleY(1.1)' },
+          '50%': { transform: 'scaleY(2)' },
+        },
+      },
       backgroundImage: {
         'yuushasama': "url('../public/yuushasama.png')"
       },
@@ -20,9 +26,11 @@ const config: Config = {
       colors: {
         dusk: '#070707',
         fuschia: '#FFE7FF',
-        viral: '#00A984'
+        viral: '#00A984',
+        rias: '#FE2760'
       },
       animation: {
+        wave: 'wave 1s ease-in-out infinite',
         border: 'background ease infinite'
       },
     },
