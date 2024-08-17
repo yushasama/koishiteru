@@ -1,14 +1,17 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import React from 'react';
 
 interface InterestProps {
-  icon?: string;
+  icon?: string | StaticImageData;
   text: string;
 }
 
 export const Interests: React.FC<InterestProps> = ({icon='', text}) => {
-    const isHeartIcon = icon == '/_next/static/media/solar_heart-broken.73022f8f.svg'
+  const iconSrc = typeof icon === 'object' ? icon.src : icon;
 
+  const isHeartIcon = iconSrc.includes('saikou_icon');
+
+    console.log(icon, typeof icon)
     const borderGradient = isHeartIcon
     ? 'from-pink-500 to-rose-700 hover:border-rose-400'
     : 'from-sky-500 to-blue-700 hover:border-blue-400'
