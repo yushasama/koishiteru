@@ -88,7 +88,7 @@ export default function Home() {
             }
       </div>
       <div className='pt-4 pb-12'>
-        <div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>I am currently a {calculateYearsSinceDate("03/07/2004")} years olds apiring software engineer.
+        <div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>I am currently a {calculateYearsSinceDate("03/07/2004")} years old apiring software engineer.
           My university of attendance is the California State University of Long Beach.
           I am studying as a Computer Science major, along with a minor in Pure Mathematics.
           I have been programming for around {calculateYearsSinceDate("02/28/2021")} years since my  junior year of high school. 
