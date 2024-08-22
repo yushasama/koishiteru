@@ -92,7 +92,7 @@ export default function Home() {
           My university of attendance is the California State University of Long Beach.
           I am studying as a Computer Science major, along with a minor in Pure Mathematics.
           I have been programming for around {calculateYearsSinceDate("02/28/2021")} years since my  junior year of high school. 
-          While working on my first major program, Rias Automation, I realized that programming is what I wanted to do. 
+          While working on my first major program, Rias Software, I realized that programming is what I wanted to do. 
           I love the aspect of constant problem solving, designing systems, and watching my ideas manifest into reality.
           Driven by my curiosity and passion, I am always eager to learn and create.
         </div>
