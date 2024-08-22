@@ -157,7 +157,7 @@ export default function Home() {
     <section id='projects' className='flex flex-col justify-start w-full'>
       <div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
       <Experiences
-      companyName='Reverse Stock Split Scanner'
+      companyName='Rust-Based Financial Data Aggregator'        
       role=''
       startDate='7/2024'
       endDate='7/2024'
