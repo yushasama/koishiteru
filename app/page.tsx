@@ -156,6 +156,21 @@ export default function Home() {
     </section>
     <section id='projects' className='flex flex-col justify-start w-full'>
       <div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
+      <Experiences
+      companyName='Reverse Stock Split Scanner'
+      role=''
+      startDate='7/2024'
+      endDate='7/2024'
+      details={
+        <>
+        Collected and aggregated financial data through the web scraping of various financial websites.
+        Programmed asynchronously to handle I/O-bound tasks efficiently, opening up the potential for concurrency in future enhancements, thus improving the tool’s scalability and responsiveness.
+        Engineered a robust data processing pipeline to clean and structure data efficiently, reducing data processing time by 30%.
+        Optimized code structure with modular design and object-oriented principles, improving code maintainability and scalability, which facilitated easy updates and extensions to the tool.
+        Utilized text processing algorithms, increasing accuracy of aggregated data.
+        </>
+      }
+      />
       <Experiences 
         companyName='Mirai Research' 
         role='Founder & Lead Software Engineer' 
