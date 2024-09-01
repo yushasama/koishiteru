@@ -115,7 +115,7 @@ export default function Home() {
       <div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Experience</div>
       <Experiences
       companyName='Beach Investment Group'
-      role='Quantitative Developer Intern'
+      role='Quantitative Researcher Intern'
       startDate='6/2024'
       endDate='PRESENT'
       details={
@@ -125,6 +125,7 @@ export default function Home() {
           Reduced manual data retrieval and analysis times by over 90%.
           Simplified mathematical formulas into matrix transformations, leveraging NumPy and Pandas for efficient linear algebra computations.
           Applied machine learning concepts such as PCA, Kernel PCA, Ridge Regression for forecasting risk and returns of securities.
+		      Conducted in-depth research on factor models, drawing insight on risk management strategies.
           </>
         }
       />
