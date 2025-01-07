@@ -134,7 +134,7 @@ export default function Home() {
 			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
 			<Experiences
 				companyName='VisionPay'
-				startdate='10/2024'
+				startDate='10/2024'
 				endDate='10/2024'
 				details={
 					<>
