@@ -39,17 +39,17 @@ export default function Home() {
 	const interestsData = [
 		{ icon: saikouIcon, text: 'German Automobiles' },
 		{ icon: saikouIcon, text: 'Korean BBQ' },
-		{ icon: saikouIcon, text: 'Computational Finance' },
-		{ icon: studyIcon, text: 'Python, Typescript, Golang' },
+		{ icon: saikouIcon, text: 'Quantitative Finance' },
+		{ icon: studyIcon, text: 'Competitive Programming' },
+		{ icon: studyIcon, text: 'C++, Python, Typescript, Golang, Rust' },
 		{ icon: studyIcon, text: 'Machine Learning' },
 		{ icon: saikouIcon, text: 'Release Hallucination' },
 		{ icon: saikouIcon, text: 'Elfensjon' },
 		{ icon: foodIcon, text: 'Takoyaki, Sushi, Katsu' },
 		{ icon: saikouIcon, text: 'Curry Udon' },
 		{ icon: musicIcon, text: 'JRock, JMetal, JPop' },
-		{ icon: foodIcon, text: 'BBQing (Smoking)' },
+		{ icon: foodIcon, text: 'BBQing' },
 		{ icon: musicIcon, text: 'Hardcore, Hardstyle, Frenchcore' },
-		{ icon: studyIcon, text: 'Digital Signal Processing' },
 		{ icon: studyIcon, text: 'Fourier Analysis' },
 	];
 
@@ -115,48 +115,35 @@ export default function Home() {
 			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Experience</div>
 			<Experiences
 			companyName='Beach Investment Group'
-			role='Quantitative Researcher Intern'
+			role='Quantitative Developer Intern'
 			startDate='6/2024'
 			endDate='PRESENT'
 			details={
 					<>
-					Developed a comprehensive toolkit for quantitative analysis aimed at the Beach Investment Group.
-					Implemented tools for risk metric computations and automated retrieval of market data.
-					Reduced manual data retrieval and analysis times by over 90%.
-					Simplified mathematical formulas into matrix transformations, leveraging NumPy and Pandas for efficient linear algebra computations.
-					Applied machine learning concepts such as PCA, Kernel PCA, Ridge Regression for forecasting risk and returns of securities.
-					Conducted in-depth research on factor models, drawing insight on risk management strategies.
-					</>
-				}
-			/>
-			<Experiences
-			companyName='Beach Investment Group'
-			role='Research Intern'
-			startDate='6/2023'
-			endDate='8/2023'
-			details={
-					<>
-					Utilized Excel for advanced data visualization, creating detailed graphs to aid in the analysis of market trends and investment opportunities.
-					Identified key macroeconomic factors and conducted comprehensive research to understand their impact on financial markets and interrelations with other economic indicators.
-					Assessed and synthesized findings to predict market movements and economic conditions over a 6-12 month period.
-					Collaborated within a team environment to discuss research outcomes and investment strategy formulation process.
-					</>
-				}
-			/>
-			<Experiences
-			companyName='Infiniti Trading'
-			role='Web Developer'
-			startDate='9/2022'
-			endDate='11/2022'
-			details={
-					<>
-					Designed and prototyped the Infiniti Trading website using Figma, ensuring a user-friendly interface and seamless user experience. Developed and launched <a href='https://infiniti-site-9xmirage.vercel.app/' className='text-blue-400'>https://infinititrading.io/</a> {'(original link no longer active as business is now longer defunct)'} using NextJS. Incorporated TailwindCSS to implement responsive and modern styling, enhancing the website{"'"}s visual appeal across multiple devices.
+					Pioneered the development of Beach Investment Group's, a student managed investment fund, first quantitative analytics platform for factor modeling and machine learning based methodologies.
+					Leveraged Nvidia CUDA for accelerated computations, enhancing the processing speed for data analysis and machine learning tasks.
+					Used Pandas and Polars for high-performance data handling, enabling efficient analysis of large datasets in securities research.
+					Developed modular factor models, allowing the models to be hybridized and use various modeling approaches such as deep learning.
+					Designed a matrix profile algorithm to identify repeating patterns and anomalies in time series data, aiding in predictive analytics and enhanced market sensitivity modeling.
+					Applied the modular factor model in the 2024 CFAOC RFP Competition, achieving a first-place finish and securing $115,000 in additional funding for the team.
 					</>
 				}
 			/>
 		</section>
 		<section id='projects' className='flex flex-col justify-start w-full'>
 			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
+			<Experiences
+				companyName='VisionPay'
+				startdate='10/2024'
+				endDate='10/2024'
+				details={
+					<>
+					Worked with a team to develop VisionPay, a computer vision powered self checkout system for MarinaHacks.
+					Designed and deployed scalable ML infrastructure with automated preprocessing pipelines, reducing training time by 30% and enabling efficient, consistent data handling for model deployment.
+					Integrated backend systems with front-end architecture, enabling real-time item recognition and receipt generation.
+					</>
+				}
+			/>
 			<Experiences
 			companyName='Rust-Based Financial Data Aggregator'        
 			role=''
@@ -165,9 +152,8 @@ export default function Home() {
 			details={
 				<>
 				Collected and aggregated financial data through the web scraping of various financial websites.
-				Programmed asynchronously to handle I/O-bound tasks efficiently, opening up the potential for concurrency in future enhancements, thus improving the tool’s scalability and responsiveness.
-				Engineered a robust data processing pipeline to clean and structure data efficiently, reducing data processing time by 30%.
-				Optimized code structure with modular design and object-oriented principles, improving code maintainability and scalability, which facilitated easy updates and extensions to the tool.
+				Engineered a data processing pipeline to clean and structure data efficiently, reducing data processing time by 30%.
+				Optimized code structure with modular design and object-oriented programming, improving code maintainability and scalability, which facilitated easy updates and extensions to the tool.
 				Utilized text processing algorithms, increasing accuracy of aggregated data.
 				</>
 			}
@@ -179,10 +165,11 @@ export default function Home() {
 				endDate='7/2024'
 				details={
 					<>
-					Directed a team of developers, voicing project goals and timelines to ensure project alignment and efficiency. Spearheaded the development roadmap and process for a desktop application designed to implement semi to fully automated Cryptocurrency trading and enhance trading capabilities. 
-					Designed internal libraries and classes to interact seamlessly with cryptocurrency protocols, increasing development speed and reducing complexities. 
-					Benchmarked the software’s latency in executing trades and identifying potentially profitable opportunities. 
-					Deployed a Command Line Interface for the software, creating a pleasant user experience.
+					Architected and implemented core components of a cryptocurrency trading software using TypeScript and GoLang. 
+					Led efforts to optimize code complexity, implementing scalable and reusable code design that enhanced system performance and maintainability while reducing technical debt.
+					Benchmarked system performance, identifying and addressing latency bottlenecks in trade execution workflows, leading to measurable improvements in processing efficiency.
+					Implemented a Command Line Interface (CLI) to streamline user interaction, simplifying operational workflows for complex trading scenarios and reducing system complexity for end users.
+					Engineered advanced monitoring systems to enhance real-time market signal analysis, achieving a 70% reduction in detection latency compared to industry benchmarks by optimizing API throughput and improving system responsiveness.
 					</>
 				}
 			/>
@@ -193,11 +180,10 @@ export default function Home() {
 			endDate='6/2022'
 			details={
 				<>
-				Crafted investment strategies based on non traditional security markets such as Cryptocurrency and Non Fungible Tokens.
-				Accrument of these securities were executed through the assistance of software both partially and entirely.
-				Software assisted investment strategies made $20,000 profit with a $30,000 revenue in 2021-2022.
-				Developed a Javascript application for automated interactions with Ethereum & Terra Luna’s blockchain network, saving time spent on manual actions by 90%.
-				Reverse-engineered rest APIs, site flows, and engineered a system for scraping and processing thousands of lines of data.
+				Engineered Javascript & Python based software solutions for automating retail purchases, raffle entry, and interactions with cryptocurrency networks to accrue limited items.
+				Designed and scaled the application to handle concurrent tasks, ensuring a robust and maintainable codebase through object-oriented programming.
+				Developed and optimized data scraping solutions to collect and process product-related data efficiently, handling thousands of lines of data from various sources.
+				Utilized multithreading and task queuing, preventing lag and resource clogging during software usage.
 				</>
 			}
 			/>
