@@ -120,7 +120,7 @@ export default function Home() {
 			endDate='PRESENT'
 			details={
 					<>
-					Pioneered the development of Beach Investment Group's, a student managed investment fund, first quantitative analytics platform for factor modeling and machine learning based methodologies.
+					Pioneered the development of Beach Investment Group&apos;s, a student managed investment fund, first quantitative analytics platform for factor modeling and machine learning based methodologies.
 					Leveraged Nvidia CUDA for accelerated computations, enhancing the processing speed for data analysis and machine learning tasks.
 					Used Pandas and Polars for high-performance data handling, enabling efficient analysis of large datasets in securities research.
 					Developed modular factor models, allowing the models to be hybridized and use various modeling approaches such as deep learning.
