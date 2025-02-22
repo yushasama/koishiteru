@@ -37,12 +37,12 @@ export default function Home() {
 	}, []);
 
 	const interestsData = [
-		{ icon: saikouIcon, text: 'German Automobiles' },
 		{ icon: saikouIcon, text: 'Korean BBQ' },
 		{ icon: saikouIcon, text: 'Quantitative Finance' },
 		{ icon: studyIcon, text: 'Competitive Programming' },
 		{ icon: studyIcon, text: 'C++, Python, Typescript, Golang, Rust' },
 		{ icon: studyIcon, text: 'Machine Learning' },
+		{ icon : saikouIcon, text: 'Judo'},
 		{ icon: saikouIcon, text: 'Release Hallucination' },
 		{ icon: saikouIcon, text: 'Elfensjon' },
 		{ icon: foodIcon, text: 'Takoyaki, Sushi, Katsu' },
@@ -50,7 +50,6 @@ export default function Home() {
 		{ icon: musicIcon, text: 'JRock, JMetal, JPop' },
 		{ icon: foodIcon, text: 'BBQing' },
 		{ icon: musicIcon, text: 'Hardcore, Hardstyle, Frenchcore' },
-		{ icon: studyIcon, text: 'Fourier Analysis' },
 	];
 
 	const sortedInterests = interestsData.sort((a, b) => {
