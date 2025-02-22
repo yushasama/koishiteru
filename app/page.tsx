@@ -133,6 +133,19 @@ export default function Home() {
 		<section id='projects' className='flex flex-col justify-start w-full'>
 			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
 			<Experiences
+			companyName='Tsundebugger'
+			startDate='1/2025'
+			endDate=''
+			details={
+				<>
+				Currently developing a cross-platform testing framework in C++ to execute and validate Python algorithms with process isolation. Achieved robust error handling and resource management using Boost libraries for Inter-Process Communication, multi-threading, and filesystem operations.
+				Implemented concurrent test execution with thread-safe result handling for improved performance.
+				Developed using Bazel build system for reproducible builds across Unix/Linux and Windows environments.
+				Enabled concurrent test execution, reducing test suite runtimes by 60%, improving CI/CD workflows.
+				</>
+			}
+			/>
+			<Experiences
 				companyName='VisionPay'
 				startDate='10/2024'
 				endDate='10/2024'
