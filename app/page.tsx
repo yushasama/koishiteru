@@ -1,6 +1,7 @@
 'use client'
 import gitHubIcon from '../public/github_icon.svg'
 import emailIcon from '../public/email_icon.svg'
+import ghostIcon from '../public/ghost_blog.svg'
 import foodIcon from '../public/food_icon.svg'
 import saikouIcon from '../public/saikou_icon.svg'
 import studyIcon from '../public/study_icon.svg'
@@ -100,6 +101,7 @@ export default function Home() {
 				<Socials icon={gitHubIcon} link='https://github.com/yushasama' text='yushasama' color='fuschia'/>
 				<Socials icon={linkedinIcon} link='https://www.linkedin.com/in/leon-do-682003156/' text='Leon Do' color='blue'/>
 				<Socials icon={emailIcon} link='/' text='leontdo2004@gmail.com' color='teal'/>
+				<Socials icon={} link='https://cache-me-if-you-can.up.railway.app/' text='blog' color='#FE2760'/>
 			</div>
 		</section>
 		<section id='interests' className='flex flex-col justify-start items-start w-full mb-[72px]'>
