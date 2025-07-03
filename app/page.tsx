@@ -88,20 +88,24 @@ export default function Home() {
 						}
 			</div>
 			<div className='pt-4 pb-12'>
-				<div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>I am currently a {calculateYearsSinceDate("03/07/2004")} years old apiring software engineer.
-					My university of attendance is the California State University of Long Beach.
-					I am studying as a Computer Science major, along with a minor in Pure Mathematics.
-					I have been programming for around {calculateYearsSinceDate("02/28/2021")} years since my  junior year of high school. 
-					While working on my first major program, Rias Software, I realized that programming is what I wanted to do. 
-					I love the aspect of constant problem solving, designing systems, and watching my ideas manifest into reality.
-					Driven by my curiosity and passion, I am always eager to learn and create.
+				<div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>I&apos;m Leon, a {calculateYearsSinceDate("03/07/2004")} years old apiring software engineer at
+					the California State University of Long Beach, majoring in Computer Science with a minor in Pure Mathematics.
+					My journey into programmming began in high school around {calculateYearsSinceDate("02/28/2021")} ago, sparked by
+					my interest in the sneaker reselling industry. While building my first major project and sneaker bot, Rias Software, I realized I became
+					obsessed with automation, reverse-engineering, and optimization.
+
+					Since then, I&apos;ve completely fallen in love with building through the art of programming. For me, programming isn&apos;t just code.
+					It&apos;s problem solving, system elegance under pressure, and the thrill of turning abstract ideas into performant, real-world solutions.
+
+					These days, I focus on Low-Latency Engineering, profiling, optimizing, and reshaping performance across both software and hardware levels,
+					from algorithmic design to cache layouts—until my code paths performs like an orchestra.
 				</div>
 			</div>
 			<div className='flex flex-row flex-wrap w-full justify-start items-start mb-[72px]'>
 				<Socials icon={gitHubIcon} link='https://github.com/yushasama' text='yushasama' color='fuschia'/>
 				<Socials icon={linkedinIcon} link='https://www.linkedin.com/in/leon-do-682003156/' text='Leon Do' color='blue'/>
 				<Socials icon={emailIcon} link='/' text='leontdo2004@gmail.com' color='teal'/>
-				<Socials icon={ghostIcon} link='https://cache-me-if-you-can.up.railway.app/' text='blog' color='hot_pink'/>
+				<Socials icon={ghostIcon} link='https://cache-me-if-you-can.up.railway.app/' text='Blog' color='hot_pink'/>
 			</div>
 		</section>
 		<section id='interests' className='flex flex-col justify-start items-start w-full mb-[72px]'>
@@ -121,22 +125,50 @@ export default function Home() {
 			endDate='PRESENT'
 			details={
 					<>
-					Pioneered the development of Beach Investment Group&apos;s, a student managed investment fund, first quantitative analytics platform for factor modeling and machine learning based methodologies.
-					Leveraged Nvidia CUDA for accelerated computations, enhancing the processing speed for data analysis and machine learning tasks.
-					Used Pandas and Polars for high-performance data handling, enabling efficient analysis of large datasets in securities research.
-					Developed modular factor models, allowing the models to be hybridized and use various modeling approaches such as deep learning.
-					Designed a matrix profile algorithm to identify repeating patterns and anomalies in time series data, aiding in predictive analytics and enhanced market sensitivity modeling.
-					Applied the modular factor model in the 2024 CFAOC RFP Competition, achieving a first-place finish and securing $115,000 in additional funding for the team.
+					Built modular factor modeling framework using Python and CUDA acceleration, enabling extensible integration of matrix profile algorithms and neural network models for price prediction workflows.
+					Accelerated computation by 60% through GPU-based processing with NVIDIA CUDA/CuPy, reducing model training latency for large financial datasets.
+					Optimized data processing pipelines using Polars, improving end-to-end workflow efficiency of time series data analysis.
+					Developed orthogonalization algorithms for independent factor construction, removing correlation dependencies between predictive variables in multi-asset models.
+					Applied quantitative research methodologies in 2024 CFAOC RFP Competition, securing 1st place and $115K in funding for the student managed investment fund.
 					</>
 				}
 			/>
 		</section>
 		<section id='projects' className='flex flex-col justify-start w-full'>
 			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
+			<Experiences 
+				companyName='Mirai Research' 
+				role='Founder & Lead Software Engineer' 
+				startDate='5/2024' 
+				endDate='7/2024'
+				details={
+					<>
+					Led cross-functional development team to architect cryptocurrency trading platform using TypeScript and GoLang, managing technical roadmap.
+					Achieved 70% faster signal detection than established market intelligence platforms by implementing asynchronous polling systems with circular queue-based resource management, reducing latency under API rate constraints.
+					Built transaction execution pipelines with automated processing workflows, implementing complex blockchain integration and low-level protocol handling, enabling reliable trading operations on Solana blockchain.
+					Engineered monitoring infrastructure, handling data streams and event-driven processing for scalable performance.
+					</>
+				}
+			/>
+			<Experiences
+				companyName='High-Performance Monte Carlo Benchmarking Engine'
+				startDate='5/2025'
+				endDate='5/2025'
+				details={
+					<>
+					Achieved 10× performance improvement by developing SIMD-accelerated simulation engine in C++17, delivering low-latency systems through vectorization and rigorous memory management.
+					Demonstrated expertise in x86 AMD/Intel microarchitecture by analyzing cache hierarchies (L1/L2/L3) and discovering spillover patterns through hardware performance counters.
+					Reduced cache miss rates from 25% to 5% by implementing custom bump allocator and increased IPC by 3× through memory alignment optimization and latency reduction.
+					Achieved 8-17× CPU throughput improvement using branchless SIMD algorithms (_mm256_cmp_pd, bitmasking) enabling parallel batch processing with low-latency execution.
+					Built high-throughput data pipeline with Python, SQL, Bash, Polars, Parquet storage, and data visualization via Grafana + ClickHouse.
+					Ensured cross-platform compatibility and implemented CI pipeline with GitHub Actions and CMake build system.
+					</>
+				}
+			/>
 			<Experiences
 			companyName='Tsundebugger'
 			startDate='1/2025'
-			endDate=''
+			endDate='1/2025'
 			details={
 				<>
 				Currently developing a cross-platform testing framework in C++ to execute and validate Python algorithms with process isolation. Achieved robust error handling and resource management using Boost libraries for Inter-Process Communication, multi-threading, and filesystem operations.
@@ -171,21 +203,6 @@ export default function Home() {
 				Utilized text processing algorithms, increasing accuracy of aggregated data.
 				</>
 			}
-			/>
-			<Experiences 
-				companyName='Mirai Research' 
-				role='Founder & Lead Software Engineer' 
-				startDate='5/2024' 
-				endDate='7/2024'
-				details={
-					<>
-					Architected and implemented core components of a cryptocurrency trading software using TypeScript and GoLang. 
-					Led efforts to optimize code complexity, implementing scalable and reusable code design that enhanced system performance and maintainability while reducing technical debt.
-					Benchmarked system performance, identifying and addressing latency bottlenecks in trade execution workflows, leading to measurable improvements in processing efficiency.
-					Implemented a Command Line Interface (CLI) to streamline user interaction, simplifying operational workflows for complex trading scenarios and reducing system complexity for end users.
-					Engineered advanced monitoring systems to enhance real-time market signal analysis, achieving a 70% reduction in detection latency compared to industry benchmarks by optimizing API throughput and improving system responsiveness.
-					</>
-				}
 			/>
 			<Experiences
 			companyName='Rias Software'
