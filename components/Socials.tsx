@@ -5,7 +5,7 @@ interface SocialsProp {
   icon: string;
   link: string;
   text: string;
-  color: 'fuschia' | 'orange' | 'blue' | 'teal'; 
+  color: 'fuschia' | 'orange' | 'blue' | 'teal' | 'hot_pink'; 
 }
 
 // interface ColorsVariantsObj {
@@ -17,7 +17,8 @@ export const Socials: React.FC<SocialsProp> = ({ icon, link, text, color }) => {
     'fuschia': 'text-fuschia border-fuschia',
     'orange': 'text-orange-300 border-orange-300',
     'blue': 'text-blue-300 border-blue-300',
-    'teal': 'text-teal-200 border-teal-200'
+    'teal': 'text-teal-200 border-teal-200',
+    'hot_pink': 'text-[#FE2760] border-[#FE2760]'
   }
 
   return (
