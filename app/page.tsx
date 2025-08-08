@@ -78,17 +78,17 @@ export default function Home() {
 	<main className='flex flex-col my-24 mx-[10%] md:mx-[20%] items-center justify-center'>
 		<section id='introduction' className='pb-4 w-full'>
 			<div className='flex flex-col justify-between md:flex-row'>
-				<div className='text-2xl xl:text-3xl 2xl:text-4xl font-heebo'>Leon Do</div>
+				<div className='text-4xl xl:text-5xl 2xl:text-6xl font-heebo'>Leon Do</div>
 						{currentSong &&
-							<div className='text-sm md:text-base xl:text-lg 2xl:text-xl text-viral pt-1 md:pt-3 font-light font-gothic'>・Currently listening to {currentSong.title} - {currentSong.artist}</div>
+							<div className='text-lg md:text-xl xl:text-2xl 2xl:text-3xl text-viral pt-1 md:pt-3 font-light font-gothic'>・Currently listening to {currentSong.title} - {currentSong.artist}</div>
 						}
 
 						{!currentSong &&
-							<div className='text-sm md:text-base xl:text-lg 2xl:text-xl text-rias pt-1 md:pt-3 font-light font-gothic'>・No songs playing at the moment</div>
+							<div className='text-lg md:text-xl xl:text-2xl 2xl:text-3xl text-rias pt-1 md:pt-3 font-light font-gothic'>・No songs playing at the moment</div>
 						}
 			</div>
 			<div className='pt-4 pb-12'>
-				<div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>I&apos;m Leon, a {calculateYearsSinceDate("03/07/2004")} years old apiring software engineer at
+				<div className='text-xl md:text-2xl xl:text-3xl 2xl:text-4xl font-thin'>I&apos;m Leon, a {calculateYearsSinceDate("03/07/2004")} years old apiring software engineer at
 					the California State University of Long Beach, majoring in Computer Science with a minor in Pure Mathematics.
 					My journey into programmming began in high school around {calculateYearsSinceDate("02/28/2021")} ago, sparked by
 					my interest in the sneaker reselling industry. While building my first major project and sneaker bot, Rias Software, I realized I became
@@ -109,7 +109,7 @@ export default function Home() {
 			</div>
 		</section>
 		<section id='interests' className='flex flex-col justify-start items-start w-full mb-[72px]'>
-			<div className='text-2xl xl:text-3xl 2xl:text-4xl font-heebo'>Recent Interests</div>
+			<div className='text-4xl xl:text-5xl 2xl:text-6xl font-heebo'>Recent Interests</div>
 			<div className='flex flex-row flex-wrap'>
 				{sortedInterests.map((interest, index) => (
 						<Interests key={index} icon={interest.icon} text={interest.text} />
@@ -117,7 +117,7 @@ export default function Home() {
 			</div>
 		</section>
 		<section id='experiences' className='flex flex-col justify-start w-full mb-[72px]'>
-			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Experience</div>
+			<div className='text-4xl xl:text-5xl 2xl:text-6xl pb-4 font-heebo'>Experience</div>
 			<Experiences
 			companyName='Beach Investment Group'
 			role='Quantitative Developer Intern'
@@ -135,7 +135,7 @@ export default function Home() {
 			/>
 		</section>
 		<section id='projects' className='flex flex-col justify-start w-full'>
-			<div className='text-2xl xl:text-3xl 2xl:text-4xl pb-4 font-heebo'>Projects & Ventures</div>
+			<div className='text-4xl xl:text-5xl 2xl:text-6xl pb-4 font-heebo'>Projects & Ventures</div>
 			<Experiences 
 				companyName='Mirai Research' 
 				role='Founder & Lead Software Engineer' 
@@ -249,7 +249,7 @@ export default function Home() {
 			}
 			/>
 		</section>
-		<footer className='mt-20 flex flex-col w-full justify-center items-center font-thin'>
+		<footer className='mt-20 flex flex-col w-full justify-center items-center text-lg font-thin'>
 			<div>koishiteru・恋してる</div>
 			<div>falling in love {'<'}3</div>
 		</footer>
