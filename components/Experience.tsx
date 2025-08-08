@@ -10,7 +10,7 @@ interface ExperienceProps {
 
 export const Experiences: React.FC<ExperienceProps> = ({companyName, role, startDate, endDate, details}) => {
   return(
-    <div className='text-base md:text-xl 2xl:text-2xl pb-10'>
+    <div className='text-lg md:text-2xl 2xl:text-4xl pb-10'>
     <div className='flex flex-col md:flex-row font-thin w-full justify-between pb-2'>
       {role &&
         <div>{`${companyName}・${role}`}</div>
