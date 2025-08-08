@@ -16,7 +16,7 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        'yuushasama': "url('../public/yuushasama.png')"
+        'chicago': "url('../public/chicago.png')"
       },
       fontFamily: {
         heebo: ['Heebo', 'sans-serif'],
