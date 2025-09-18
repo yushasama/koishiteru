@@ -122,7 +122,7 @@ export default function Home() {
 			companyName='Beach Investment Group'
 			role='Quantitative Developer Intern'
 			startDate='6/2024'
-			endDate='PRESENT'
+			endDate='5/2025'
 			details={
 					<>
 					Built modular factor modeling framework using Python and CUDA acceleration, enabling extensible integration of matrix profile algorithms and neural network models for price prediction workflows.
