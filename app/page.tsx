@@ -90,7 +90,7 @@ export default function Home() {
 			<div className='pt-4 pb-12'>
 				<div className='md:text-lg xl:text-xl 2xl:text-2xl font-thin'>I&apos;m Leon, a {calculateYearsSinceDate("03/07/2004")} years old apiring software engineer at
 					the California State University of Long Beach, majoring in Computer Science with a minor in Pure Mathematics.
-					My journey into programmming began in high school around {calculateYearsSinceDate("02/28/2021")} ago, sparked by
+					My journey into programmming began in high school around {calculateYearsSinceDate("02/28/2021")} years ago, sparked by
 					my interest in the sneaker reselling industry. While building my first major project and sneaker bot, Rias Software, I realized I became
 					obsessed with automation, reverse-engineering, and optimization.
 
