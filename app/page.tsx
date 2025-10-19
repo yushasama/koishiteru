@@ -11,13 +11,13 @@ const panels = [
   },
   {
     title: "Competitive Programming",
-    subtitle: "Algorithmic writeups",
+    subtitle: "Algorithmic Writeups",
     image: "home/panels/competitive.jpg",
     link: "/competitive",
   },
   {
     title: "Blog",
-    subtitle: "Infrastructure, Systems, Low Latency Engineering, & More",
+    subtitle: "Infrastructure, Systems, Optimization & More",
     image: "home/panels/blog.jpg",
     link: "http://cache-me-if-you-can.up.railway.app/",
   },
