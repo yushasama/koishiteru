@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode
 }): JSX.Element {
   return (
-    <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-chicago bg-no-repeat bg-cover bg-dusk'>
+    <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-dusk'>
       <body>
         <FloatingNav />
         {children}

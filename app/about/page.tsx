@@ -13,7 +13,7 @@ import { Socials } from '@/components/Socials'
 import { Experiences } from '@/components/Experience'
 import { AwesomeLink, Link } from '@/components/Link'
 
-export default function Home() {
+export default function About() {
 	const [currentSong, setCurrentSong] = useState({ title: '', artist: '' });
 
 	const fetchCurrentSong = async () => {
@@ -79,7 +79,7 @@ export default function Home() {
 
 	return (
 	<>
-	<main className='flex flex-col pt-24 pb-24 mx-[10%] md:mx-[20%] items-center justify-center'>
+	<main className='flex flex-col pt-24 pb-24 mx-[10%] md:mx-[20%] items-center justify-center bg-chicago bg-no-repeat bg-cover bg-center min-h-screen'>
 		<section id='introduction' className='pb-4 w-full'>
 			<div className='flex flex-col justify-between md:flex-row'>
 				<div className='text-2xl xl:text-3xl 2xl:text-4xl font-heebo'>Leon Do</div>
@@ -109,7 +109,7 @@ export default function Home() {
 					<p>
 						These days, I spend my time building & optimizing systems / infrastructure software, along with solving algorithmic challenges. Do please check out
 						my <Link className='text-blue-400' link='http://cache-me-if-you-can.ghost.io/' text='blog'></Link> where I write about my projects, thoughts, & random blurbs about things I find interesting.
-						For my algorithmically hungry friends, I write detailed <Link className='text-blue-400' text='breakdowns' link='https://nhentai.net/g/518355/'></Link> on various competitive programming topics.
+						For my algorithmically hungry friends, I write detailed <Link className='text-blue-400' text='breakdowns' link='https://scribble-ivory.vercel.app/'></Link> on various competitive programming topics.
 					</p>
 				</div>
 			</div>

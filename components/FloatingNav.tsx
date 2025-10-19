@@ -46,7 +46,7 @@ const FloatingNav = () => {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/competitive', label: 'Competitive' },
-    { href: '/blog', label: 'Blog' },
+    { href: 'https://cache-me-if-you-can.up.railway.app/', label: 'Blog' },
     { href: '/research', label: 'Research' },
     { href: '/life', label: 'Life' },
     { href: '/contact', label: 'Contact' },
