@@ -91,47 +91,32 @@ body::-webkit-scrollbar-button {
 .panel-shine {
   position: absolute;
   top: 0;
-  left: -200%;
+  left: -100%;
   width: 200%;
   height: 100%;
   transform: skewX(-20deg);
-  z-index: 1; /* below overlays but above image */
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(255, 255, 255, 0.12),
-    transparent
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 45%,
+    transparent 100%
   );
-  animation: panel-shine 18s linear infinite;
-  opacity: 0.08;
-  pointer-events: none;
-}
-
-/* Stronger + slightly faster on hover */
-.group:hover .panel-shine {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
-  animation: panel-shine 9s linear infinite;
-  opacity: 1.0;
+  animation: panel-shine 12s linear infinite;
+  opacity: 0.15;
+  will-change: transform, opacity;
 }
 
 @keyframes panel-shine {
   0% {
-    left: -200%;
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.08;
+    transform: translateX(-50%) skewX(-20deg);
+    opacity: 0.1;
   }
   50% {
-    opacity: 0.12;
+    transform: translateX(50%) skewX(-20deg);
+    opacity: 0.15;
   }
   100% {
-    left: 200%;
+    transform: translateX(150%) skewX(-20deg);
     opacity: 0;
   }
 }

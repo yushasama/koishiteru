@@ -1,19 +1,37 @@
 import { ArrowUpRight } from "lucide-react";
 import React from "react"
+import { useNavHighlight } from "../contexts/NavHighlightContext"
 
 interface LinkProps {
   text: string,
   link: string
-  className?: string; 
+  className?: string;
+  highlightNav?: string; // Optional prop to specify which nav item to highlight
 }
 
-export const Link:React.FC<LinkProps> = ({text, link, className}) => {
+export const Link:React.FC<LinkProps> = ({text, link, className, highlightNav}) => {
+  const { setHighlightedNav } = useNavHighlight()
+
+  const handleMouseEnter = () => {
+    if (highlightNav) {
+      setHighlightedNav(highlightNav)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (highlightNav) {
+      setHighlightedNav(null)
+    }
+  }
+
   return(
     <a
     href={`${link}`}
     target="_blank"
     rel="noopener noreferrer"
     className={`inline-flex items-center transition-transform duration-200 hover:scale-[1.05] ${className}`}
+    onMouseEnter={handleMouseEnter}
+    onMouseLeave={handleMouseLeave}
     >{text}
     <ArrowUpRight
       className="inline-block align-[0.05em] h-[1em] w-[1em] opacity-70"
