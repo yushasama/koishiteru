@@ -19,7 +19,7 @@ const panels = [
     title: "Blog",
     subtitle: "Infrastructure, Systems, Low Latency Engineering, & More",
     image: "home/panels/blog.jpg",
-    link: "/blog",
+    link: "http://cache-me-if-you-can.up.railway.app/",
   },
   {
     title: "Personal Research",

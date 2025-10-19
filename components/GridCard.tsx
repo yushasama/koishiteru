@@ -41,7 +41,7 @@ const GridCard: React.FC<GridCardProps> = ({ card }) => {
         </h2>
         <div className="relative z-10 flex items-center gap-1.5 text-xs uppercase text-neutral-400 transition-colors duration-500 group-hover:text-green-300">
           <Radiation className="text-base" size={16} />
-          <span>Powered by Scribble</span>
+          <span>Soon to be Powered by Scribble</span>
         </div>
         <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="absolute right-3 top-4 text-2xl text-neutral-400 transition-colors duration-500 group-hover:text-green-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
           <line x1="7" y1="17" x2="17" y2="7"></line>
