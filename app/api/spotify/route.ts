@@ -20,5 +20,6 @@ export async function GET(){
     return NextResponse.json(mostRecentSong)
   } catch (error) {
     console.error(error)
+    return NextResponse.json({ title: '', artist: '' }, { status: 500 })
   }
 }

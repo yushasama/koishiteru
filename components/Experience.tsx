@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ExperienceProps {
-  companyName: string;
+  companyName: string | React.ReactNode;
   role?: string;
   startDate: string;
   endDate: string;
@@ -13,10 +13,10 @@ export const Experiences: React.FC<ExperienceProps> = ({companyName, role, start
     <div className='text-base md:text-xl 2xl:text-2xl pb-10'>
     <div className='flex flex-col md:flex-row font-normal w-full justify-between pb-2'>
       {role &&
-        <div>{`${companyName}・${role}`}</div>
+        <div>{companyName}・{role}</div>
       }
       {!role &&
-        <div>{`${companyName}`}</div>
+        <div>{companyName}</div>
       }
       <div>{`${startDate} - ${endDate}`}</div>
     </div>

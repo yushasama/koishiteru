@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react';
 import './globals.css'
+import FloatingNav from '../components/FloatingNav'
 
 
 export const metadata:Metadata = {
@@ -15,7 +16,10 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-chicago bg-no-repeat bg-cover bg-dusk'>
-      <body>{children}</body>
+      <body>
+        <FloatingNav />
+        {children}
+      </body>
     </html>
   )
 }

@@ -2,39 +2,136 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========== GLOBAL ========== */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 0, 0, 0;
 }
 
 body {
-  color: #FFFFFF
+  color: white;
+  background-color: transparent;
 }
 
+/* ========== SCROLLBAR ========== */
 body::-webkit-scrollbar {
-    background-color: #101015;
-    width: 8px;
+  background-color: #101015;
+  width: 8px;
 }
 
 body::-webkit-scrollbar-track {
-    background-color: #101015;
+  background-color: #101015;
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #FB4E7C;
-    border-radius: 8px;
-    border: 2px solid #101015;
+  background-color: #fb4e7c;
+  border-radius: 8px;
+  border: 2px solid #101015;
 }
 
 body::-webkit-scrollbar-button {
-    display:none;
+  display: none;
+}
+
+/* Completely hide scrollbars */
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Ensure horizontal scroll works */
+.horizontal-scroll {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========== LINK SHINE ========== */
+@keyframes shimmer {
+  0% {
+    opacity: 0;
+    transform: translateX(-80%);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateX(-40%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-20%);
+  }
+}
+
+.link-shine::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 1px;
+  width: 60%;
+  background: white;
+  opacity: 0;
+  transform: translateX(-80%);
+  transform-origin: left;
+  transition: opacity 0.2s ease;
+}
+
+.link-shine:hover::after {
+  opacity: 0.5;
+  animation: shimmer 0.5s ease-out forwards;
+}
+
+/* --- Continuous subtle panel shine (inside image only) --- */
+.panel-shine {
+  position: absolute;
+  top: 0;
+  left: -200%;
+  width: 200%;
+  height: 100%;
+  transform: skewX(-20deg);
+  z-index: 1; /* below overlays but above image */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  animation: panel-shine 18s linear infinite;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Stronger + slightly faster on hover */
+.group:hover .panel-shine {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  animation: panel-shine 9s linear infinite;
+  opacity: 1.0;
+}
+
+@keyframes panel-shine {
+  0% {
+    left: -200%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.12;
+  }
+  100% {
+    left: 200%;
+    opacity: 0;
+  }
 }
