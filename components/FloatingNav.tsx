@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useNavHighlight } from '../contexts/NavHighlightContext'
 
 const FloatingNav = () => {
   const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const { highlightedNav } = useNavHighlight()
 
   useEffect(() => {
     // Don't add scroll listener on home page
@@ -53,7 +55,7 @@ const FloatingNav = () => {
   ]
 
   return (
-    <nav className={`fixed left-[50%] top-8 flex w-fit -translate-x-[50%] items-center gap-6 rounded-lg border-[1px] border-neutral-700 bg-neutral-900/95 backdrop-blur-sm p-2 text-sm text-neutral-500 z-50 shadow-2xl transition-all duration-500 ease-out ${
+    <nav className={`fixed left-[50%] top-8 hidden md:flex w-fit -translate-x-[50%] items-center gap-6 rounded-lg border-[1px] border-neutral-700 bg-neutral-900/95 backdrop-blur-sm p-2 text-sm text-neutral-500 z-50 shadow-2xl transition-all duration-500 ease-out ${
       isVisible 
         ? 'translate-y-0 opacity-100' 
         : '-translate-y-20 opacity-0'
@@ -68,13 +70,18 @@ const FloatingNav = () => {
       {/* Navigation Links */}
       {navItems.map((item) => {
         const isActive = pathname === item.href
+        const isHighlighted = highlightedNav === item.label.toLowerCase()
         return (
           <Link 
             key={item.href}
             href={item.href} 
             rel="nofollow" 
-            className={`block overflow-hidden transition-colors duration-200 ${
-              isActive ? 'text-neutral-50' : 'text-neutral-500 hover:text-neutral-300'
+            className={`block overflow-hidden transition-all duration-300 ${
+              isActive 
+                ? 'text-neutral-50' 
+                : isHighlighted 
+                  ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] scale-105' 
+                  : 'text-neutral-500 hover:text-neutral-300'
             }`}
           >
             <div className="h-[20px]" style={{ transform: isActive ? 'none' : undefined }}>

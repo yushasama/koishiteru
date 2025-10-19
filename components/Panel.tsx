@@ -31,8 +31,6 @@ const Panel: React.FC<PanelProps> = ({
         className="
           relative h-[90%] w-[90%] mx-auto mt-[5%]
           overflow-hidden
-          transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-          group-hover:-translate-y-[8px]
           rounded-sm
         "
       >
@@ -43,7 +41,7 @@ const Panel: React.FC<PanelProps> = ({
             h-full w-full object-cover
             grayscale-[0.85] brightness-[0.9]
             transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-            group-hover:grayscale-0 group-hover:brightness-100
+            group-hover:grayscale-0 group-hover:brightness-100 group-hover:-translate-y-[20px]
           "
         />
         {/* continuous shine */}

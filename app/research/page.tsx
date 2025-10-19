@@ -9,7 +9,7 @@ export default function ReadingList() {
     {
       title: 'Modeling Emotion-Based Memory Recall & Mood Swings via Linear Algebra',
       subtitle:
-        'Using linear algebra to explore how emotionally reactive AI might form biases, hold grudges, and recall events through mood-colored memory.'
+        'Using linear algebra to explore how emotionally reactive AI might form biases, hold grudges, and recall events through mood-colored memory. For realism, memory recall has a chance to be done at the worst times '
     }
   ];
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import React from 'react';
 import './globals.css'
 import FloatingNav from '../components/FloatingNav'
+import { NavHighlightProvider } from '../contexts/NavHighlightContext'
 
 
 export const metadata:Metadata = {
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-dusk'>
       <body>
-        <FloatingNav />
-        {children}
+        <NavHighlightProvider>
+          <FloatingNav />
+          {children}
+        </NavHighlightProvider>
       </body>
     </html>
   )
