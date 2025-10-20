@@ -1,27 +1,22 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function WriteupLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    // Hide nav bars
-    const navElements = document.querySelectorAll('nav');
-    navElements.forEach(nav => {
-      (nav as HTMLElement).style.display = 'none';
-    });
-
-    // Restore nav bars on unmount
-    return () => {
-      navElements.forEach(nav => {
-        (nav as HTMLElement).style.display = '';
-      });
-    };
-  }, []);
-
-  return <>{children}</>;
+  return (
+    <>
+      {/* Hide main site nav immediately with CSS - no wait for JS */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .main-site-nav {
+          display: none !important;
+        }
+      ` }} />
+      {children}
+    </>
+  );
 }
 

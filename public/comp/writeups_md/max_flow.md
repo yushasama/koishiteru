@@ -172,7 +172,7 @@ Reserve lower bounds, adjust node balances, add a super‑source and super‑sin
 
 ## 5) Important Algorithms
 
-## **Ford Fulkerson**  
+## Ford Fulkerson  
 Find any augmenting path, push the bottleneck, repeat. Short to code, fine only for tiny inputs.
 ```cpp
 #include <bits/stdc++.h>
@@ -215,7 +215,7 @@ struct FordFulkerson {
 };
 ```
 
-## **Edmond Karp**  
+## Edmond Karp
 Always take a BFS shortest augmenting path. Predictable and simple, but slow on larger graphs.
 
 ```cpp
@@ -265,7 +265,7 @@ struct EdmondsKarp {
 };
 ```
 
-## **Dinic**  
+## Dinic 
 Build a level graph by BFS, then push a blocking flow by DFS with a current‑arc pointer. Fast in practice on sparse and unit‑cap graphs. Use this as your default.
 
 ```cpp
