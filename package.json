@@ -11,10 +11,17 @@
   "dependencies": {
     "axios": "^1.6.0",
     "framer-motion": "^12.23.24",
+    "katex": "^0.16.25",
     "lucide-react": "^0.546.0",
+    "mermaid": "^11.12.0",
     "next": "^14.2.30",
     "react": "^18",
     "react-dom": "^18",
+    "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "shiki": "^3.13.0",
     "swr": "^2.2.4",
     "vercel": "^32.5.0"
   },

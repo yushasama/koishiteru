@@ -3,6 +3,7 @@ import React from 'react';
 import './globals.css'
 import FloatingNav from '../components/FloatingNav'
 import { NavHighlightProvider } from '../contexts/NavHighlightContext'
+import MobileNav from '../components/MobileNav'
 
 
 export const metadata:Metadata = {
@@ -16,13 +17,14 @@ export default function RootLayout({
   children: React.ReactNode
 }): JSX.Element {
   return (
-    <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-dusk'>
-      <body>
-        <NavHighlightProvider>
-          <FloatingNav />
-          {children}
-        </NavHighlightProvider>
-      </body>
-    </html>
+        <html lang="en" className='backdrop-filter backdrop-blur-2xl bg-dusk'>
+          <body>
+            <NavHighlightProvider>
+              <FloatingNav />
+              <MobileNav />
+              {children}
+            </NavHighlightProvider>
+          </body>
+        </html>
   )
 }

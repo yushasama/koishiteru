@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Navigation Animations */
+@import '../styles/nav-animations.css';
+
 /* ========== GLOBAL ========== */
 :root {
   --foreground-rgb: 255, 255, 255;

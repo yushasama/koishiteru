@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import Carousel from '../components/Carousel'
+import MobileCarousel from '../components/MobileCarousel'
 
 const panels = [
   {
@@ -44,7 +45,15 @@ const panels = [
 export default function Home() {
   return (
     <main className='h-screen'>
-      <Carousel panels={panels}/>
+      {/* Desktop Carousel - hidden on mobile */}
+      <div className="hidden md:block">
+        <Carousel panels={panels}/>
+      </div>
+      
+      {/* Mobile Carousel - visible only on mobile */}
+      <div className="block md:hidden">
+        <MobileCarousel panels={panels}/>
+      </div>
     </main>
   );
 }
