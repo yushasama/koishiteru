@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Radiation, Watch } from 'lucide-react';
 
 export interface GridCardData {
@@ -72,14 +73,17 @@ const GridCard: React.FC<GridCardProps> = ({ card }) => {
         {card.title}
       </h2>
       {card.backgroundImage && (
-        <div 
-          className="absolute bottom-0 left-0 right-0 top-0 opacity-100 bg-black/100 blur-sm grayscale transition-all group-hover:opacity-40 group-active:scale-105 group-active:opacity-70 group-active:blur-0 group-hover:grayscale-0" 
-          style={{
-            backgroundImage: `url(${card.backgroundImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 top-0 opacity-100 bg-black/100 blur-sm grayscale transition-all group-hover:opacity-40 group-active:scale-105 group-active:opacity-70 group-active:blur-0 group-hover:grayscale-0">
+          <Image
+            src={card.backgroundImage}
+            alt={`${card.title} background`}
+            fill
+            priority
+            quality={100}
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
       )}
       
       {/* Corner borders */}

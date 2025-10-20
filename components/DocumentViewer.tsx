@@ -30,44 +30,32 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
   useEffect(() => {
     if (!markdownContent) return;
 
-    // Extract headings from markdown for TOC
-    const lines = markdownContent.split('\n');
-    const tocItems: TocItem[] = [];
-    let headingIndex = 0;
+    // Wait for ScribbleRender to finish rendering, then extract TOC from DOM
+    const extractTocFromDOM = () => {
+      if (!contentRef.current) return;
 
-    lines.forEach((line) => {
-      const h1Match = line.match(/^#\s+(.+)$/);
-      const h2Match = line.match(/^##\s+(.+)$/);
-      
-      if (h1Match) {
-        const text = h1Match[1];
-        const id = `heading-${headingIndex++}`;
-        tocItems.push({ id, text, level: 1 });
-      } else if (h2Match) {
-        const text = h2Match[1];
-        const id = `heading-${headingIndex++}`;
-        tocItems.push({ id, text, level: 2 });
-      }
-    });
-
-    setToc(tocItems);
-  }, [markdownContent]);
-
-  useEffect(() => {
-    // After ScribbleRender renders, add IDs to headings for TOC navigation
-    if (!contentRef.current || toc.length === 0) return;
-
-    setTimeout(() => {
-      const headings = contentRef.current?.querySelectorAll('h1, h2');
-      if (!headings) return;
+      const headings = contentRef.current.querySelectorAll('h1, h2, h3');
+      const tocItems: TocItem[] = [];
 
       headings.forEach((heading, index) => {
-        if (index < toc.length) {
-          heading.setAttribute('id', toc[index].id);
-        }
+        const text = heading.textContent?.trim() || '';
+        const level = parseInt(heading.tagName.charAt(1));
+        const id = `heading-${index}`;
+        
+        // Add ID to the heading for navigation
+        heading.id = id;
+        
+        tocItems.push({ id, text, level });
       });
-    }, 100);
-  }, [toc, markdownContent]);
+
+      setToc(tocItems);
+    };
+
+    // Wait a bit for ScribbleRender to finish
+    const timer = setTimeout(extractTocFromDOM, 100);
+    return () => clearTimeout(timer);
+  }, [markdownContent, isContentReady]);
+
 
   // Show loading state, then reveal content
   useEffect(() => {
@@ -190,7 +178,6 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
   }, []);
 
   useEffect(() => {
-    // Handle code block focus - add border and lock vertical scroll
     if (!contentRef.current) return;
 
     let activeCodeBlock: HTMLElement | null = null;
@@ -199,27 +186,21 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
       const target = e.target as HTMLElement;
       const codeBlock = (target.closest('.code-container') || target.closest('pre')) as HTMLElement;
       
-      // Only activate on desktop
       if (codeBlock && window.innerWidth >= 1024) {
-        // Find the actual scrollable element (pre or code-container)
         const scrollableElement = codeBlock.querySelector('pre') || codeBlock;
         
-        // Check if there's capability to scroll horizontally
         const canScrollHorizontally = scrollableElement.scrollWidth > scrollableElement.clientWidth;
         
-        // Remove active class from previous block
         if (activeCodeBlock && activeCodeBlock !== codeBlock) {
           activeCodeBlock.classList.remove('code-block-active');
-          // Unlock scroll from previous block
+
           document.documentElement.style.overflow = '';
           document.body.style.overflow = '';
         }
         
-        // Add active class to current block
         codeBlock.classList.add('code-block-active');
         activeCodeBlock = codeBlock;
         
-        // Lock vertical scroll ONLY if horizontal scrolling is possible
         if (canScrollHorizontally) {
           document.documentElement.style.overflow = 'hidden';
           document.body.style.overflow = 'hidden';
@@ -233,7 +214,6 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
         activeCodeBlock.classList.remove('code-block-active');
         activeCodeBlock = null;
         
-        // Unlock vertical scroll
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
       }
@@ -273,7 +253,6 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Back Button - Desktop only */}
       <Link
         href="/competitive"
         className="hidden lg:flex fixed top-4 right-4 z-50 bg-neutral-900 p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300 items-center gap-2 text-sm"
@@ -282,7 +261,6 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
         <span>Back</span>
       </Link>
 
-      {/* Scroll Progress & Top Button - Desktop only */}
       <div className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-4">
         <button
           onClick={scrollToTop}
@@ -359,10 +337,10 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
                 onClick={() => scrollToHeading(item.id)}
                 className={`
                   block w-full text-left py-2 px-3 text-sm transition-all duration-300
-                  ${item.level === 1 ? 'font-semibold' : 'pl-8'}
+                  ${item.level === 1 ? 'font-semibold pl-3' : item.level === 2 ? 'pl-6' : 'pl-9'}
                   ${
                     activeId === item.id
-                      ? 'text-green-400 border-l-2 border-green-500 pl-2'
+                      ? 'text-green-400 border-l-2 border-green-500'
                       : 'text-neutral-500 hover:text-green-400 border-l-2 border-transparent'
                   }
                 `}
@@ -394,10 +372,10 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
                 onClick={() => scrollToHeading(item.id)}
                 className={`
                   block w-full text-left py-2 px-3 text-sm transition-all duration-300
-                  ${item.level === 1 ? 'font-semibold' : 'pl-8'}
+                  ${item.level === 1 ? 'font-semibold pl-3' : item.level === 2 ? 'pl-6' : 'pl-9'}
                   ${
                     activeId === item.id
-                      ? 'text-green-400 border-l-2 border-green-500 pl-2'
+                      ? 'text-green-400 border-l-2 border-green-500'
                       : 'text-neutral-500 hover:text-green-400 border-l-2 border-transparent'
                   }
                 `}
@@ -429,7 +407,6 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
             {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Back to Competitive */}
           <Link
             href="/competitive"
             className="p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300 flex items-center gap-2"
@@ -439,7 +416,6 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
             <span className="text-sm">Back</span>
           </Link>
 
-          {/* Scroll to Top with Progress */}
           <button
             onClick={scrollToTop}
             className="relative p-2 rounded-lg border border-neutral-800 hover:border-green-400 transition-all duration-300 focus:outline-none"

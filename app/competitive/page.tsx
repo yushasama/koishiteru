@@ -60,7 +60,7 @@ export default function CompetitivePage() {
 
   return (
     <div className="pt-20 min-h-screen bg-nyc bg-no-repeat bg-cover bg-center relative flex flex-col">
-      <div className="absolute inset-0 bg-black/95 backdrop-blur-xs"></div>
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-xs"></div>
       <div className="relative z-10 flex-1">
         <GridSection cards={competitiveCards} title="Competitive Programming" />
       </div>
