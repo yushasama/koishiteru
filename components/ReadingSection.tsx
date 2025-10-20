@@ -22,9 +22,7 @@ export default function ReadingSection({ sectionTitle, books }: ReadingSectionPr
         {books.map((book, i) => (
           <li
             key={i}
-            className={`group cursor-pointer px-2 py-4 sm:py-5 pl-3 transition-colors duration-200 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-violet-500/70 ${
-              i > 0 ? "border-t border-white/5" : ""
-            }`}
+            className="group cursor-pointer px-2 py-4 sm:py-5 pl-3 transition-colors duration-200 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-violet-500/70 border-t border-white/5"
           >
             <div className="text-[1rem] sm:text-[1.05rem] font-medium text-gray-100 group-hover:text-violet-300">
               {book.title}

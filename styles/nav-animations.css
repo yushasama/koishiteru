@@ -1,0 +1,19 @@
+/* Centralized Navigation Breathing Animations */
+@keyframes nav-breathe {
+  0%, 100% { 
+    opacity: 1; 
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+  }
+  50% { 
+    opacity: 0.6; 
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+  }
+}
+
+.nav-breathe {
+  animation: nav-breathe 2s ease-in-out infinite;
+}
+
+.nav-breathe-hover:hover {
+  animation: nav-breathe 2s ease-in-out infinite;
+}

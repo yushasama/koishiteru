@@ -71,7 +71,9 @@ export default function About() {
 
   return (
     <>
-      <main className="flex flex-col pt-20 pb-24 px-4 sm:px-8 md:px-16 lg:px-[10%] items-center justify-center bg-chicago bg-no-repeat bg-cover bg-center min-h-screen overflow-x-hidden">
+       <main className="flex flex-col pt-20 pb-24 px-4 sm:px-8 md:px-16 lg:px-[10%] items-center justify-center bg-chicago bg-no-repeat bg-cover bg-center min-h-screen overflow-x-hidden relative">
+         <div className="absolute inset-0 bg-black/85 backdrop-blur-xs"></div>
+         <div className="relative z-10 w-full">
         {/* INTRODUCTION */}
         <section id="introduction" className="pb-4 w-full">
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
@@ -123,13 +125,13 @@ export default function About() {
 
         {/* INTERESTS */}
         <section id="interests" className="flex flex-col justify-start items-start w-full mb-16">
-          <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-heebo mb-4">Recent Interests</div>
-          <div className="flex flex-wrap gap-2 sm:gap-4">
-            {sortedInterests.map((interest, index) => (
-              <Interests key={index} icon={interest.icon} text={interest.text} />
-            ))}
-          </div>
-        </section>
+           <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-heebo mb-4">Recent Interests</div>
+           <div className="grid grid-cols-1 sm:flex sm:flex-wrap gap-2 sm:gap-4">
+             {sortedInterests.map((interest, index) => (
+               <Interests key={index} icon={interest.icon} text={interest.text} />
+             ))}
+           </div>
+         </section>
 
         {/* EXPERIENCE */}
         <section id="experiences" className="flex flex-col justify-start w-full mb-16">
@@ -324,6 +326,7 @@ export default function About() {
           <div>koishiteru・恋してる</div>
           <div>falling in love {'<'}3</div>
         </footer>
+         </div>
       </main>
     </>
   )

@@ -18,7 +18,7 @@ export const Interests: React.FC<InterestProps> = ({icon='', text}) => {
 
     return(
   <div className='pt-4 mr-4'>  
-    <div className={`w-min px-6 py-2 h-min border-white border rounded-md flex flex-row justify-center items-center whitespace-nowrap hover:bg-gradient-to-r ${borderGradient} transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-105`}>
+    <div className={`w-full sm:w-min px-6 py-2 h-min border-white border rounded-md flex flex-row justify-center items-center sm:whitespace-nowrap hover:bg-gradient-to-r ${borderGradient} transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-105`}>
       {icon && 
         <Image className='transform scale-125 mr-2' src={icon} alt="icon" />
       }

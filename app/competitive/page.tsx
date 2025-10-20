@@ -50,7 +50,7 @@ const competitiveCards: GridCardData[] = [
   },
   {
     id: 'constraints',
-    title: 'Sniffing Out The Algo by Reading Problem Constraints',
+    title: 'Sniffing Out The Algo From Constraints',
     link: 'https://hackmd.io/@tQjg8NggTS6f_6mc5wITHA/SkP40U13xe',
     backgroundImage: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   }
@@ -58,11 +58,14 @@ const competitiveCards: GridCardData[] = [
 
 export default function CompetitivePage() {
   return (
-    <div className="pt-20 min-h-screen bg-nyc bg-no-repeat bg-cover bg-center relative">
+    <div className="pt-20 min-h-screen bg-nyc bg-no-repeat bg-cover bg-center relative flex flex-col">
       <div className="absolute inset-0 bg-black/95 backdrop-blur-xs"></div>
-      <div className="relative z-10">
+      <div className="relative z-10 flex-1">
         <GridSection cards={competitiveCards} title="Competitive Programming" />
       </div>
+      <footer className="relative z-10 text-center text-sm text-gray-500 tracking-wide pb-8">
+        © {new Date().getFullYear()} Leon Do ・ Competitive Programming
+      </footer>
     </div>
   );
 }

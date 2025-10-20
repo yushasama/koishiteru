@@ -16,7 +16,7 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        'chicago': "url('/wallpapers/chicago.png')",
+        'chicago': "url('/wallpapers/chicago.jpg')",
         'nyc': "url('/wallpapers/nyc.jpg')",
         'research': "url('/wallpapers/research.jpg')"
       },

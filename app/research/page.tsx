@@ -7,9 +7,9 @@ import ReadingSection from '../../components/ReadingSection';
 export default function ReadingList() {
   const researchItems = [
     {
-      title: 'Modeling Emotion-Based Memory Recall & Mood Swings via Linear Algebra',
+      title: 'Replicating Emotionally Reactive AI Waifus / Husbandos with Linear Algebra',
       subtitle:
-        'Using linear algebra to explore how emotionally reactive AI might form biases, hold grudges, and recall events through mood-colored memory. For realism, memory recall has a chance to be done at the worst times '
+        'Using linear algebra to explore how emotionally reactive AI companions might form biases, hold grudges, and recall events through mood-colored memory. For realism, memory recall has a chance to be done at the worst times '
     }
   ];
 

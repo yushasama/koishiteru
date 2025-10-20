@@ -7,6 +7,7 @@ interface PanelProps {
   subtitle: string;
   delay?: number;
   href?: string;
+  isMobile?: boolean;
 }
 
 const Panel: React.FC<PanelProps> = ({
@@ -15,24 +16,27 @@ const Panel: React.FC<PanelProps> = ({
   subtitle,
   delay = 0,
   href,
+  isMobile = false,
 }) => {
   const content = (
     <div
-      className="
+      className={`
         group relative flex-shrink-0
-        w-[20vw] h-screen
         overflow-hidden
         bg-[#0f0f0f]
         cursor-pointer
-      "
+        ${isMobile ? 'w-full h-[25vh]' : 'w-[20vw] h-screen'}
+      `}
     >
       {/* --- IMAGE CONTAINER --- */}
       <div
-        className="
-          relative h-[90%] w-[90%] mx-auto mt-[5%]
-          overflow-hidden
-          rounded-sm
-        "
+        className={`
+          relative overflow-hidden rounded-sm
+          ${isMobile 
+            ? 'h-[85%] w-[95%] mx-auto mt-[2%]' 
+            : 'h-[90%] w-[90%] mx-auto mt-[5%]'
+          }
+        `}
       >
         <img
           src={image}
@@ -51,21 +55,41 @@ const Panel: React.FC<PanelProps> = ({
         />
       </div>
 
-      {/* --- BOTTOM OVERLAY --- */}
-      <div
-        className="
-          absolute bottom-0 left-0 w-full
-          bg-[#0f0f0f] text-white
-          h-[45%]
-          translate-y-[100%] group-hover:translate-y-[60%]
-          transition-transform duration-600 ease-[cubic-bezier(0.25,1,0.5,1)]
-        "
-      >
-        <div className="p-6">
-          <h2 className="text-xl font-bold uppercase">{title}</h2>
-          <p className="text-sm text-neutral-400 mt-1">{subtitle}</p>
+      {/* --- BOTTOM OVERLAY (Desktop) --- */}
+      {!isMobile && (
+        <div
+          className="
+            absolute bottom-0 left-0 w-full
+            bg-[#0f0f0f] text-white
+            h-[45%]
+            translate-y-[100%] group-hover:translate-y-[60%]
+            transition-transform duration-600 ease-[cubic-bezier(0.25,1,0.5,1)]
+          "
+        >
+          <div className="p-6">
+            <h2 className="text-xl font-bold uppercase">{title}</h2>
+            <p className="text-sm text-neutral-400 mt-1">{subtitle}</p>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* --- LEFT SIDE SLAB (Mobile) --- */}
+      {isMobile && (
+        <div
+          className="
+            absolute left-0 bottom-0 h-[40%] w-full
+            bg-[#0f0f0f] text-white
+            -translate-x-full group-hover:translate-x-0
+            transition-transform duration-600 ease-[cubic-bezier(0.25,1,0.5,1)]
+            z-20
+          "
+        >
+          <div className="p-4 py-6 h-full flex flex-col justify-center">
+            <h2 className="text-lg font-bold uppercase">{title}</h2>
+            <p className="text-xs text-neutral-400 mt-1">{subtitle}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 

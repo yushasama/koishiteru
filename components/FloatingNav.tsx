@@ -4,11 +4,12 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useNavHighlight } from '../contexts/NavHighlightContext'
 
-const FloatingNav = () => {
-  const pathname = usePathname()
-  const [isVisible, setIsVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
-  const { highlightedNav } = useNavHighlight()
+  const FloatingNav = () => {
+    const pathname = usePathname()
+    const [isVisible, setIsVisible] = useState(true)
+    const [lastScrollY, setLastScrollY] = useState(0)
+    const [forceShow, setForceShow] = useState(false)
+    const { highlightedNav } = useNavHighlight()
 
   useEffect(() => {
     // Don't add scroll listener on home page
@@ -39,6 +40,15 @@ const FloatingNav = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY, pathname])
 
+  // Show nav when highlighted
+  useEffect(() => {
+    if (highlightedNav) {
+      setForceShow(true)
+    } else {
+      setForceShow(false)
+    }
+  }, [highlightedNav])
+
   // Don't show navigation on home page
   if (pathname === '/') {
     return null
@@ -56,7 +66,7 @@ const FloatingNav = () => {
 
   return (
     <nav className={`fixed left-[50%] top-8 hidden md:flex w-fit -translate-x-[50%] items-center gap-6 rounded-lg border-[1px] border-neutral-700 bg-neutral-900/95 backdrop-blur-sm p-2 text-sm text-neutral-500 z-50 shadow-2xl transition-all duration-500 ease-out ${
-      isVisible 
+      (isVisible || forceShow)
         ? 'translate-y-0 opacity-100' 
         : '-translate-y-20 opacity-0'
     }`}>
@@ -80,8 +90,8 @@ const FloatingNav = () => {
               isActive 
                 ? 'text-neutral-50' 
                 : isHighlighted 
-                  ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] scale-105' 
-                  : 'text-neutral-500 hover:text-neutral-300'
+                  ? 'text-white nav-breathe' 
+                  : 'text-neutral-500 hover:text-white nav-breathe-hover'
             }`}
           >
             <div className="h-[20px]" style={{ transform: isActive ? 'none' : undefined }}>
