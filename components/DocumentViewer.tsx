@@ -19,6 +19,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
   const [toc, setToc] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [tocCollapsed, setTocCollapsed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -184,25 +185,17 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden bg-neutral-900 p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300"
-      >
-        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
-      {/* Back Button */}
+      {/* Back Button - Desktop only */}
       <Link
         href="/competitive"
-        className="fixed top-4 right-4 z-50 bg-neutral-900 p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300 flex items-center gap-2 text-sm"
+        className="hidden lg:flex fixed top-4 right-4 z-50 bg-neutral-900 p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300 items-center gap-2 text-sm"
       >
         <ChevronLeft size={20} />
-        <span className="hidden sm:inline">Back</span>
+        <span>Back</span>
       </Link>
 
-      {/* Scroll Progress & Top Button */}
-      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-4">
+      {/* Scroll Progress & Top Button - Desktop only */}
+      <div className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-4">
         <button
           onClick={scrollToTop}
           className="relative bg-neutral-900 p-3 rounded-full hover:scale-110 transition-all duration-300 group focus:outline-none"
@@ -248,12 +241,30 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
       </div>
 
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-72 bg-[#0a0a0a] border-r border-neutral-800 overflow-y-auto scrollbar-hide">
+      <aside className={`hidden lg:block fixed left-0 top-0 h-screen bg-[#0a0a0a] border-r border-neutral-800 overflow-y-auto scrollbar-hide transition-all duration-300 ${tocCollapsed ? 'w-12' : 'w-72'}`}>
         <div className="p-6">
-          <h3 className="text-sm font-bold uppercase text-neutral-400 mb-4 tracking-wide">
-            Table of Contents
-          </h3>
-          <nav className="space-y-1">
+          {/* Toggle Button */}
+          <button
+            onClick={() => setTocCollapsed(!tocCollapsed)}
+            className="absolute top-4 right-3 p-1.5 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300 z-50"
+            aria-label={tocCollapsed ? 'Expand TOC' : 'Collapse TOC'}
+          >
+            <svg
+              className={`w-4 h-4 transition-transform duration-300 ${tocCollapsed ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {!tocCollapsed && (
+            <>
+              <h3 className="text-sm font-bold uppercase text-neutral-400 mb-4 tracking-wide">
+                Table of Contents
+              </h3>
+              <nav className="space-y-1">
             {toc.map((item) => (
               <button
                 key={item.id}
@@ -271,14 +282,16 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
                 {item.text}
               </button>
             ))}
-          </nav>
+              </nav>
+            </>
+          )}
         </div>
       </aside>
 
       {/* Sidebar - Mobile */}
       <aside
         className={`
-          lg:hidden fixed left-0 top-0 h-screen w-72 bg-[#0a0a0a] border-r border-neutral-800 overflow-y-auto z-40 transition-transform duration-300 scrollbar-hide
+          lg:hidden fixed left-0 top-0 h-screen w-full sm:w-80 bg-[#0a0a0a] border-r border-neutral-800 overflow-y-auto z-40 transition-transform duration-300 scrollbar-hide
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
@@ -316,8 +329,74 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
         />
       )}
 
+      {/* Mobile Bottom Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-neutral-900/95 backdrop-blur-sm border-t border-neutral-800">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Menu Button */}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300"
+            aria-label="Toggle menu"
+          >
+            {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Back to Competitive */}
+          <Link
+            href="/competitive"
+            className="p-2 rounded-lg border border-neutral-800 hover:border-green-400 hover:text-green-400 transition-all duration-300 flex items-center gap-2"
+            aria-label="Back"
+          >
+            <ChevronLeft size={20} />
+            <span className="text-sm">Back</span>
+          </Link>
+
+          {/* Scroll to Top with Progress */}
+          <button
+            onClick={scrollToTop}
+            className="relative p-2 rounded-lg border border-neutral-800 hover:border-green-400 transition-all duration-300 focus:outline-none"
+            aria-label="Scroll to top"
+          >
+            {/* Progress Circle */}
+            <svg 
+              className="absolute inset-0 w-full h-full -rotate-90"
+              viewBox="0 0 100 100"
+            >
+              <defs>
+                <linearGradient id="mobileRadioactiveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#4ade80" stopOpacity="1" />
+                  <stop offset="50%" stopColor="#22d3ee" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#86efac" stopOpacity="1" />
+                </linearGradient>
+              </defs>
+              <circle
+                cx="50"
+                cy="50"
+                r="46"
+                fill="none"
+                stroke="url(#mobileRadioactiveGradient)"
+                strokeWidth="6"
+                strokeDasharray={`${2 * Math.PI * 46}`}
+                strokeDashoffset={`${2 * Math.PI * 46 * (1 - scrollProgress / 100)}`}
+                className="transition-all duration-150"
+                strokeLinecap="round"
+              />
+            </svg>
+            {/* Arrow Icon */}
+            <svg 
+              className="w-5 h-5 text-neutral-400 hover:text-green-400 transition-colors relative z-10" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       {/* Main Content */}
-      <main className="lg:ml-72 min-h-screen scrollbar-hide">
+      <main className={`min-h-screen scrollbar-hide pb-24 lg:pb-0 transition-all duration-300 ${tocCollapsed ? 'lg:ml-12' : 'lg:ml-72'}`}>
         <div className="max-w-4xl w-full mx-auto px-6 sm:px-12 py-20">
           <div
             ref={contentRef}
@@ -373,16 +452,42 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
           display: list-item !important;
         }
 
-        /* Code block styling */
-        .document-content pre.code-block {
-          outline: none !important;
-          cursor: text;
-          overflow-x: auto !important;
+        /* Show scrollbars on code blocks */
+        .document-content pre,
+        .document-content pre.code-block,
+        .document-content .shiki {
+          scrollbar-width: thin !important;
+          scrollbar-color: #4ade80 rgba(23, 23, 23, 0.3) !important;
         }
-        
-        .document-content pre.code-block:focus {
-          outline: none !important;
+
+        .document-content pre::-webkit-scrollbar,
+        .document-content pre.code-block::-webkit-scrollbar,
+        .document-content .shiki::-webkit-scrollbar {
+          height: 10px !important;
+          width: 10px !important;
         }
+
+        .document-content pre::-webkit-scrollbar-track,
+        .document-content pre.code-block::-webkit-scrollbar-track,
+        .document-content .shiki::-webkit-scrollbar-track {
+          background: rgba(23, 23, 23, 0.3) !important;
+          border-radius: 5px !important;
+        }
+
+        .document-content pre::-webkit-scrollbar-thumb,
+        .document-content pre.code-block::-webkit-scrollbar-thumb,
+        .document-content .shiki::-webkit-scrollbar-thumb {
+          background: #4ade80 !important;
+          border-radius: 5px !important;
+          border: 2px solid rgba(23, 23, 23, 0.3) !important;
+        }
+
+        .document-content pre::-webkit-scrollbar-thumb:hover,
+        .document-content pre.code-block::-webkit-scrollbar-thumb:hover,
+        .document-content .shiki::-webkit-scrollbar-thumb:hover {
+          background: #22d3ee !important;
+        }
+
       ` }} />
     </div>
   );
