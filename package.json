@@ -21,6 +21,7 @@
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
+    "scribble-render": "file:scribble-render-1.0.0.tgz",
     "shiki": "^3.13.0",
     "swr": "^2.2.4",
     "vercel": "^32.5.0"

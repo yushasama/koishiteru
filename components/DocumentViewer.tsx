@@ -3,6 +3,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ChevronLeft, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { ScribbleRender } from 'scribble-render';
+import 'scribble-render/dist/index.css';
+import 'katex/dist/katex.min.css';
 
 interface TocItem {
   id: string;
@@ -11,52 +14,74 @@ interface TocItem {
 }
 
 interface DocumentViewerProps {
-  htmlContent: string;
+  markdownContent: string;
   slug: string;
 }
 
-const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
+const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
   const [toc, setToc] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tocCollapsed, setTocCollapsed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isContentReady, setIsContentReady] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!contentRef.current) return;
+    if (!markdownContent) return;
 
-    // Parse the HTML and extract h1 and h2 elements
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
-
-    const headings = tempDiv.querySelectorAll('h1, h2');
+    // Extract headings from markdown for TOC
+    const lines = markdownContent.split('\n');
     const tocItems: TocItem[] = [];
+    let headingIndex = 0;
 
-    headings.forEach((heading, index) => {
-      const level = parseInt(heading.tagName.substring(1));
-      const text = heading.textContent || '';
-      const id = heading.getAttribute('id') || `heading-${index}`;
+    lines.forEach((line) => {
+      const h1Match = line.match(/^#\s+(.+)$/);
+      const h2Match = line.match(/^##\s+(.+)$/);
       
-      // Set ID if not present
-      heading.setAttribute('id', id);
-      
-      tocItems.push({ id, text, level });
+      if (h1Match) {
+        const text = h1Match[1];
+        const id = `heading-${headingIndex++}`;
+        tocItems.push({ id, text, level: 1 });
+      } else if (h2Match) {
+        const text = h2Match[1];
+        const id = `heading-${headingIndex++}`;
+        tocItems.push({ id, text, level: 2 });
+      }
     });
 
     setToc(tocItems);
+  }, [markdownContent]);
 
-    // Inject the modified HTML with IDs
-    if (contentRef.current) {
-      contentRef.current.innerHTML = tempDiv.innerHTML;
-      
-      // Add class to code blocks for styling
-      const codeBlocks = contentRef.current.querySelectorAll('pre');
-      codeBlocks.forEach(block => {
-        block.classList.add('code-block');
+  useEffect(() => {
+    // After ScribbleRender renders, add IDs to headings for TOC navigation
+    if (!contentRef.current || toc.length === 0) return;
+
+    setTimeout(() => {
+      const headings = contentRef.current?.querySelectorAll('h1, h2');
+      if (!headings) return;
+
+      headings.forEach((heading, index) => {
+        if (index < toc.length) {
+          heading.setAttribute('id', toc[index].id);
+        }
       });
-    }
-  }, [htmlContent]);
+    }, 100);
+  }, [toc, markdownContent]);
+
+  // Show loading state, then reveal content
+  useEffect(() => {
+    if (!markdownContent) return;
+    
+    setIsContentReady(false);
+    
+    // Wait longer for ScribbleRender to process
+    const timer = setTimeout(() => {
+      setIsContentReady(true);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [markdownContent]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -163,6 +188,69 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
       content.removeEventListener('click', handleCopyClick);
     };
   }, []);
+
+  useEffect(() => {
+    // Handle code block focus - add border and lock vertical scroll
+    if (!contentRef.current) return;
+
+    let activeCodeBlock: HTMLElement | null = null;
+
+    const handleCodeBlockClick = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const codeBlock = (target.closest('.code-container') || target.closest('pre')) as HTMLElement;
+      
+      // Only activate on desktop
+      if (codeBlock && window.innerWidth >= 1024) {
+        // Find the actual scrollable element (pre or code-container)
+        const scrollableElement = codeBlock.querySelector('pre') || codeBlock;
+        
+        // Check if there's capability to scroll horizontally
+        const canScrollHorizontally = scrollableElement.scrollWidth > scrollableElement.clientWidth;
+        
+        // Remove active class from previous block
+        if (activeCodeBlock && activeCodeBlock !== codeBlock) {
+          activeCodeBlock.classList.remove('code-block-active');
+          // Unlock scroll from previous block
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }
+        
+        // Add active class to current block
+        codeBlock.classList.add('code-block-active');
+        activeCodeBlock = codeBlock;
+        
+        // Lock vertical scroll ONLY if horizontal scrolling is possible
+        if (canScrollHorizontally) {
+          document.documentElement.style.overflow = 'hidden';
+          document.body.style.overflow = 'hidden';
+        }
+      }
+    };
+
+    const handleClickOutside = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (activeCodeBlock && !activeCodeBlock.contains(target)) {
+        activeCodeBlock.classList.remove('code-block-active');
+        activeCodeBlock = null;
+        
+        // Unlock vertical scroll
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+    };
+
+    const content = contentRef.current;
+    content.addEventListener('click', handleCodeBlockClick, true);
+    document.addEventListener('click', handleClickOutside, true);
+
+    return () => {
+      content.removeEventListener('click', handleCodeBlockClick, true);
+      document.removeEventListener('click', handleClickOutside, true);
+      // Clean up on unmount
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, [markdownContent]);
 
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id);
@@ -397,11 +485,29 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
 
       {/* Main Content */}
       <main className={`min-h-screen scrollbar-hide pb-24 lg:pb-0 transition-all duration-300 ${tocCollapsed ? 'lg:ml-12' : 'lg:ml-72'}`}>
-        <div className="max-w-4xl w-full mx-auto px-6 sm:px-12 py-20">
+        <div className="max-w-6xl w-full mx-auto px-6 sm:px-12 py-20">
+          {/* Loading State */}
+          {!isContentReady && (
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <div className="text-neutral-500 text-lg animate-pulse">
+                Rendering document...
+              </div>
+            </div>
+          )}
+          
+          {/* Content */}
           <div
             ref={contentRef}
-            className="document-content"
-          />
+            className={`document-content transition-opacity duration-300 ${
+              isContentReady ? 'opacity-100' : 'opacity-0 absolute'
+            }`}
+          >
+            <ScribbleRender
+              content={markdownContent}
+              theme="github-dark-high-contrast"
+              codeTheme="material-theme-darker"
+            />
+          </div>
         </div>
       </main>
 
@@ -455,9 +561,60 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
         /* Show scrollbars on code blocks */
         .document-content pre,
         .document-content pre.code-block,
-        .document-content .shiki {
+        .document-content .shiki,
+        .document-content .code-container {
+          overflow: auto !important;
+          overflow-x: auto !important;
           scrollbar-width: thin !important;
           scrollbar-color: #4ade80 rgba(23, 23, 23, 0.3) !important;
+          unicode-bidi: normal !important;
+          text-align: left !important;
+          /* Ensure LTR for scrollbar positioning */
+          -webkit-writing-mode: horizontal-tb !important;
+          writing-mode: horizontal-tb !important;
+          position: relative !important;
+          transition: all 0.3s ease !important;
+        }
+
+        /* Electric blue border when code block is active - DESKTOP ONLY */
+        @media (min-width: 1024px) {
+          .document-content .code-container.code-block-active,
+          .document-content pre.code-block-active {
+            outline: 1px solid #60a5fa;
+            outline-offset: 2px;
+            transition: outline 0.3s ease;
+          }
+        }
+
+        /* Hide scrollbar and copy button on mobile */
+        @media (max-width: 1023px) {
+          .document-content pre::-webkit-scrollbar,
+          .document-content pre.code-block::-webkit-scrollbar,
+          .document-content .shiki::-webkit-scrollbar,
+          .document-content .code-container::-webkit-scrollbar {
+            display: none !important;
+          }
+
+          .document-content pre,
+          .document-content pre.code-block,
+          .document-content .shiki,
+          .document-content .code-container {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+
+          /* Hide copy button on mobile */
+          .document-content .copy-btn,
+          .document-content button[aria-label*="copy" i],
+          .document-content button[aria-label*="clipboard" i] {
+            display: none !important;
+          }
+        }
+        
+        .document-content pre code,
+        .document-content .shiki code {
+          direction: ltr !important;
+          unicode-bidi: embed !important;
         }
 
         .document-content pre::-webkit-scrollbar,
@@ -465,6 +622,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
         .document-content .shiki::-webkit-scrollbar {
           height: 10px !important;
           width: 10px !important;
+          direction: ltr !important;
         }
 
         .document-content pre::-webkit-scrollbar-track,
@@ -472,6 +630,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
         .document-content .shiki::-webkit-scrollbar-track {
           background: rgba(23, 23, 23, 0.3) !important;
           border-radius: 5px !important;
+          direction: ltr !important;
         }
 
         .document-content pre::-webkit-scrollbar-thumb,
@@ -480,12 +639,20 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ htmlContent }) => {
           background: #4ade80 !important;
           border-radius: 5px !important;
           border: 2px solid rgba(23, 23, 23, 0.3) !important;
+          direction: ltr !important;
         }
 
         .document-content pre::-webkit-scrollbar-thumb:hover,
         .document-content pre.code-block::-webkit-scrollbar-thumb:hover,
         .document-content .shiki::-webkit-scrollbar-thumb:hover {
           background: #22d3ee !important;
+        }
+        
+        /* Force scrollbar button direction */
+        .document-content pre::-webkit-scrollbar-button,
+        .document-content pre.code-block::-webkit-scrollbar-button,
+        .document-content .shiki::-webkit-scrollbar-button {
+          direction: ltr !important;
         }
 
       ` }} />
