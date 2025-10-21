@@ -65,10 +65,10 @@ const LifePage = () => {
     <div className="flex h-screen overflow-hidden bg-black text-white">
       {/* Scroll indicator */}
       {showScrollIndicator && (
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 lg:hidden transition-opacity duration-500">
-          <div className="flex flex-col items-center text-white/60 animate-bounce">
-            <div className="text-xs mb-1">Scroll</div>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 transition-opacity duration-500">
+          <div className="bg-black/80 backdrop-blur-sm rounded-full px-6 py-3 flex items-center space-x-3 text-white font-medium text-sm animate-bounce">
+            <span>SCROLL TO EXPLORE</span>
+            <svg className="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
@@ -86,14 +86,6 @@ const LifePage = () => {
       {lifeSections.map((s, i) => {
         const isEven = (i + 1) % 2 === 0;
 
-        const fade = mounted
-          ? i === activeIndex
-            ? 'opacity-100'
-            : 'opacity-0'
-          : i === 0
-          ? 'opacity-100'
-          : 'opacity-0';
-
         const cardColors = isEven ? 'bg-white text-black' : 'bg-black text-white';
         const subColor = isEven ? 'text-gray-700' : 'text-gray-300';
         const bodyColor = isEven ? 'text-gray-800' : 'text-gray-200';
@@ -101,7 +93,7 @@ const LifePage = () => {
         return (
           <section
             key={i}
-            className={`h-screen flex flex-col justify-center px-12 transition-opacity duration-400 ease-out ${fade} ${cardColors}`}
+            className={`h-screen flex flex-col justify-center px-12 transition-opacity duration-400 ease-out ${cardColors}`}
           >
             {/* Mobile polaroid layout */}
             <div className="lg:hidden mb-4 sm:mb-6 relative max-w-lg sm:max-w-xl mx-auto">
