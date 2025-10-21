@@ -16,16 +16,18 @@ const LifePage = () => {
       const left = leftRef.current;
       if (left) {
         left.scrollTo({ top: 0, behavior: 'smooth' });
-        // Force focus with multiple attempts
         left.focus();
-        left.click(); // This ensures the element receives focus
       }
     };
 
-    // Use requestAnimationFrame to ensure DOM is ready
-    const rafId = requestAnimationFrame(handleReady);
-    
-    return () => cancelAnimationFrame(rafId);
+    // Wait for DOM content to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handleReady);
+      return () => document.removeEventListener('DOMContentLoaded', handleReady);
+    } else {
+      // DOM is already ready
+      handleReady();
+    }
   }, []);
 
   useEffect(() => {
@@ -83,6 +85,8 @@ const LifePage = () => {
         className="w-full lg:w-1/2 h-screen overflow-y-scroll scrollbar-hide focus:outline-none"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         tabIndex={0}
+        role="region"
+        aria-label="Life sections scrollable area"
       >
         {lifeSections.map((s, i) => {
           const isEven = (i + 1) % 2 === 0;
