@@ -18,7 +18,10 @@ const config: Config = {
       backgroundImage: {
         'chicago': "url('/wallpapers/chicago.jpg')",
         'nyc': "url('/wallpapers/nyc.jpg')",
-        'research': "url('/wallpapers/research.jpg')"
+        'research': "url('/wallpapers/research.jpg')",
+        'garden-grove': "url('/wallpapers/garden_grove.jpg')",
+        'singapore': "url('/wallpapers/singapore.jpg')"
+
       },
       fontFamily: {
         heebo: ['Heebo', 'sans-serif'],

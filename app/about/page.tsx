@@ -72,7 +72,7 @@ export default function About() {
   return (
     <>
        <main className="flex flex-col pt-20 pb-24 px-4 sm:px-8 md:px-16 lg:px-[10%] items-center justify-center bg-chicago bg-no-repeat bg-cover bg-center min-h-screen overflow-x-hidden relative">
-         <div className="absolute inset-0 bg-black/85 backdrop-blur-xs"></div>
+         <div className="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
          <div className="relative z-10 w-full">
         {/* INTRODUCTION */}
         <section id="introduction" className="pb-4 w-full">
