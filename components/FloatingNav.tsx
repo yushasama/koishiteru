@@ -65,7 +65,7 @@ import { useNavHighlight } from '../contexts/NavHighlightContext'
   ]
 
   return (
-    <nav className={`main-site-nav fixed left-[50%] top-8 hidden md:flex w-fit -translate-x-[50%] items-center gap-6 rounded-lg border-[1px] border-neutral-700 bg-neutral-900/95 backdrop-blur-sm p-2 text-sm text-neutral-500 z-50 shadow-2xl transition-all duration-500 ease-out ${
+    <nav className={`main-site-nav fixed left-[50%] top-8 hidden md:flex w-fit -translate-x-[50%] items-center gap-6 rounded-lg border-[1px] border-neutral-700 bg-neutral-900/95 backdrop-blur-sm px-6 py-2 text-sm text-neutral-500 z-50 shadow-2xl transition-all duration-500 ease-out ${
       (isVisible || forceShow)
         ? 'translate-y-0 opacity-100' 
         : '-translate-y-20 opacity-0'
