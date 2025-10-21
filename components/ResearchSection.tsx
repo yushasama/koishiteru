@@ -13,7 +13,7 @@ export default function ResearchSection({ items }: ResearchSectionProps) {
   return (
     <section className="mb-16 rounded-xl border border-violet-300/10 bg-white/[0.015] p-5 sm:p-6 lg:p-8">
       <h2 className="text-base sm:text-lg font-semibold text-violet-300 mb-5">
-        Research Notes
+        Research
       </h2>
       <ul className="space-y-6">
         {items.map((item, i) => (

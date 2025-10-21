@@ -18,43 +18,43 @@ export default function CompetitivePage() {
       id: 'max_flow',
       title: 'Max Flow',
       readingTime: readingTimes.max_flow,
-      backgroundImage: 'https://images.unsplash.com/photo-1738463738098-63ec4af1cf89',
+      backgroundImage: 'https://images.unsplash.com/photo-1738463738098-63ec4af1cf89?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'matrix_exponentiation',
       title: 'Matrix Exponentiation',
       readingTime: readingTimes.matrix_exponentiation,
-      backgroundImage: 'https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=2379&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      backgroundImage: 'https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'fenwick_segment_trees',
       title: 'Fenwick & Segment Trees',
       readingTime: readingTimes.fenwick_segment_trees,
-      backgroundImage: 'https://images.unsplash.com/photo-1736063618602-85b664d957a4',
+      backgroundImage: 'https://images.unsplash.com/photo-1736063618602-85b664d957a4?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'dynamic_programming_subset_sums',
       title: 'Dynamic Programming Subset Sums',
       readingTime: readingTimes.dynamic_programming_subset_sums,
-      backgroundImage: 'https://images.unsplash.com/photo-1738463734038-c533b2658a2a',
+      backgroundImage: 'https://images.unsplash.com/photo-1738463734038-c533b2658a2a?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'prefix_sums',
       title: 'Prefix Sums',
       readingTime: readingTimes.prefix_sums,
-      backgroundImage: 'https://images.unsplash.com/photo-1617140237060-d09a58ba8edd?',
+      backgroundImage: 'https://images.unsplash.com/photo-1617140237060-d09a58ba8edd?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'interval_math',
       title: 'Interval Math',
       readingTime: readingTimes.interval_math,
-      backgroundImage: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      backgroundImage: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'constraints',
       title: 'Sniffing Out The Algo From Constraints',
       readingTime: readingTimes.constraints,
-      backgroundImage: 'https://images.unsplash.com/photo-1561835503-648c2f1169d2',
+      backgroundImage: 'https://images.unsplash.com/photo-1561835503-648c2f1169d2?q=80&w=800&auto=format&fit=crop',
     }
   ];
 
