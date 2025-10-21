@@ -29,11 +29,11 @@ const GridCard: React.FC<GridCardProps> = ({ card }) => {
         className="group relative flex h-56 flex-col justify-between bg-neutral-950 p-6 md:h-80 md:p-9 overflow-hidden"
       >
         {/* Radioactive Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-green-900/20 to-cyan-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-green-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-green-900/20 to-cyan-900/20 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-green-400/10 to-transparent opacity-20 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
         
         {/* Glow Effect */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-green-400/30 via-green-300/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-green-400/30 via-green-300/20 to-transparent rounded-full blur-xl opacity-20 group-hover:opacity-100 transition-opacity duration-500"></div>
         
         <h2 className="relative z-10 text-4xl uppercase leading-tight">
           <span className="text-neutral-400 transition-colors duration-500 group-hover:bg-gradient-to-r group-hover:from-green-400 group-hover:via-cyan-400 group-hover:to-green-300 group-hover:bg-clip-text group-hover:text-transparent">
