@@ -8,22 +8,16 @@ const LifePage = () => {
   const leftRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [mounted, setMounted] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // prevent transition flicker on initial mount
-    const timer = setTimeout(() => setMounted(true), 100);
-    
-     // Auto-scroll to first section on mount and focus
-     const left = leftRef.current;
-     if (left) {
-       left.scrollTo({ top: 0, behavior: 'smooth' });
-       left.focus();
-     }
-    
-    return () => clearTimeout(timer);
+    // Auto-scroll to first section on mount and focus
+    const left = leftRef.current;
+    if (left) {
+      left.scrollTo({ top: 0, behavior: 'smooth' });
+      left.focus();
+    }
   }, []);
 
   useEffect(() => {
