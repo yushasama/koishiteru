@@ -120,21 +120,29 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ markdownContent }) => {
   }, [toc]);
 
   useEffect(() => {
-    // Track scroll progress
+    // Track scroll progress - only after content is ready
+    if (!isContentReady) return;
+
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollTop = window.scrollY;
       const trackLength = documentHeight - windowHeight;
-      const progress = Math.min((scrollTop / trackLength) * 100, 100);
-      setScrollProgress(progress);
+      
+      // Only calculate progress if we have a valid track length
+      if (trackLength > 0) {
+        const progress = Math.min((scrollTop / trackLength) * 100, 100);
+        setScrollProgress(progress);
+      } else {
+        setScrollProgress(0);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial call
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isContentReady]);
 
   useEffect(() => {
     // Handle copy button clicks - copy code to clipboard
