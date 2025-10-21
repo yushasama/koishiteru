@@ -9,25 +9,22 @@ const LifePage = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollTopRef = useRef(0);
 
   useEffect(() => {
-    // Auto-scroll to first section on mount and focus
     const handleReady = () => {
       const left = leftRef.current;
       if (left) {
         left.scrollTo({ top: 0, behavior: 'smooth' });
-        // Force focus by simulating a click
         left.click();
         left.focus();
       }
     };
 
-    // Wait for DOM content to be ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', handleReady);
       return () => document.removeEventListener('DOMContentLoaded', handleReady);
     } else {
-      // DOM is already ready
       handleReady();
     }
   }, []);
@@ -39,31 +36,33 @@ const LifePage = () => {
     const handleScroll = () => {
       const scrollTop = left.scrollTop;
       const sectionHeight = left.clientHeight;
-      const fullProgress = scrollTop / sectionHeight;
-      setScrollProgress(fullProgress);
+      const progress = scrollTop / sectionHeight;
+      const direction = scrollTop > lastScrollTopRef.current ? 'down' : 'up';
+      lastScrollTopRef.current = scrollTop;
 
-      // Hide scroll indicator after first scroll
-      if (scrollTop > 30) {
-        setShowScrollIndicator(false);
-      }
+      setScrollProgress(progress);
+      if (scrollTop > 30) setShowScrollIndicator(false);
 
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
-        // Different thresholds for mobile vs desktop
-        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768; // md breakpoint
-        const threshold = isMobile ? 0.05 : 0.3; // Ultra low threshold for mobile (5%)
-        
-        // Debug logging
-        console.log('Mobile:', isMobile, 'Threshold:', threshold, 'Progress:', fullProgress);
-        
-        const idx = fullProgress > threshold ? Math.ceil(fullProgress) : Math.floor(fullProgress);
-        const clamped = Math.max(0, Math.min(lifeSections.length - 1, idx));
-        if (clamped !== activeIndex) setActiveIndex(clamped);
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        const thresholdDown = isMobile ? 0.08 : 0.3;
+        const thresholdUp = isMobile ? 0.12 : 0.3;
 
-        left.scrollTo({
-          top: clamped * sectionHeight,
-          behavior: 'smooth',
-        });
+        let idx = activeIndex;
+        if (direction === 'down' && progress > activeIndex + thresholdDown) {
+          idx = Math.min(lifeSections.length - 1, activeIndex + 1);
+        } else if (direction === 'up' && progress < activeIndex - thresholdUp) {
+          idx = Math.max(0, activeIndex - 1);
+        }
+
+        if (idx !== activeIndex) {
+          setActiveIndex(idx);
+          left.scrollTo({
+            top: idx * sectionHeight,
+            behavior: 'smooth',
+          });
+        }
       }, 100);
     };
 
@@ -99,7 +98,6 @@ const LifePage = () => {
       >
         {lifeSections.map((s, i) => {
           const isEven = (i + 1) % 2 === 0;
-
           const cardColors = isEven ? 'bg-white text-black' : 'bg-black text-white';
           const subColor = isEven ? 'text-gray-700' : 'text-gray-300';
           const bodyColor = isEven ? 'text-gray-800' : 'text-gray-200';
@@ -111,54 +109,55 @@ const LifePage = () => {
             >
               {/* Mobile polaroid layout */}
               <div className="lg:hidden mb-4 sm:mb-6 relative max-w-sm mx-auto">
-                {/* Polaroid with alternating rotations */}
-                <div className={`relative bg-white p-3 sm:p-4 pb-10 sm:pb-12 shadow-lg transition-transform duration-500 hover:scale-[1.02] ${
-                  i === 0 ? 'rotate-[1deg]' :
-                  i === 1 ? 'rotate-[-2deg]' :
-                  i === 2 ? 'rotate-[3deg]' :
-                  i === 3 ? 'rotate-[-1deg]' :
-                  i === 4 ? 'rotate-[2deg]' :
-                  'rotate-[-3deg]'
-                }`}>
+                <div
+                  className={`relative bg-white p-3 sm:p-4 pb-4 sm:pb-6 shadow-lg transition-transform duration-500 hover:scale-[1.02] ${
+                    i === 0 ? 'rotate-[1deg]' :
+                    i === 1 ? 'rotate-[-2deg]' :
+                    i === 2 ? 'rotate-[3deg]' :
+                    i === 3 ? 'rotate-[-1deg]' :
+                    i === 4 ? 'rotate-[2deg]' :
+                    'rotate-[-3deg]'
+                  }`}
+                  >
                   <Image
                     src={s.imageSource}
                     alt={s.header}
                     width={1000}
                     height={700}
-                    className="w-full aspect-square object-cover"
+                    className="w-full aspect-square object-cover rounded"
                     priority={i < 2}
                     quality={90}
                   />
-                  <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:left-4 text-center text-xs sm:text-sm text-black font-medium leading-tight px-1 py-1">
+
+                  <div className="mt-3 text-center text-xs sm:text-sm text-black font-medium leading-tight">
                     {s.header}
                   </div>
                 </div>
               </div>
 
-              {/* Desktop layout - original */}
+              {/* Desktop layout */}
               <div className="hidden lg:block">
                 <h2 className="text-5xl font-light mb-4">{s.header}</h2>
                 <h3 className={`text-2xl mb-6 ${subColor}`}>{s.subtitle}</h3>
                 <p className={`text-lg leading-relaxed ${bodyColor}`}>{s.mainText}</p>
               </div>
 
-              {/* Mobile journal card block */}
-                <div className="lg:hidden p-6 sm:p-8">
-                  <h2 className="text-3xl sm:text-4xl font-light mb-4">{s.header}</h2>
-                  <h3 className={`text-lg sm:text-xl mb-6 ${subColor}`}>{s.subtitle}</h3>
-                  <p className={`text-sm sm:text-base leading-relaxed ${bodyColor}`}>
-                    {s.mainText}
-                  </p>
-                </div>
+              {/* Mobile journal block */}
+              <div className="lg:hidden p-6 sm:p-8">
+                <h2 className="text-3xl sm:text-4xl font-light mb-4">{s.header}</h2>
+                <h3 className={`text-lg sm:text-xl mb-6 ${subColor}`}>{s.subtitle}</h3>
+                <p className={`text-sm sm:text-base leading-relaxed ${bodyColor}`}>
+                  {s.mainText}
+                </p>
+              </div>
             </section>
           );
         })}
       </div>
 
-      {/* RIGHT SIDE — vertical image scroll (hidden on mobile) */}
+      {/* RIGHT SIDE (hidden on mobile) */}
       <div className="hidden lg:block relative w-1/2 h-screen overflow-hidden bg-black">
         {lifeSections.map((s, i) => {
-          // Inverted translation - scrolls opposite direction
           const translateY = (scrollProgress - i) * 100;
           return (
             <div
