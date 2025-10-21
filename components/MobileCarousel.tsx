@@ -39,6 +39,7 @@ export default function MobileCarousel({ panels }: MobileCarouselProps) {
               delay={i * 0.8}
               href={panel.link}
               isMobile={true}
+              priority={true}
             />
           </div>
         ))}

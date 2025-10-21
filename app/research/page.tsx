@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import ResearchSection from '../../components/ResearchSection';
 import ReadingSection from '../../components/ReadingSection';
 
@@ -24,9 +25,20 @@ export default function ReadingList() {
   ];
 
   return (
-    <div className="pt-20 min-h-screen bg-research bg-no-repeat bg-cover bg-center relative">
+    <div className="pt-20 min-h-screen relative overflow-hidden">
+      {/* Optimized Next.js background image */}
+      <Image
+        src="/wallpapers/research.jpg"
+        alt="Research background"
+        fill
+        priority
+        quality={85}
+        className="object-cover object-center"
+        sizes="100vw"
+      />
+      
       {/* Dim overlay for readability */}
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-[2px]" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-4xl px-6 sm:px-8 py-20 sm:py-24 text-gray-200 font-[Inter] tracking-tight">
