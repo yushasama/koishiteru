@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 
 interface PanelProps {
   image: string;
@@ -8,6 +9,7 @@ interface PanelProps {
   delay?: number;
   href?: string;
   isMobile?: boolean;
+  priority?: boolean;
 }
 
 const Panel: React.FC<PanelProps> = ({
@@ -17,6 +19,7 @@ const Panel: React.FC<PanelProps> = ({
   delay = 0,
   href,
   isMobile = false,
+  priority = false,
 }) => {
   const content = (
     <div
@@ -38,11 +41,15 @@ const Panel: React.FC<PanelProps> = ({
           }
         `}
       >
-        <img
-          src={image}
+        <Image
+          src={'/' + image}
           alt={title}
+          fill
+          priority={priority}
+          quality={75}
+          sizes={isMobile ? "100vw" : "20vw"}
           className="
-            h-full w-full object-cover
+            object-cover
             grayscale-[0.85] brightness-[0.9]
             transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
             group-hover:grayscale-0 group-hover:brightness-100 group-hover:-translate-y-[20px]

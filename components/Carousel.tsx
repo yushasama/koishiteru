@@ -75,6 +75,7 @@ export default function Carousel({ panels }: CarouselProps) {
             subtitle={panel.subtitle}
             delay={i * 0.8}
             href={panel.link}
+            priority={true}
           />
         ))}
       </div>
