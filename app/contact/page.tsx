@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Github, Linkedin, Mail, FileText, ExternalLink, Download } from 'lucide-react';
 
 const ContactPage = () => {
@@ -36,7 +37,18 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="pt-20 min-h-screen bg-singapore bg-no-repeat bg-cover bg-center bg-fixed relative flex flex-col">
+    <div className="pt-20 min-h-screen relative flex flex-col">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/wallpapers/singapore.jpg"
+          alt="Singapore background"
+          fill
+          priority
+          quality={90}
+          className="object-cover"
+        />
+      </div>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
       
       <div className="relative z-10 flex-1 flex items-center justify-center px-6 py-12">
