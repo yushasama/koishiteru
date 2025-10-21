@@ -43,13 +43,20 @@ const LifePage = () => {
       setScrollProgress(fullProgress);
 
       // Hide scroll indicator after first scroll
-      if (scrollTop > 50) {
+      if (scrollTop > 30) {
         setShowScrollIndicator(false);
       }
 
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
-        const idx = Math.round(fullProgress);
+        // Different thresholds for mobile vs desktop
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768; // md breakpoint
+        const threshold = isMobile ? 0.05 : 0.3; // Ultra low threshold for mobile (5%)
+        
+        // Debug logging
+        console.log('Mobile:', isMobile, 'Threshold:', threshold, 'Progress:', fullProgress);
+        
+        const idx = fullProgress > threshold ? Math.ceil(fullProgress) : Math.floor(fullProgress);
         const clamped = Math.max(0, Math.min(lifeSections.length - 1, idx));
         if (clamped !== activeIndex) setActiveIndex(clamped);
 
@@ -57,7 +64,7 @@ const LifePage = () => {
           top: clamped * sectionHeight,
           behavior: 'smooth',
         });
-      }, 150);
+      }, 100);
     };
 
     left.addEventListener('scroll', handleScroll, { passive: true });
@@ -103,7 +110,7 @@ const LifePage = () => {
               className={`h-screen flex flex-col justify-center px-12 transition-opacity duration-400 ease-out ${cardColors}`}
             >
               {/* Mobile polaroid layout */}
-              <div className="lg:hidden mb-4 sm:mb-6 relative max-w-lg sm:max-w-xl mx-auto">
+              <div className="lg:hidden mb-4 sm:mb-6 relative max-w-sm mx-auto">
                 {/* Polaroid with alternating rotations */}
                 <div className={`relative bg-white p-3 sm:p-4 pb-10 sm:pb-12 shadow-lg transition-transform duration-500 hover:scale-[1.02] ${
                   i === 0 ? 'rotate-[1deg]' :
@@ -122,7 +129,7 @@ const LifePage = () => {
                     priority={i < 2}
                     quality={90}
                   />
-                  <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:left-4 text-center text-xs sm:text-sm text-black font-medium leading-tight px-1">
+                  <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:left-4 text-center text-xs sm:text-sm text-black font-medium leading-tight px-1 py-1">
                     {s.header}
                   </div>
                 </div>
@@ -136,13 +143,13 @@ const LifePage = () => {
               </div>
 
               {/* Mobile journal card block */}
-              <div className="lg:hidden p-6 sm:p-8">
-                <h2 className="text-4xl sm:text-5xl font-light mb-4">{s.header}</h2>
-                <h3 className={`text-xl sm:text-2xl mb-6 ${subColor}`}>{s.subtitle}</h3>
-                <p className={`text-base sm:text-lg leading-relaxed ${bodyColor}`}>
-                  {s.mainText}
-                </p>
-              </div>
+                <div className="lg:hidden p-6 sm:p-8">
+                  <h2 className="text-3xl sm:text-4xl font-light mb-4">{s.header}</h2>
+                  <h3 className={`text-lg sm:text-xl mb-6 ${subColor}`}>{s.subtitle}</h3>
+                  <p className={`text-sm sm:text-base leading-relaxed ${bodyColor}`}>
+                    {s.mainText}
+                  </p>
+                </div>
             </section>
           );
         })}
