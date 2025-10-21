@@ -54,12 +54,21 @@ const LifePage = () => {
           idx = Math.min(lifeSections.length - 1, activeIndex + 1);
         } else if (direction === 'up' && progress < activeIndex - thresholdUp) {
           idx = Math.max(0, activeIndex - 1);
+        } else if (!isMobile) {
+          // Desktop: snap back to current section if threshold not met
+          idx = activeIndex;
         }
 
         if (idx !== activeIndex) {
           setActiveIndex(idx);
           left.scrollTo({
             top: idx * sectionHeight,
+            behavior: 'smooth',
+          });
+        } else if (!isMobile) {
+          // Desktop: snap back to current section
+          left.scrollTo({
+            top: activeIndex * sectionHeight,
             behavior: 'smooth',
           });
         }
