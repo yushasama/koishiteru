@@ -16,6 +16,8 @@ const LifePage = () => {
       const left = leftRef.current;
       if (left) {
         left.scrollTo({ top: 0, behavior: 'smooth' });
+        // Force focus by simulating a click
+        left.click();
         left.focus();
       }
     };
