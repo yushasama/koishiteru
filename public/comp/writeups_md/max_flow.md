@@ -636,7 +636,7 @@ public:
 * The **level graph** in Dinic has nothing to do with the physical distance between seats. Level edges are an algorithmic concept; conflict edges come from the model.
 * If your statement’s cheating rules differ (e.g., only left/right and upper-left/upper-right), just change the neighbor list. The bipartition argument still holds as long as every conflict changes column parity.
 
-## 7) TLDR
+## 9) TLDR
 
 - Learn the parts: capacities, conservation, residuals, augmenting paths.  
 - Map the statement to a model & its space.
@@ -645,13 +645,13 @@ public:
 - In bipartite graphs, $|\text{min vertex cover}| = |\text{max matching}|$ and $\alpha(G) = |V| - \nu(G)$.
 - Master this and you will enjoy farming free elo off everyone else.
 
-## 8) Recommended Problems
+## 10) Recommended Problems
 * [USACO Guide - Maximal Flow](https://usaco.guide/adv/max-flow?lang=cpp)
 * [USACO Guide - Minimum Cut](https://usaco.guide/adv/min-cut?lang=cpp)
 * [USACO Guide - Minimum Cost Flow](https://usaco.guide/adv/min-cost-flow?lang=cpp)
 * [LeetCode 1349 - Maximum Students Taking Exams](https://leetcode.com/problems/maximum-students-taking-exam/description/)
-* [CSES - Download Speed](https://cses.fi/problemset/task/1694)
-* [CSES - Police Chase](https://cses.fi/problemset/task/1695)
+* [CSES 1694 - Download Speed](https://cses.fi/problemset/task/1694)
+* [CSES 1695 - Police Chase](https://cses.fi/problemset/task/1695)
 
 
 

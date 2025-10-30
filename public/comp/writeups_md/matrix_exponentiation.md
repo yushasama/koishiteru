@@ -135,7 +135,7 @@ $$
 - Base at **step 1** (you know $\text{State}(1)$) $\Rightarrow$ $\text{State}(n)=T^{n-1}\,\text{State}(1)$.
 - Base at **step 0** (you know $\text{State}(0)$) $\Rightarrow$ $\text{State}(n)=T^{n}\,\text{State}(0)$.
 
-It’s just indexing. Align it with your base case. **Don’t overthink**—pick the natural base.
+It’s just indexing. Align it with your base case. **Don’t overthink**, pick the natural base.
 
 ---
 
@@ -485,7 +485,7 @@ $$
 1. **Define state.** Package just enough info into a vector so one step forward is linear.
 2. **Build transition $T$.** Write the recurrence as a dot product of coefficients with past state.
 3. **Choose base index.** Decide if your base is $\text{State}(0)$ or $\text{State}(1)$.
-4. **Compute $T^{\text{power}}$** with **binary exponentiation** — $O(k^3\log n)$.
+4. **Compute $T^{\text{power}}$** with **binary exponentiation:** $O(k^3\log n)$.
 5. **Multiply once by the base vector.** That gives $\text{State}(n)$.
 
 ### **How to Spot it From a Statement**
@@ -494,7 +494,7 @@ $$
 - Graph path DP that looks like
   $$dp[\ell+1][u] = \sum_v dp[\ell][v] \cdot \text{edges}(v\to u)$$
   is literally matrix multiplication with your $A[v][u]$.
-- If $n$ or $k$ goes up to $10^9$, $10^{12}$, $10^{18}$, step‑by‑step DP is impossible — use matrix expo.
+- If $n$ or $k$ goes up to $10^9$, $10^{12}$, $10^{18}$, step‑by‑step DP is impossible, use matrix expo.
 
 ### **Where It Shines**
 - Fibonacci/Tribonacci/**any** fixed $k$‑term linear recurrence.

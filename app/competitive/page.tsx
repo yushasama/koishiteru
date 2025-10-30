@@ -15,6 +15,30 @@ export default function CompetitivePage() {
       isMain: true,
     },
     {
+      id: 'segment_trees_ii',
+      title: 'The Return of Segment Trees: Lazy and Beats',
+      readingTime: readingTimes.segment_trees_ii,
+      backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e"
+    },
+        {
+      id: 'bitmasks',
+      title: 'Hardmogging with Bitmasks',
+      readingTime: readingTimes.bitmasks,
+      backgroundImage: "https://images.unsplash.com/photo-1658931419235-1b8aa5a44829"
+    },
+    {
+      id: 'square_root_decomposition',
+      title: 'Square Root Decomposition and Mo\'s Algorithm',
+      readingTime: readingTimes.square_root_decomposition,
+      backgroundImage: "https://images.unsplash.com/photo-1738463771395-4ca093b19e2c"
+    },
+    {
+      id: 'binary_search',
+      title: 'Unlock 1/4th of CP With Binary Search',
+      readingTime: readingTimes.binary_search,
+      backgroundImage: "https://images.unsplash.com/photo-1541727687969-ce40493cd847"
+    },
+    {
       id: 'max_flow',
       title: 'Max Flow',
       readingTime: readingTimes.max_flow,

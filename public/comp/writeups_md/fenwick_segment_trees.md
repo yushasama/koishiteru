@@ -107,7 +107,7 @@ struct Fenwick {
 **Notes:**
 
 * Fenwick = **point update + prefix/range query**.
-* Always use `long long` for sums — `n * max(a[i])` can exceed `2e9`.
+* Always use `long long` for sums as `n * max(a[i])` can exceed `2e9`.
 * If you only store counts (`+1` each time), `int` would be fine, but `ll` is safer universally.
 
 ---

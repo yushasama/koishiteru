@@ -1,6 +1,6 @@
 # DP Forward-Building Trick (Subset / Knapsack Propagation)
 
-This is very useful when the DP state is **boolean** — meaning we only care whether a value is *possible* or not:
+This is very useful when the DP state is **boolean**, meaning we only care whether a value is *possible* or not:
 
 $$
 dp[j] = \text{true} \quad \text{if some value } j \text{ is possible.}
@@ -69,7 +69,7 @@ $$
 
 ## Feasibility Problems
 
-If the DP state is boolean — we just need to track if a subset sum is possible:
+If the DP state is boolean, we just need to track if a subset sum is possible:
 
 ```cpp
 std::vector<bool> dp(target + 1, false);
@@ -117,7 +117,7 @@ Let $\Omega$ be the number of DP states.
 * **Compression:** In LIS / patience sorting, you can compress values and use a segment tree or Fenwick tree.
 
 Hashmaps can degrade from $O(1)$ to $O(\Omega)$ with collisions, so if constraints are tight, balanced trees may be safer.
-Big-O alone doesn’t capture real-world performance — **tail latency** matters.
+Big-O alone doesn’t capture real-world performance, **tail latency** is a factor.
 
 ---
 
@@ -136,7 +136,7 @@ That’s exactly what we used above in the knapsack examples.
 * **Numeric Transforms (FFT / NTT)**
 * **SOS DP**
 
-(I’ll cover up to MITM later — the rest are 2000+ Elo tricks and I’m not that good yet.)
+(I’ll cover up to MITM later, the rest are 2000+ Elo tricks and I’m not that good yet.)
 
 ---
 

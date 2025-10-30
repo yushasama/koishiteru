@@ -65,7 +65,11 @@ export function getAllReadingTimes(): Record<string, string> {
     'dynamic_programming_subset_sums',
     'prefix_sums',
     'interval_math',
-    'constraints'
+    'constraints',
+    'binary_search',
+    'square_root_decomposition',
+    'bitmasks',
+    'segment_trees_ii'
   ];
 
   const times: Record<string, string> = {};

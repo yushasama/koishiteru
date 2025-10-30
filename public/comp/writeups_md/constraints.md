@@ -39,7 +39,7 @@ Imagine you're in a live contest, solving Div2D. You whip up a “genius” pref
 
 ---
 
-## **Cheat map w/ hidden tells**
+## **Cheat Map w/ Hidden Tells**
 
 | $n$ scale      | Safe complexity | Algos you grab                          | Hidden tells               |
 | -------------- | --------------- | --------------------------------------- | ---------------------------------------------- |
@@ -54,7 +54,7 @@ Imagine you're in a live contest, solving Div2D. You whip up a “genius” pref
 
 ---
 
-## **Other hidden tells**
+## **Other Hidden Tells**
 
 * **Sum of $n$ over testcases $\leq 10^5$** → amortize across tests, total complexity matters.
 

@@ -34,3 +34,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large image files (over 1MB)
+*.jpg
+*.jpeg
+*.png
+!public/**/*.jpg
+!public/**/*.jpeg  
+!public/**/*.png
+
