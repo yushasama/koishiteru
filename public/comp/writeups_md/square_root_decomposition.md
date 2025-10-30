@@ -1,59 +1,86 @@
 # Square Root Decomposition and Mo's Algorithm
 
-When queries are offline or the operation is simple, **square root decomposition** and **Mo's algorithm** let you "block it out," cut work to about $O(\sqrt{N})$ per move, and keep code tight. Meaning we don't always need a big structure like a Segment Tree. Use segment trees only when you truly need online dynamic updates or lazy range operations.
+When queries are offline or the operation is simple, **square root decomposition** and **Mo's algorithm** let you "block it out," cut work to about $O(\sqrt{N})$ per move, and keep code tight. You don't always need a big structure like a segment tree.
 
-For those unfamiliar with Segment Trees, please checkout my writeups:
+**When to use segment trees:** Only when you truly need online dynamic updates with range modifications (like range add, range set) or lazy propagation. For static arrays with simple queries, or offline frequency-based queries, the methods here are simpler and often faster.
+
+For those unfamiliar with segment trees, check out my other writeups on segment trees and lazy propagation.
 
 ---
 
 ## 0) Core Definitions
 
-**Square Root Decomposition:** Split an array into blocks of size $B \approx \sqrt{N}$. Keep an aggregate per block. Answer a range by scanning edge items and aggregating full blocks. About $O(\sqrt{N})$ per query.
+**Square Root Decomposition:** Split an array into blocks of size $B \approx \sqrt{N}$. Keep an aggregate per block. Answer a range query by scanning edge items individually and aggregating full blocks. About $O(\sqrt{N})$ per query.
 
-**Mo's Algorithm:** Sort all range queries by $(\lfloor L / B \rfloor, R)$, then slide a window and maintain a frequency based answer with $\text{add}(x)$ and $\text{remove}(x)$ in $O(1)$. Offline total about $O((N + Q)\sqrt{N})$.
+**Mo's Algorithm:** Sort all range queries by $(\lfloor L / B \rfloor, R)$ with alternating $R$ order per block, then slide a window and maintain an answer with `add(x)` and `remove(x)` in $O(1)$. Offline, total complexity about $O((N + Q)\sqrt{N})$ plus sorting.
 
-**Associativity:** If the operation is associative and has an identity (sum, min, max, gcd), you can pre-aggregate per block. If the answer is a function of frequencies that does not merge cleanly, use Mo's.
+**Associativity:** If the operation is associative and has an identity (sum, min, max, gcd), you can pre-aggregate per block and answer queries by combining block aggregates. If the answer is a function of frequencies that doesn't merge cleanly (like "count distinct" or "sum of frequency squares"), use Mo's.
 
-**Offline vs Online:** Mo's is offline. Square Root Decomposition can answer online when there are no range updates and only light point edits.
+**Offline vs Online:** Mo's is **offline only**—you must know all queries in advance. Square root decomposition can answer queries **online** when there are no range updates, or only light point updates.
 
 ---
 
 ## 1) Constraints
 
-* Scale: $n \approx 10^5$ both are fine. $n \approx 10^6$ blocks are still fine for sum or min. Use Mo's only if add and remove are true $O(1)$ and $Q$ is large.
+* **Scale:** $n \approx 10^5$ both are fine. $n \approx 10^6$ blocks still work for sum or min. Use Mo's only if `add` and `remove` are true $O(1)$ and $Q$ is reasonably large.
 
-* Quick pick: if $Q < n$ choose blocks. if $Q > n$ choose Mo's. if $Q \approx n$ choose by model fit.
+* **Quick pick:** 
+  - If $Q < n$ choose blocks. 
+  - If $Q > n$ choose Mo's. 
+  - If $Q \approx n$ choose by model fit.
 
-* Cost estimates: blocks $\approx O(Q\sqrt{n})$. Mo's $\approx O((n + Q)\sqrt{n} + Q \log Q)$.
+* **Cost estimates:** 
+  - Blocks: $O(Q\sqrt{n})$ for queries, $O(n)$ build.
+  - Mo's: $O((n + Q)\sqrt{n})$ for pointer moves plus $O(Q \log Q)$ for sorting.
 
-* Compression: required for Mo's when values are large. Optional for blocks.
+* **Compression:** Required for Mo's when values are large (to keep frequency array size manageable). Optional for blocks.
 
-* Memory: blocks $\approx n + \frac{n}{B}$. Mo's $\approx n + M$, where $M$ is the number of distinct values after compression.
+* **Memory:** 
+  - Blocks: $\approx n + \frac{n}{B}$ where $B \approx \sqrt{n}$.
+  - Mo's: $\approx n + M$ where $M$ is the number of distinct values after compression.
+
+* **Block size optimization:**
+  - Square root decomp: $B = \sqrt{n}$ minimizes $\frac{n}{B} + B$.
+  - Mo's: Optimal block size is $\frac{n}{\sqrt{Q}}$ when $Q$ is known. In practice, $B = \sqrt{n}$ works well for most cases. For $Q \gg n$, use $B = \frac{n}{\sqrt{Q}}$ for better constants.
 
 ---
 
 ## 2) Theory Bridge
 
-**Blocks.** A query touches at most $\frac{N}{B}$ full blocks and $O(B)$ edge items. Cost $f(B) = \frac{N}{B} + B$. Minimum near $B = \sqrt{N}$, so $O(\sqrt{N})$ per query.
+**Blocks.** A query touches at most $\frac{N}{B}$ full blocks and $O(B)$ edge items. Cost $f(B) = \frac{N}{B} + B$. Taking derivative and setting to zero: $f'(B) = -\frac{N}{B^2} + 1 = 0 \Rightarrow B = \sqrt{N}$. This gives $f(\sqrt{N}) = 2\sqrt{N}$, so $O(\sqrt{N})$ per query.
 
-**Mo's.** Sorting by $(\lfloor L / B \rfloor, R)$ makes successive windows differ by $O(\sqrt{N})$ items on average. With $O(1)$ add and remove, total work is $O((N + Q)\sqrt{N})$.
+**Mo's.** Sorting by $(\lfloor L / B \rfloor, R)$ with alternating $R$ order per $L$-block makes successive windows differ by $O(\sqrt{N})$ items on average:
+- Within a block, $L$ changes by at most $B = \sqrt{N}$.
+- Between blocks, $R$ can change by at most $N$, but this happens only $\frac{N}{B} = \sqrt{N}$ times across all queries.
+- Total pointer movement: $O(Q \cdot B)$ for $L$ moves plus $O(N \cdot \frac{N}{B}) = O(N\sqrt{N})$ for $R$ moves.
+- With $O(1)$ add and remove, total work is $O((N + Q)\sqrt{N})$.
+
+**Why coordinate compression matters:** If values go up to $10^9$ but there are only $M \le 10^5$ distinct values, you'd need a $10^9$-sized frequency array without compression. After compression, frequency array is size $M$, which is manageable.
 
 ---
 
 ## 3) Shapes and Models
 
-| Statement cue                                 | Pick this model |
-| --------------------------------------------- | --------------- |
-| Static array, sum or min over ranges          | Square Root Decomp          |
-| All queries known, count distinct             | Mo's            |
-| Weighted frequency metric $\sum g(\text{val}, \text{freq}[\text{val}])$ | Mo's            |
-| Intermixed queries with a few point updates   | Square Root Decomp          |
+| Statement cue                                 | Pick this model | Why |
+| --------------------------------------------- | --------------- | --- |
+| Static array, sum or min over ranges          | Square Root Decomp | Associative with identity → precompute per block |
+| All queries known, count distinct             | Mo's | Non-mergeable frequency metric → slide window |
+| Weighted frequency metric $\sum g(\text{val}, \text{freq}[\text{val}])$ | Mo's | Function of counts, not associative |
+| Intermixed queries with a few point updates   | Square Root Decomp | Can rebuild blocks incrementally or lazily |
+| Online queries, no updates                    | Square Root Decomp | Blocks support online queries |
+| Offline queries, complex frequency function   | Mo's | Sliding window with $O(1)$ add/remove |
 
 ---
 
 ## 4) Templates
 
-### 4.1 Square Root Decomposition — sum only
+### Square Root Decomposition — sum only
+
+**Complexity:** 
+- Build: $O(n)$
+- Query: $O(\sqrt{n})$
+- Point update: $O(1)$
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -100,14 +127,17 @@ struct SqrtSum {
 
         long long res = 0;
 
+        // Left edge
         while (l <= r && (l % B)) {
             res += a[l];
             l++;
         }
+        // Full blocks
         while (l + B - 1 <= r) {
             res += agg[l / B];
             l += B;
         }
+        // Right edge
         while (l <= r) {
             res += a[l];
             l++;
@@ -128,7 +158,9 @@ struct SqrtSum {
 };
 ```
 
-### 4.2 Square Root Decomposition — generic monoid
+---
+
+### Square Root Decomposition — Generic Monoid
 
 Identity means the neutral element $e$ such that $\text{combine}(e, x) = x$ and $\text{combine}(x, e) = x$.
 
@@ -138,6 +170,8 @@ Identity means the neutral element $e$ such that $\text{combine}(e, x) = x$ and 
 * gcd → $0$
 * xor → $0$
 
+**Complexity:** Same as sum version.
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -145,13 +179,13 @@ using namespace std;
 template <class T>
 struct MinOp {
     T identity() const { return numeric_limits<T>::max(); }
-    T combine(const T& a, const T& b) const { return a < b ? a : b; }
+    T combine(const T& a, const T& b) const { return min(a, b); }
 };
 
 template <class T>
 struct MaxOp {
     T identity() const { return numeric_limits<T>::lowest(); }
-    T combine(const T& a, const T& b) const { return a < b ? b : a; }
+    T combine(const T& a, const T& b) const { return max(a, b); }
 };
 
 template <class T>
@@ -205,14 +239,17 @@ struct SqrtBlocks {
 
         T res = op.identity();
 
+        // Left edge
         while (l <= r && (l % B)) {
             res = op.combine(res, a[l]);
             l++;
         }
+        // Full blocks
         while (l + B - 1 <= r) {
             res = op.combine(res, agg[l / B]);
             l += B;
         }
+        // Right edge
         while (l <= r) {
             res = op.combine(res, a[l]);
             l++;
@@ -226,6 +263,7 @@ struct SqrtBlocks {
         int L = b * B;
         int R = min(n, L + B);
 
+        // Rebuild block aggregate
         T s = op.identity();
         for (int j = L; j < R; j++) {
             s = op.combine(s, a[j]);
@@ -235,9 +273,13 @@ struct SqrtBlocks {
 };
 ```
 
-### 4.3 Mo's Algorithm — distinct count base
+---
 
-Use half open ranges $[l, r)$. Coordinate compress first.
+### Mo's Algorithm — Distinct Count Base
+
+Use half-open ranges $[l, r)$. Coordinate compress first.
+
+**Complexity:** $O(Q \log Q + (N + Q)\sqrt{N})$ where the $Q \log Q$ is for sorting queries.
 
 ```cpp
 #include <bits/stdc++.h>
@@ -245,7 +287,7 @@ using namespace std;
 
 struct Query {
     int l;
-    int r;   // [l, r)
+    int r;   // [l, r) half-open
     int id;
 };
 
@@ -268,6 +310,7 @@ bool mo_compare(const Query& A, const Query& B) {
     int ab = A.l / B_size;
     int bb = B.l / B_size;
     if (ab != bb) return ab < bb;
+    // Alternate R order per block to reduce pointer travel
     if (ab % 2 == 0) return A.r < B.r;
     return A.r > B.r;
 }
@@ -281,6 +324,7 @@ vector<int> mo_solve(vector<Query> qs) {
     current_distinct = 0;
 
     for (const Query& q : qs) {
+        // Expand/contract window to match query range
         while (L > q.l) {
             L--;
             add_value(a[L]);
@@ -303,9 +347,15 @@ vector<int> mo_solve(vector<Query> qs) {
 }
 ```
 
-### 4.4 Mo's Algorithm — weighted frequency metric
+**Why alternating R order:** Within a block of queries (same $\lfloor L / B \rfloor$), alternating the direction of $R$ traversal reduces backtracking. Odd blocks go right-to-left, even blocks go left-to-right.
+
+---
+
+### Mo's Algorithm — Weighted Frequency Metric
 
 Example metric: sum over $v$ of $\text{freq}[v]^2 \cdot \text{weight}[v]$. Keep $\text{weight}[v]$ as the original value or a given weight.
+
+**Complexity:** Same as distinct count Mo's.
 
 ```cpp
 #include <bits/stdc++.h>
@@ -318,22 +368,22 @@ long long cur_answer = 0;
 
 void add_weighted(int v) {
     long long f = freq64[v];
-    cur_answer -= f * f * weight[v];
+    cur_answer -= f * f * weight[v];  // remove old contribution
     f += 1;
     freq64[v] = f;
-    cur_answer += f * f * weight[v];
+    cur_answer += f * f * weight[v];  // add new contribution
 }
 
 void remove_weighted(int v) {
     long long f = freq64[v];
-    cur_answer -= f * f * weight[v];
+    cur_answer -= f * f * weight[v];  // remove old contribution
     f -= 1;
     freq64[v] = f;
-    cur_answer += f * f * weight[v];
+    cur_answer += f * f * weight[v];  // add new contribution
 }
 ```
 
-**Math explanation:**
+**Math Explanation:**
 
 When adding a value $v$ with current frequency $f$:
 
@@ -341,37 +391,51 @@ $$
 \text{cur\_answer} \gets \text{cur\_answer} - f^2 \cdot \text{weight}[v] + (f+1)^2 \cdot \text{weight}[v]
 $$
 
-When removing:
+The net change is:
+$$
+(f+1)^2 \cdot w - f^2 \cdot w = (f^2 + 2f + 1 - f^2) \cdot w = (2f + 1) \cdot w
+$$
 
+When removing (frequency $f$ becomes $f-1$):
 $$
 \text{cur\_answer} \gets \text{cur\_answer} - f^2 \cdot \text{weight}[v] + (f-1)^2 \cdot \text{weight}[v]
 $$
+
+The net change is:
+$$
+(f-1)^2 \cdot w - f^2 \cdot w = (f^2 - 2f + 1 - f^2) \cdot w = (1 - 2f) \cdot w
+$$
+
+This allows $O(1)$ updates to the global answer.
 
 ---
 
 ## 5) Algorithms That Win In Practice
 
-* Frequency shaped and offline → Mo's with $O(1)$ add and remove.
-* Associative with identity and static or lightly updated → blocks.
-* Coordinate compress for Mo's. Keep freq over compressed values.
+* **Frequency-shaped and offline** → Mo's with $O(1)$ add and remove.
+* **Associative with identity and static or lightly updated** → blocks.
+* **Coordinate compress for Mo's.** Keep freq over compressed values to avoid huge arrays.
+* **Block size tuning:** Use $B = \sqrt{n}$ by default. For Mo's with $Q \gg n$, use $B = \frac{n}{\sqrt{Q}}$ for better constants.
 
 ---
 
 ## 6) Cheat Sheet Table
 
-| Type                    | How to tell                | What to output         | Shape          | Solver |
-| ----------------------- | -------------------------- | ---------------------- | -------------- | ------ |
-| Static range sum        | No updates, numeric sum    | Sum over $[l, r]$        | Blocks         | Blocks |
-| Static range min or gcd | No updates, associative op | Min or gcd over $[l, r]$ | Blocks         | Blocks |
-| Distinct count          | All queries known          | Number of distinct     | Sliding window | Mo's   |
-| Weighted freq metric    | Depends on counts          | Scalar from freq       | Sliding window | Mo's   |
-| Few point updates       | Small number of edits      | Aggregates             | Blocks         | Blocks |
+| Type                    | How to tell                | What to output         | Shape          | Solver | Complexity |
+| ----------------------- | -------------------------- | ---------------------- | -------------- | ------ | ---------- |
+| Static range sum        | No updates, numeric sum    | Sum over $[l, r]$        | Blocks         | Blocks | $O(Q\sqrt{n})$ |
+| Static range min or gcd | No updates, associative op | Min or gcd over $[l, r]$ | Blocks         | Blocks | $O(Q\sqrt{n})$ |
+| Distinct count          | All queries known          | Number of distinct     | Sliding window | Mo's   | $O((n+Q)\sqrt{n})$ |
+| Weighted freq metric    | Depends on counts          | Scalar from freq       | Sliding window | Mo's   | $O((n+Q)\sqrt{n})$ |
+| Few point updates       | Small number of edits      | Aggregates             | Blocks         | Blocks | $O(Q\sqrt{n})$ |
 
 ---
 
 ## 7) Worked Example — Mo's for distinct count
 
-Self contained. Reads $n$, array, $q$, queries in 1 based inclusive form, prints answers in original order. Converts to 0 based and $[l, r)$ internally.
+Self-contained. Reads $n$, array, $q$, queries in 1-based inclusive form, prints answers in original order. Converts to 0-based and $[l, r)$ internally.
+
+**Complexity:** $O(Q \log Q + (n + Q)\sqrt{n})$
 
 ```cpp
 #include <bits/stdc++.h>
@@ -379,7 +443,7 @@ using namespace std;
 
 struct Query {
     int l;
-    int r;   // [l, r)
+    int r;   // [l, r) half-open
     int id;
 };
 
@@ -393,7 +457,7 @@ int main() {
     vector<int> a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
 
-    // coordinate compression
+    // Coordinate compression
     vector<int> vals = a;
     sort(vals.begin(), vals.end());
     vals.erase(unique(vals.begin(), vals.end()), vals.end());
@@ -410,7 +474,7 @@ int main() {
         cin >> L >> R;      // 1-based inclusive input
         L--;                // convert to 0-based
         R--;
-        qs[i] = {L, R + 1, i}; // to half-open
+        qs[i] = {L, R + 1, i}; // to half-open [L, R+1)
     }
 
     int B_size = max(1, (int)sqrt(max(1, n)));
@@ -468,23 +532,71 @@ int main() {
 
 ---
 
-## 8) TLDR
+## 8) Common Pitfalls
 
-* Check associativity first. Associative and static → **block**. Frequency shaped and offline → **Mo's**.
-* Square Root Decomposition gives about $O(\sqrt{N})$ per query with tiny code.
-* Mo's gives about $O((N + Q)\sqrt{N})$ total, but only if $\text{add}$ and $\text{remove}$ are $O(1)$.
-* For heavy or range updates, switch to the **segment tree** link.
-* Coordinate-compress for Mo's. Alternate $R$ per $L$-block or use Hilbert order to reduce pointer travel.
-* Rebuild blocks lazily for non-invertible ops to keep amortized $O(\sqrt{N})$.
+1. **Forgetting coordinate compression for Mo's:** If values are up to $10^9$, you'll get MLE without compressing.
+2. **Using closed intervals inconsistently:** Pick either $[l, r]$ or $[l, r)$ and stick to it. This guide uses $[l, r)$ for Mo's.
+3. **Wrong block size for Mo's:** Using $B = \sqrt{n}$ when $Q \gg n$ can be suboptimal. Use $B = \frac{n}{\sqrt{Q}}$ for better constants.
+4. **Non-$O(1)$ add/remove in Mo's:** If your add or remove operation is $O(\log n)$, Mo's becomes $O((n+Q)\sqrt{n} \log n)$, which might TLE.
+5. **Not alternating R order:** Forgetting the `if (ab % 2 == 0)` check doubles the pointer travel for $R$.
+6. **Rebuilding blocks inefficiently:** For non-invertible operations in square root decomp, rebuild the entire block on each update rather than trying to maintain incrementally.
 
 ---
 
-## 9) Recommended Problems
+## 9) Advanced: Hilbert Order for Mo's
+
+For very tight time limits, you can sort queries by **Hilbert curve order** instead of the standard Mo's comparator. This reduces cache misses and pointer travel by following a space-filling curve.
+
+**When to use:** Competitive programming with strict time limits and large $n, Q \approx 10^5$ to $10^6$.
+
+**Complexity:** Still $O((n+Q)\sqrt{n})$ but with better constants (often 2-3x speedup).
+
+**Implementation sketch:**
+```cpp
+inline long long hilbert_order(int x, int y, int pow, int rotate) {
+    if (pow == 0) return 0;
+    int hpow = 1 << (pow - 1);
+    int seg = (x < hpow) ? ((y < hpow) ? 0 : 3) : ((y < hpow) ? 1 : 2);
+    seg = (seg + rotate) & 3;
+    const int rotateDelta[4] = {3, 0, 0, 1};
+    int nx = x & (x ^ hpow), ny = y & (y ^ hpow);
+    int nrot = (rotate + rotateDelta[seg]) & 3;
+    long long subSquareSize = 1LL << (2 * pow - 2);
+    long long ans = seg * subSquareSize;
+    long long add = hilbert_order(nx, ny, pow - 1, nrot);
+    ans += (seg == 1 || seg == 2) ? add : (subSquareSize - add - 1);
+    return ans;
+}
+
+// In mo_compare:
+int logn = __builtin_clz(1) - __builtin_clz(max(1, n));
+return hilbert_order(A.l, A.r, logn, 0) < hilbert_order(B.l, B.r, logn, 0);
+```
+
+This is overkill for most problems but mentioned for completeness.
+
+---
+
+## 10) TLDR
+
+* Check associativity first. **Associative and static** → blocks. **Frequency-shaped and offline** → Mo's.
+* Square root decomposition gives about $O(\sqrt{N})$ per query with tiny code. Build is $O(n)$.
+* Mo's gives about $O((N + Q)\sqrt{N})$ total, but **only if `add` and `remove` are $O(1)$**.
+* For heavy or range updates, switch to segment trees with lazy propagation.
+* **Coordinate-compress for Mo's** to keep frequency arrays manageable.
+* **Alternate $R$ order per $L$-block** (even/odd) to reduce pointer travel.
+* **Block size:** Use $B = \sqrt{n}$ by default. For Mo's with $Q \gg n$, use $B = \frac{n}{\sqrt{Q}}$.
+* Rebuild blocks lazily or per update for non-invertible ops to keep amortized $O(\sqrt{N})$.
+
+---
+
+## 11) Recommended Problems
 
 * [USACO Guide - Square Root Decomposition](https://usaco.guide/plat/sqrt?lang=cpp)
-* [CSES Range Sum Queries I](https://cses.fi/problemset/task/1646)
-* [AtCoder ARC98E - Range Minimum Queries](https://atcoder.jp/contests/arc098/tasks/arc098_c)
+* [CSES 1646 - Static Range Sum Queries](https://cses.fi/problemset/task/1646)
+* [AtCoder ARC098E - Range Minimum Queries](https://atcoder.jp/contests/arc098/tasks/arc098_c)
 * [SPOJ - DQUERY](https://www.spoj.com/problems/DQUERY/)
 * [Codeforces 86D - Powerful Array](https://codeforces.com/problemset/problem/86/D)
 * [Codeforces 375D - Tree and Queries](https://codeforces.com/problemset/problem/375/D)
 * [Codeforces 940F - Machine Learning](https://codeforces.com/problemset/problem/940/F)
+* [Codeforces 617E - XOR and Favorite Number](https://codeforces.com/problemset/problem/617/E)

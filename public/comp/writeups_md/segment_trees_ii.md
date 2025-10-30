@@ -4,21 +4,24 @@ Plain segtree is fine when it is just point updates and clean range queries. Coo
 
 This is where lazy propagation comes in: tag the range now, push later when needed. And if even that starts struggling, like when updates depend on current values (chmin, chmax), bring out Segment Tree Beats to keep things clean without nuking your time.
 
-**Prerequisite.** You should be comfortable with baseline segment trees and Fenwick.
+**Prerequisites**
+You should be comfortable with baseline segment trees, here's a [primer on them.](../competitive/fenwick_segment_trees)
 
-[Primer. on Segment Trees](https://koishite.ru/competitive/fenwick_segment_trees
-)
 ---
 
 ## 0) Core Definitions
 
-**Segment Tree.** A binary tree over $[0..n-1]$ that stores an aggregate for each segment. Supports point updates and range queries in $O(\log n)$.
+**Segment Tree**
+A binary tree over $[0..n-1]$ that stores an aggregate for each segment. Supports point updates and range queries in $O(\log n)$.
 
-**Lazy Segment Tree.** A segment tree that defers uniform range updates by storing a **lazy tag** at internal nodes. You record the tag at the covering node and propagate only when a query or deeper update needs the children. Each operation stays $O(\log n)$ even for range updates. Sometimes this is referred to as Segment Tree with Lazy Propogation.
+**Lazy Segment Tree**
+A segment tree that defers uniform range updates by storing a **lazy tag** at internal nodes. You record the tag at the covering node and propagate only when a query or deeper update needs the children. Each operation stays $O(\log n)$ even for range updates. Sometimes this is referred to as Segment Tree with Lazy Propagation.
 
-**Segment Tree Beats.** A segment tree variant for value-dependent range operations such as $\mathrm{chmin}(x)$ or $\mathrm{chmax}(x)$. Each node tracks structure like $\max_1$, $\max_2$, $\mathrm{cnt}_{\max}$, and $\mathrm{sum}$ so a clamp update applies to an entire node when it does not cross the node's second extreme. Otherwise, descend and continue. Amortized $O(\log n)$ to $O(\log^2 n)$.
+**Segment Tree Beats**
+A segment tree variant for value-dependent range operations such as $\mathrm{chmin}(x)$ or $\mathrm{chmax}(x)$. Each node tracks structure like $\max_1$, $\max_2$, $\mathrm{cnt}_{\max}$, and $\mathrm{sum}$ so a clamp update applies to an entire node when the clamp value lies strictly between the first and second extremes. Otherwise, descend and continue. Amortized $O(\log n)$ per operation; worst-case $O(\log^2 n)$ per operation.
 
-**Range style.** Inclusive $[l, r]$ in all code.
+**Range style**
+Inclusive $[l, r]$ in all code.
 
 ---
 
@@ -29,7 +32,7 @@ This is where lazy propagation comes in: tag the range now, push later when need
 * Costs:
   * Build $O(n)$
   * Lazy range update or query $O(\log n)$
-  * Beats $\mathrm{chmin}/\mathrm{chmax}$ amortized $O(\log n \cdot \alpha(n))$
+  * Beats $\mathrm{chmin}/\mathrm{chmax}$ amortized $O(\log n)$, worst-case $O(\log^2 n)$
 
 **Online vs offline and query style**
 
@@ -55,20 +58,20 @@ This is where lazy propagation comes in: tag the range now, push later when need
 
 **Memory budget**
 
-* `tree` and `lazy` of size $4n$ are standard.
-* Beats stores a few scalars per node. Still $O(n)$.
+* A segment tree over $n$ elements has exactly $2n - 1$ nodes. Allocating $2n$ or $4n$ works but $4n$ is wasteful. Use $4n$ if you want to avoid off-by-one paranoia in contest.
+* Beats stores a few scalars per node. Still $O(n)$ total memory.
 
 **Heuristics and knobs**
 
-* Recursive $4n$ implementation is reliable under contest time.
+* Recursive implementation with $4n$ array size is reliable under contest time.
 * For assign+add, model tags with precedence. Assign overrides add.
 
 **Pitfalls**
 
-* Always `push` before descending and `pull` after updating children.
+* Always `push` before descending and `pull` after updating children. `push` propagates lazy tags downward to children; `pull` recomputes the parent's aggregate from its children.
 * Compose tags as new after old. Be explicit in code.
 * Reset per test case or use epochs.
-* Beats applies a clamp at a node only if it does not cross the node's second extreme.
+* Beats applies a clamp at a node only if the clamp value lies strictly between the node's first and second extremes. For `chmin(x)`: apply in bulk when `mx2 < x < mx1`. If `x >= mx1`, it's a no-op. If `x <= mx2`, you must descend.
 
 ---
 
@@ -110,7 +113,7 @@ Otherwise descend.
 
 ---
 
-## 3) Spotting the Model
+## 3) Modeling From Problem Statements
 
 | Clues in statement                          | Model                             |
 | ------------------------------------------- | --------------------------------- |
@@ -142,18 +145,22 @@ Otherwise descend.
 
 * Node keeps query aggregate and often $\mathrm{len}$.
 * Tag keeps pending operation. For add: a number. For assign: a flagged pair and optional add on top.
+* **Push:** When descending, propagate the parent's tag to both children, then clear the parent's tag.
+* **Pull:** After updating children, recompute the parent's aggregate by combining the children's aggregates.
 * Update $[l,r]$: if the node is fully covered, mutate aggregate and compose tag, then stop. Else push and recurse.
 
 ### Segment Tree Beats
 
 * Node keeps $(\max_1, \max_2, \mathrm{cnt}_{\max}, \mathrm{sum})$ for $\mathrm{chmin}$. Min-symmetric for $\mathrm{chmax}$.
 * For $\mathrm{chmin}(x)$ on a node:
-  * If $x \ge \max_1$ do nothing.
+  * If $x \ge \max_1$ do nothing (no-op).
   * If $\max_2 < x < \max_1$ apply in bulk:
     $$
     \mathrm{sum} \gets \mathrm{sum} - (\max_1 - x)\cdot \mathrm{cnt}_{\max},\quad \max_1 \gets x.
     $$
-  * Else push to children and continue.
+  * Else ($x \le \max_2$) push to children and continue.
+* **Push:** Propagate the parent's clamp tag (stored implicitly via $\max_1$) to children if their maximum exceeds it.
+* **Pull:** Recompute $\max_1$, $\max_2$, $\mathrm{cnt}_{\max}$, and $\mathrm{sum}$ from children.
 
 ---
 
@@ -235,7 +242,7 @@ struct BeatsChMinSum {
     struct Node {
         long long sum;
         long long mx1;   // maximum in segment
-        long long mx2;   // second maximum
+        long long mx2;   // second maximum (LLONG_MIN if all equal)
         int cntMx;       // count of maximum
     };
 
@@ -280,14 +287,15 @@ struct BeatsChMinSum {
         st[p].mx1 = x;
     }
     void push(int p) {
+        // Propagate chmin tag (implicitly stored as mx1) to children
         for (int c : {p << 1, p << 1 | 1})
             if (st[c].mx1 > st[p].mx1) apply_chmin(c, st[p].mx1);
     }
 
     void range_chmin(int ql, int qr, long long x, int p = 1, int L = 0, int R = -1) {
         if (R == -1) R = n - 1;
-        if (qr < L || R < ql || st[p].mx1 <= x) return;
-        if (ql <= L && R <= qr && st[p].mx2 < x) { apply_chmin(p, x); return; }
+        if (qr < L || R < ql || st[p].mx1 <= x) return;  // out of range or no-op
+        if (ql <= L && R <= qr && st[p].mx2 < x) { apply_chmin(p, x); return; }  // bulk apply
         push(p);
         int M = (L + R) >> 1;
         range_chmin(ql, qr, x, p << 1, L, M);
@@ -372,8 +380,8 @@ int main(){
 
 ## 8) TLDR
 
-* Lazy segment tree stores deferred uniform range updates as tags and applies them when necessary.
-* Segment Tree Beats augments nodes with extremes and counts so clamps like $\mathrm{chmin}$ and $\mathrm{chmax}$ can be applied in bulk when the clamp does not cross the second extreme.
+* Lazy segment tree stores deferred uniform range updates as tags and applies them when necessary. Push propagates tags downward to children; pull recomputes aggregates upward from children.
+* Segment Tree Beats augments nodes with extremes and counts so clamps like $\mathrm{chmin}$ and $\mathrm{chmax}$ can be applied in bulk when the clamp value lies strictly between the first and second extremes.
 * Use inclusive $[l, r]$ consistently. Push before descent and pull after updates.
 * Coordinate-compress sparse indices. Use `long long` for sums.
 * Pick the model from the update verb. Add or assign implies lazy. Clamp implies Beats.
@@ -381,10 +389,10 @@ int main(){
 ---
 
 ## 9) Recommended Problems
-* USACO Guide - Segment Tree Beats: https://usaco.guide/adv/segtree-beats
-* Codeforces 52C - Circular RMQ: https://codeforces.com/problemset/problem/52/C
-* SPOJ - HORRIBLE: https://www.spoj.com/problems/HORRIBLE/
-* HDU 1698 - Just a Hook: https://acm.hdu.edu.cn/showproblem.php?pid=1698
-* Codeforces 438D - The Child and Sequence: https://codeforces.com/problemset/problem/438/D
-* Yosupo - Range Chmin Range Sum: https://judge.yosupo.jp/problem/range_chmin_range_sum
-* Yosupo - Range Chmin Chmax Add Range Sum: https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum
+* [USACO Guide - Segment Tree Beats](https://usaco.guide/adv/segtree-beats)
+* [Codeforces 52C - Circular RMQ](https://codeforces.com/problemset/problem/52/C)
+* [SPOJ - HORRIBLE](https://www.spoj.com/problems/HORRIBLE/)
+* [HDU 1698 - Just a Hook](https://acm.hdu.edu.cn/showproblem.php?pid=1698)
+* [Codeforces 438D - The Child and Sequence](https://codeforces.com/problemset/problem/438/D)
+* [Yosupo - Range Chmin Range Sum](https://judge.yosupo.jp/problem/range_chmin_range_sum)
+* [Yosupo - Range Chmin Chmax Add Range Sum](https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum)
