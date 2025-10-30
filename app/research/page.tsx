@@ -21,6 +21,11 @@ export default function ReadingList() {
       title: 'Replicating Emotionally Reactive AI Waifus / Husbandos with Linear Algebra',
       subtitle:
         'Using linear algebra to explore how emotionally reactive AI companions might form biases, hold grudges, and recall events through mood-colored memory. For realism, memory recall has a chance to be done at the worst times '
+    },
+    {
+      title: 'Market Making on Prediction Markets',
+      subtitle:
+        'Exploring how liquidity and crowd behavior influence pricing structure in markets where people bet on what happens next.'
     }
   ];
 
