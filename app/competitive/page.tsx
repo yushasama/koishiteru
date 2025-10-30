@@ -34,7 +34,7 @@ export default function CompetitivePage() {
     },
     {
       id: 'binary_search',
-      title: 'Unlock 1/4th of CP With Binary Search',
+      title: 'Binary Search: The Boundary Hunter',
       readingTime: readingTimes.binary_search,
       backgroundImage: "https://images.unsplash.com/photo-1541727687969-ce40493cd847"
     },

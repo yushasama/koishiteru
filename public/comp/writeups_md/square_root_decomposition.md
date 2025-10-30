@@ -16,7 +16,7 @@ For those unfamiliar with segment trees, check out my other writeups on segment 
 
 **Associativity:** If the operation is associative and has an identity (sum, min, max, gcd), you can pre-aggregate per block and answer queries by combining block aggregates. If the answer is a function of frequencies that doesn't merge cleanly (like "count distinct" or "sum of frequency squares"), use Mo's.
 
-**Offline vs Online:** Mo's is **offline only**—you must know all queries in advance. Square root decomposition can answer queries **online** when there are no range updates, or only light point updates.
+**Offline vs Online:** Mo's is **offline only**-you must know all queries in advance. Square root decomposition can answer queries **online** when there are no range updates, or only light point updates.
 
 ---
 
@@ -74,7 +74,7 @@ For those unfamiliar with segment trees, check out my other writeups on segment 
 
 ## 4) Templates
 
-### Square Root Decomposition — sum only
+### Square Root Decomposition - sum only
 
 **Complexity:** 
 - Build: $O(n)$
@@ -160,7 +160,7 @@ struct SqrtSum {
 
 ---
 
-### Square Root Decomposition — Generic Monoid
+### Square Root Decomposition - Generic Monoid
 
 Identity means the neutral element $e$ such that $\text{combine}(e, x) = x$ and $\text{combine}(x, e) = x$.
 
@@ -431,7 +431,7 @@ This allows $O(1)$ updates to the global answer.
 
 ---
 
-## 7) Worked Example — Mo's for distinct count
+## 7) Worked Example - Mo's for distinct count
 
 Self-contained. Reads $n$, array, $q$, queries in 1-based inclusive form, prints answers in original order. Converts to 0-based and $[l, r)$ internally.
 
