@@ -275,7 +275,7 @@ struct SqrtBlocks {
 
 ---
 
-### Mo's Algorithm — Distinct Count Base
+### Mo's Algorithm - Distinct Count Base
 
 Use half-open ranges $[l, r)$. Coordinate compress first.
 
@@ -351,7 +351,7 @@ vector<int> mo_solve(vector<Query> qs) {
 
 ---
 
-### Mo's Algorithm — Weighted Frequency Metric
+### Mo's Algorithm - Weighted Frequency Metric
 
 Example metric: sum over $v$ of $\text{freq}[v]^2 \cdot \text{weight}[v]$. Keep $\text{weight}[v]$ as the original value or a given weight.
 

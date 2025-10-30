@@ -60,13 +60,7 @@ Binary search exists because many problems form a **false…true** pattern over 
 
 If we can phrase a task as "find the smallest `x` such that there exists a solution with cost ≤ `x`," and the predicate is monotone, the boundary is the minimal feasible `x`.
 
-You're minimizing over a 0-1 function without ever computing full costs—just checking feasibility.
-
----
-
-You're right — your **Modeling Space** section and **Modeling Space Table** (section 7) are structurally overlapping. They're both aiming to help the reader recognize and map problem phrasing to a binary search form.
-
-Here's a clean way to **merge them**:
+You're minimizing over a 0-1 function without ever computing full costs, just checking feasibility.
 
 ---
 
@@ -86,7 +80,7 @@ If the problem says:
 
 …then odds are high it’s a binary search over the answer.
 
-These problems are about **finding boundaries** — the smallest or largest value that satisfies a feasibility condition.
+These problems are about **finding boundaries**, the smallest or largest value that satisfies a feasibility condition.
 
 ---
 

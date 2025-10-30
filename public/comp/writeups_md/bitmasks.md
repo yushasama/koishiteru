@@ -12,7 +12,7 @@ You’ll walk out knowing how to toggle, subset iterate, popcount optimize, and 
 * **LSB (Least Significant Bit)** - `x & -x`. Pulls out the lowest 1-bit.
 * **Popcount** - number of 1-bits. `__builtin_popcount(x)` for 32-bit, `__builtin_popcountll(x)` for 64-bit.
 * **ctz / clz** - count trailing / leading zeros.  
-  Use `ctz(x)` to get the index of the lowest bit. **Undefined if $x = 0$**—always guard this.
+  Use `ctz(x)` to get the index of the lowest bit. **Undefined if $x = 0$**, always guard this.
 * **Submask** - any mask $s$ such that $(s \& m) = s$. In other words, $s$ has only bits that are also in $m$.
 * **Practical limit** - Bitmasks work well for $n \le 20$-$22$. Beyond that, $2^n$ states explode exponentially. For $n \ge 25$, you're looking at 30+ million states, which is often too slow.
 
@@ -400,7 +400,7 @@ Key checks are one-liners using bit ops. No nested loops, no per-cell scanning.
 * Submask loop iterates all subsets fast: `for (int s = mask; ; s = (s - 1) & mask)`.
 * Row-mask DP handles $W \le 20$.
 * For pattern matching, XOR with the pattern and count bits.
-* **Always guard `ctz(0)` and `clz(0)`**—they're undefined.
+* **Always guard `ctz(0)` and `clz(0)`** as they're undefined.
 * **Always use unsigned integers for shifts** to avoid undefined behavior.
 * **Always reset per test case** to avoid WA from stale state.
 * If your rule is local, like $2 \times 2$, it is almost always a mask DP.
