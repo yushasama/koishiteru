@@ -4,8 +4,10 @@ Plain segtree is fine when it is just point updates and clean range queries. Coo
 
 This is where lazy propagation comes in: tag the range now, push later when needed. And if even that starts struggling, like when updates depend on current values (chmin, chmax), bring out Segment Tree Beats to keep things clean without nuking your time.
 
-**Prerequisite.** You should be comfortable with baseline segment trees and Fenwick. Primer: https://koishite.ru/competitive/fenwick_segment_trees
+**Prerequisite.** You should be comfortable with baseline segment trees and Fenwick.
 
+[Primer. on Segment Trees](https://koishite.ru/competitive/fenwick_segment_trees
+)
 ---
 
 ## 0) Core Definitions
@@ -14,7 +16,7 @@ This is where lazy propagation comes in: tag the range now, push later when need
 
 **Lazy Segment Tree.** A segment tree that defers uniform range updates by storing a **lazy tag** at internal nodes. You record the tag at the covering node and propagate only when a query or deeper update needs the children. Each operation stays $O(\log n)$ even for range updates. Sometimes this is referred to as Segment Tree with Lazy Propogation.
 
-**Segment Tree Beats.** A segment tree variant for value-dependent range operations such as $\mathrm{chmin}(x)$ or $\mathrm{chmax}(x)$. Each node tracks structure like $\max_1$, $\max_2$, $\mathrm{cnt}_{\max}$, and $\mathrm{sum}$ so a clamp update applies to an entire node when it does not cross the node's second extreme. Otherwise, descend and continue. Amortized $O(\log n)$ to $O(\log n \cdot \alpha(n))$.
+**Segment Tree Beats.** A segment tree variant for value-dependent range operations such as $\mathrm{chmin}(x)$ or $\mathrm{chmax}(x)$. Each node tracks structure like $\max_1$, $\max_2$, $\mathrm{cnt}_{\max}$, and $\mathrm{sum}$ so a clamp update applies to an entire node when it does not cross the node's second extreme. Otherwise, descend and continue. Amortized $O(\log n)$ to $O(\log^2 n)$.
 
 **Range style.** Inclusive $[l, r]$ in all code.
 
@@ -155,7 +157,7 @@ Otherwise descend.
 
 ---
 
-## 6) Templates You Actually Use
+## 6) Templates
 
 ### A) Lazy Range Add + Range Sum
 
