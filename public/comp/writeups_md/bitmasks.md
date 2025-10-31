@@ -225,7 +225,7 @@ for (int b = 0; b < K; b++)
 
 ## **5) Bitmask DP Patterns**
 
-### **A) Subset DP (generic)**
+### **Subset DP (Generic)**
 
 You store something per subset. Example: shortest Hamiltonian path (TSP).
 
@@ -251,7 +251,7 @@ Each bit means a city is visited.
 
 ---
 
-### **B) Chessboard Flip**
+### **Chessboard Flip**
 
 Grid repaint to alternating pattern: each row alternates 0/1. There are two global patterns, with top-left 0 or 1.  
 Flip cost per row is `popcount(row[i] ^ pattern[i])`.
@@ -280,7 +280,7 @@ cout << min(cost0, cost1);
 
 ---
 
-### **C) Row-Mask DP**
+### **Row-Mask DP**
 
 Used for "no $2 \times 2$ same color" type grids.  
 Each state is the bitmask of the current row, and a transition is allowed only if it is compatible with the previous row.

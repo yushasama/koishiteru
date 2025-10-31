@@ -1,4 +1,4 @@
-# The Return of Segment Tree: Lazy and Beats
+# **The Return of Segment Tree: Lazy and Beats**
 
 Plain segtree is fine when it is just point updates and clean range queries. Cool, fast, simple. But the moment you need range adds, range sets, or something like "cap everything over 10 to 10," that vanilla tree gets cooked.
 
@@ -9,7 +9,7 @@ You should be comfortable with baseline segment trees, here's a [primer on them.
 
 ---
 
-## 0) Core Definitions
+## **0) Core Definitions**
 
 **Segment Tree**
 A binary tree over $[0..n-1]$ that stores an aggregate for each segment. Supports point updates and range queries in $O(\log n)$.
@@ -25,7 +25,7 @@ Inclusive $[l, r]$ in all code.
 
 ---
 
-## 1) Constraints
+## **1) Constraints**
 
 * Typical CP: $n, q \le 2\cdot 10^5$, time limit $1$ s.
 * Budget: about $10^8$ to $2\cdot 10^8$ simple ops per second in C++.
@@ -75,7 +75,7 @@ Inclusive $[l, r]$ in all code.
 
 ---
 
-## 2) Theory Bridge
+## **2) Theory Bridge**
 
 Two monoids and an action:
 
@@ -113,7 +113,7 @@ Otherwise descend.
 
 ---
 
-## 3) Modeling From Problem Statements
+## **3) Modeling From Problem Statements**
 
 | Clues in statement                          | Model                             |
 | ------------------------------------------- | --------------------------------- |
@@ -126,7 +126,7 @@ Otherwise descend.
 
 ---
 
-## 4) Shapes and Models
+## **4) Shapes and Models**
 
 | Type                                        | How to tell                   | What to output            | Shape | Solver                 | Notes                                               |
 | ------------------------------------------- | ----------------------------- | ------------------------- | ----- | ---------------------- | --------------------------------------------------- |
@@ -139,9 +139,9 @@ Otherwise descend.
 
 ---
 
-## 5) Algorithms
+## **5) Algorithms**
 
-### Lazy segment tree
+### **Lazy segment tree**
 
 * Node keeps query aggregate and often $\mathrm{len}$.
 * Tag keeps pending operation. For add: a number. For assign: a flagged pair and optional add on top.
@@ -149,7 +149,7 @@ Otherwise descend.
 * **Pull:** After updating children, recompute the parent's aggregate by combining the children's aggregates.
 * Update $[l,r]$: if the node is fully covered, mutate aggregate and compose tag, then stop. Else push and recurse.
 
-### Segment Tree Beats
+### **Segment Tree Beats**
 
 * Node keeps $(\max_1, \max_2, \mathrm{cnt}_{\max}, \mathrm{sum})$ for $\mathrm{chmin}$. Min-symmetric for $\mathrm{chmax}$.
 * For $\mathrm{chmin}(x)$ on a node:
@@ -164,9 +164,9 @@ Otherwise descend.
 
 ---
 
-## 6) Templates
+## **6) Templates**
 
-### A) Lazy Range Add + Range Sum
+### **Lazy Range Add + Range Sum**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -232,7 +232,81 @@ struct LazyAddSum {
 };
 ```
 
-### B) Segment Tree Beats for $\mathrm{chmin}$ + sum
+### Templated Lazy Segment Tree (Monoids)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// Monoid: defines node merge and identity
+// Lazy: defines how updates apply to nodes and how they compose
+
+template<class Monoid, class Lazy>
+struct LazySegTree {
+    using S = typename Monoid::S; // value type
+    using F = typename Lazy::F;   // update type
+
+    int n;
+    vector<S> st;
+    vector<F> lz;
+    vector<bool> marked;
+
+    LazySegTree(int n_) : n(n_), st(4 * n_, Monoid::e()), lz(4 * n_, Lazy::id()), marked(4 * n_, false) {}
+
+    void build(const vector<S>& a, int p = 1, int L = 0, int R = -1) {
+        if (R == -1) R = n - 1;
+        if (L == R) { st[p] = a[L]; return; }
+        int M = (L + R) >> 1;
+        build(a, p << 1, L, M);
+        build(a, p << 1 | 1, M + 1, R);
+        pull(p);
+    }
+
+    void pull(int p) {
+        st[p] = Monoid::op(st[p << 1], st[p << 1 | 1]);
+    }
+
+    void apply(int p, const F& f, int L, int R) {
+        st[p] = Lazy::mapping(f, st[p], R - L + 1);
+        if (marked[p]) lz[p] = Lazy::composition(f, lz[p]);
+        else { lz[p] = f; marked[p] = true; }
+    }
+
+    void push(int p, int L, int R) {
+        if (!marked[p] || L == R) return;
+        int M = (L + R) >> 1;
+        apply(p << 1, lz[p], L, M);
+        apply(p << 1 | 1, lz[p], M + 1, R);
+        lz[p] = Lazy::id();
+        marked[p] = false;
+    }
+
+    void range_apply(int ql, int qr, const F& f, int p = 1, int L = 0, int R = -1) {
+        if (R == -1) R = n - 1;
+        if (qr < L || R < ql) return;
+        if (ql <= L && R <= qr) { apply(p, f, L, R); return; }
+        push(p, L, R);
+        int M = (L + R) >> 1;
+        range_apply(ql, qr, f, p << 1, L, M);
+        range_apply(ql, qr, f, p << 1 | 1, M + 1, R);
+        pull(p);
+    }
+
+    S range_query(int ql, int qr, int p = 1, int L = 0, int R = -1) {
+        if (R == -1) R = n - 1;
+        if (qr < L || R < ql) return Monoid::e();
+        if (ql <= L && R <= qr) return st[p];
+        push(p, L, R);
+        int M = (L + R) >> 1;
+        return Monoid::op(
+            range_query(ql, qr, p << 1, L, M),
+            range_query(ql, qr, p << 1 | 1, M + 1, R)
+        );
+    }
+};
+```
+
+### **Segment Tree Beats for $\mathrm{chmin}$ + sum**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -316,9 +390,9 @@ struct BeatsChMinSum {
 
 ---
 
-## 7) Worked Examples
+## **7) Worked Examples**
 
-### 7A) Pure Lazy Segment Tree
+### **Pure Lazy Segment Tree**
 
 **Task.** Maintain $a[0..n-1]$ under
 * `1 l r x` add $x$ to $a[l..r]$
@@ -347,7 +421,7 @@ int main(){
 }
 ```
 
-### 7B) Segment Tree Beats for $\mathrm{chmin}$ + sum
+### **Segment Tree Beats for $\mathrm{chmin}$ + sum**
 
 **Task.** Maintain $a[0..n-1]$ under
 * `1 l r x` set $a_i \gets \min(a_i, x)$ for all $i \in [l, r]$
@@ -378,7 +452,7 @@ int main(){
 
 ---
 
-## 8) TLDR
+## **8) TLDR**
 
 * Lazy segment tree stores deferred uniform range updates as tags and applies them when necessary. Push propagates tags downward to children; pull recomputes aggregates upward from children.
 * Segment Tree Beats augments nodes with extremes and counts so clamps like $\mathrm{chmin}$ and $\mathrm{chmax}$ can be applied in bulk when the clamp value lies strictly between the first and second extremes.
@@ -388,7 +462,7 @@ int main(){
 
 ---
 
-## 9) Recommended Problems
+## **9) Recommended Problems**
 * [USACO Guide - Segment Tree Beats](https://usaco.guide/adv/segtree-beats)
 * [Codeforces 52C - Circular RMQ](https://codeforces.com/problemset/problem/52/C)
 * [SPOJ - HORRIBLE](https://www.spoj.com/problems/HORRIBLE/)
