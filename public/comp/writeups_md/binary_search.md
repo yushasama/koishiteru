@@ -111,7 +111,7 @@ These problems are about **finding boundaries**, the smallest or largest value t
 
 ## **6) Algorithms**
 
-### **A. First True (default solver)**
+### **First True (default solver)**
 
 Finds the smallest `x` in `[lo, hi)` where `P(x)` is true.
 
@@ -135,7 +135,7 @@ long long first_true(long long lo, long long hi, F P){
 
 ---
 
-### **B. Last True**
+### **Last True**
 
 Finds the largest `x` in `[lo, hi]` where `P(x)` is true. Note: uses closed interval `[lo, hi]`.
 
@@ -159,7 +159,7 @@ long long last_true(long long lo, long long hi, F P){
 
 ---
 
-### **C. Lower / Upper Bound**
+### **Lower / Upper Bound**
 
 Standard binary search on a sorted array. Returns the first index where `a[i] >= x` (lower_bound) or `a[i] > x` (upper_bound).
 
@@ -191,7 +191,7 @@ int upper_bound_idx(const vector<int>& a, int x){
 
 ---
 
-### **D. Unknown Upper Bound (Exponential Search)**
+### *Unknown Upper Bound (Exponential Search)**
 
 When you don't know the upper bound in advance, double `hi` until `P(hi)` is true, then binary search.
 
@@ -218,7 +218,7 @@ long long first_true_unbounded(F P){
 
 ---
 
-### **E. Real-Valued**
+### **Real-Valued**
 
 For continuous answer spaces (geometry, ratios, etc.). Run a fixed number of iterations to converge to precision $\epsilon$.
 
@@ -241,7 +241,7 @@ double first_true_real(double lo, double hi, function<bool(double)> P, int iters
 }
 ```
 
-**Alternative (epsilon-based):**
+**Alternative (Epsilon-Based):**
 ```cpp
 double first_true_real_eps(double lo, double hi, function<bool(double)> P, double eps=1e-9){
     while (hi - lo > eps){
