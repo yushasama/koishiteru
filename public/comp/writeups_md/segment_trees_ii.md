@@ -238,9 +238,32 @@ struct LazyAddSum {
 #include <bits/stdc++.h>
 using namespace std;
 
-// Monoid: defines node merge and identity
-// Lazy: defines how updates apply to nodes and how they compose
+// Monoid: defines how to merge and identity
+struct SumMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return a + b; }
+    static S e() { return 0; }
+};
 
+struct MinMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return min(a, b); }
+    static S e() { return LLONG_MAX; }
+};
+
+struct MaxMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return max(a, b); }
+    static S e() { return LLONG_MIN; }
+};
+
+struct GCDMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return gcd(a, b); }
+    static S e() { return 0; } // gcd(a, 0) = 0;
+}
+
+// Lazy: defines how updates apply to nodes and how they compose
 template<class Monoid, class Lazy>
 struct LazySegTree {
     using S = typename Monoid::S; // value type

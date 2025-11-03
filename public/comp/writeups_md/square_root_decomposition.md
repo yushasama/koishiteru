@@ -2,21 +2,29 @@
 
 When queries are offline or the operation is simple, **square root decomposition** and **Mo's algorithm** let you "block it out," cut work to about $O(\sqrt{N})$ per move, and keep code tight. You don't always need a big structure like a segment tree.
 
-**When to use segment trees:** Only when you truly need online dynamic updates with range modifications (like range add, range set) or lazy propagation. For static arrays with simple queries, or offline frequency-based queries, the methods here are simpler and often faster.
+**When to Use Segment Trees**
+Only when you truly need online dynamic updates with range modifications (like range add, range set) or lazy propagation. For static arrays with simple queries, or offline frequency-based queries, the methods here are simpler and often faster.
 
-For those unfamiliar with segment trees, check out my other writeups on segment trees and lazy propagation.
+For those unfamiliar with Segment trees, check out my other writeups on Segment Trees.
+
+[Segment Trees & Fenwick Trees](../competitive/fenwick_segment_trees)
+[Segment Trees II](../competitive/segment_trees_ii)
 
 ---
 
 ## 0) Core Definitions
 
-**Square Root Decomposition:** Split an array into blocks of size $B \approx \sqrt{N}$. Keep an aggregate per block. Answer a range query by scanning edge items individually and aggregating full blocks. About $O(\sqrt{N})$ per query.
+**Square Root Decomposition**
+Split an array into blocks of size $B \approx \sqrt{N}$. Keep an aggregate per block. Answer a range query by scanning edge items individually and aggregating full blocks. About $O(\sqrt{N})$ per query.
 
-**Mo's Algorithm:** Sort all range queries by $(\lfloor L / B \rfloor, R)$ with alternating $R$ order per block, then slide a window and maintain an answer with `add(x)` and `remove(x)` in $O(1)$. Offline, total complexity about $O((N + Q)\sqrt{N})$ plus sorting.
+**Mo's Algorithm**
+Sort all range queries by $(\lfloor L / B \rfloor, R)$ with alternating $R$ order per block, then slide a window and maintain an answer with `add(x)` and `remove(x)` in $O(1)$. Offline, total complexity about $O((N + Q)\sqrt{N})$ plus sorting.
 
-**Associativity:** If the operation is associative and has an identity (sum, min, max, gcd), you can pre-aggregate per block and answer queries by combining block aggregates. If the answer is a function of frequencies that doesn't merge cleanly (like "count distinct" or "sum of frequency squares"), use Mo's.
+**Associativity**
+If the operation is associative and has an identity (sum, min, max, gcd), you can pre-aggregate per block and answer queries by combining block aggregates. If the answer is a function of frequencies that doesn't merge cleanly (like "count distinct" or "sum of frequency squares"), use Mo's.
 
-**Offline vs Online:** Mo's is **offline only**-you must know all queries in advance. Square root decomposition can answer queries **online** when there are no range updates, or only light point updates.
+**Offline vs Online**
+Mo's is **offline only**, you must know all queries in advance. Square root decomposition can answer queries **online** when there are no range updates, or only light point updates.
 
 ---
 
@@ -25,18 +33,18 @@ For those unfamiliar with segment trees, check out my other writeups on segment 
 * **Scale:** $n \approx 10^5$ both are fine. $n \approx 10^6$ blocks still work for sum or min. Use Mo's only if `add` and `remove` are true $O(1)$ and $Q$ is reasonably large.
 
 * **Quick pick:** 
-  - If $Q < n$ choose blocks. 
+  - If $Q < n$ choose Square Root Decomposition. 
   - If $Q > n$ choose Mo's. 
   - If $Q \approx n$ choose by model fit.
 
 * **Cost estimates:** 
-  - Blocks: $O(Q\sqrt{n})$ for queries, $O(n)$ build.
+  - Square Root Decomposition: $O(Q\sqrt{n})$ for queries, $O(n)$ build.
   - Mo's: $O((n + Q)\sqrt{n})$ for pointer moves plus $O(Q \log Q)$ for sorting.
 
-* **Compression:** Required for Mo's when values are large (to keep frequency array size manageable). Optional for blocks.
+* **Compression:** Required for Mo's when values are large (to keep frequency array size manageable). Optional for Square Root Decomposition.
 
 * **Memory:** 
-  - Blocks: $\approx n + \frac{n}{B}$ where $B \approx \sqrt{n}$.
+  - Square Root Decomposition: $\approx n + \frac{n}{B}$ where $B \approx \sqrt{n}$.
   - Mo's: $\approx n + M$ where $M$ is the number of distinct values after compression.
 
 * **Block size optimization:**
@@ -47,15 +55,18 @@ For those unfamiliar with segment trees, check out my other writeups on segment 
 
 ## 2) Theory Bridge
 
-**Blocks.** A query touches at most $\frac{N}{B}$ full blocks and $O(B)$ edge items. Cost $f(B) = \frac{N}{B} + B$. Taking derivative and setting to zero: $f'(B) = -\frac{N}{B^2} + 1 = 0 \Rightarrow B = \sqrt{N}$. This gives $f(\sqrt{N}) = 2\sqrt{N}$, so $O(\sqrt{N})$ per query.
+**Blocks**
+A query touches at most $\frac{N}{B}$ full blocks and $O(B)$ edge items. Cost $f(B) = \frac{N}{B} + B$. Taking derivative and setting to zero: $f'(B) = -\frac{N}{B^2} + 1 = 0 \Rightarrow B = \sqrt{N}$. This gives $f(\sqrt{N}) = 2\sqrt{N}$, so $O(\sqrt{N})$ per query.
 
-**Mo's.** Sorting by $(\lfloor L / B \rfloor, R)$ with alternating $R$ order per $L$-block makes successive windows differ by $O(\sqrt{N})$ items on average:
+**Mo's**
+Sorting by $(\lfloor L / B \rfloor, R)$ with alternating $R$ order per $L$-block makes successive windows differ by $O(\sqrt{N})$ items on average:
 - Within a block, $L$ changes by at most $B = \sqrt{N}$.
 - Between blocks, $R$ can change by at most $N$, but this happens only $\frac{N}{B} = \sqrt{N}$ times across all queries.
 - Total pointer movement: $O(Q \cdot B)$ for $L$ moves plus $O(N \cdot \frac{N}{B}) = O(N\sqrt{N})$ for $R$ moves.
 - With $O(1)$ add and remove, total work is $O((N + Q)\sqrt{N})$.
 
-**Why coordinate compression matters:** If values go up to $10^9$ but there are only $M \le 10^5$ distinct values, you'd need a $10^9$-sized frequency array without compression. After compression, frequency array is size $M$, which is manageable.
+**Why Coordinate Compression Matters**
+If values go up to $10^9$ but there are only $M \le 10^5$ distinct values, you'd need a $10^9$-sized frequency array without compression. After compression, frequency array is size $M$, which is manageable.
 
 ---
 
@@ -74,7 +85,7 @@ For those unfamiliar with segment trees, check out my other writeups on segment 
 
 ## 4) Templates
 
-### Square Root Decomposition - sum only
+### Square Root Decomposition - Sum Only
 
 **Complexity:** 
 - Build: $O(n)$
@@ -176,40 +187,38 @@ Identity means the neutral element $e$ such that $\text{combine}(e, x) = x$ and 
 #include <bits/stdc++.h>
 using namespace std;
 
-template <class T>
-struct MinOp {
-    T identity() const { return numeric_limits<T>::max(); }
-    T combine(const T& a, const T& b) const { return min(a, b); }
+// Monoid: defines how to merge and identity
+struct MinMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return min(a, b); }
+    static S e() { return LLONG_MAX; }
 };
 
-template <class T>
-struct MaxOp {
-    T identity() const { return numeric_limits<T>::lowest(); }
-    T combine(const T& a, const T& b) const { return max(a, b); }
+struct MaxMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return max(a, b); }
+    static S e() { return LLONG_MIN; }
 };
 
-template <class T>
-struct GcdOp {
-    T identity() const { return T(0); }
-    T combine(T a, T b) const { return std::gcd(a, b); }
+struct GCDMonoid {
+    using S = long long;
+    static S op(const S& a, const S& b) { return gcd(a, b); }
+    static S e() { return 0; }
 };
 
-template <class T, class Op>
+// --- Sqrt Decomposition ---
+template<class Monoid>
 struct SqrtBlocks {
+    using S = typename Monoid::S;
+
     int n = 0;
     int B = 1;
     int nb = 0;
-    vector<T> a;
-    vector<T> agg;
-    Op op;
+    vector<S> a, agg;
 
     SqrtBlocks() {}
-
-    SqrtBlocks(int n_, int B_ = -1) {
-        init(n_, B_);
-    }
-
-    SqrtBlocks(const vector<T>& init_values, int B_ = -1) {
+    SqrtBlocks(int n_, int B_ = -1) { init(n_, B_); }
+    SqrtBlocks(const vector<S>& init_values, int B_ = -1) {
         init((int)init_values.size(), B_);
         a = init_values;
         build();
@@ -219,55 +228,48 @@ struct SqrtBlocks {
         n = n_;
         B = (B_ == -1 ? max(1, (int)sqrt(max(1, n))) : max(1, B_));
         nb = (n + B - 1) / B;
-        a.assign(n, op.identity());
-        agg.assign(nb, op.identity());
+        a.assign(n, Monoid::e());
+        agg.assign(nb, Monoid::e());
     }
 
     void build() {
-        fill(agg.begin(), agg.end(), op.identity());
+        fill(agg.begin(), agg.end(), Monoid::e());
         for (int i = 0; i < n; i++) {
             int b = i / B;
-            agg[b] = op.combine(agg[b], a[i]);
+            agg[b] = Monoid::op(agg[b], a[i]);
         }
     }
 
-    T query(int l, int r) { // inclusive [l, r]
-        if (n == 0) return op.identity();
+    S query(int l, int r) { // inclusive [l, r]
+        if (n == 0) return Monoid::e();
         l = max(l, 0);
         r = min(r, n - 1);
-        if (l > r) return op.identity();
+        if (l > r) return Monoid::e();
 
-        T res = op.identity();
+        S res = Monoid::e();
 
         // Left edge
-        while (l <= r && (l % B)) {
-            res = op.combine(res, a[l]);
-            l++;
-        }
+        while (l <= r && (l % B)) res = Monoid::op(res, a[l++]);
         // Full blocks
         while (l + B - 1 <= r) {
-            res = op.combine(res, agg[l / B]);
+            res = Monoid::op(res, agg[l / B]);
             l += B;
         }
         // Right edge
-        while (l <= r) {
-            res = op.combine(res, a[l]);
-            l++;
-        }
+        while (l <= r) res = Monoid::op(res, a[l++]);
+
         return res;
     }
 
-    void point_set(int i, T v) {
+    void point_set(int i, S v) {
         a[i] = v;
         int b = i / B;
         int L = b * B;
         int R = min(n, L + B);
 
-        // Rebuild block aggregate
-        T s = op.identity();
-        for (int j = L; j < R; j++) {
-            s = op.combine(s, a[j]);
-        }
+        S s = Monoid::e();
+        for (int j = L; j < R; j++)
+            s = Monoid::op(s, a[j]);
         agg[b] = s;
     }
 };
@@ -413,7 +415,7 @@ This allows $O(1)$ updates to the global answer.
 ## 5) Algorithms That Win In Practice
 
 * **Frequency-shaped and offline** → Mo's with $O(1)$ add and remove.
-* **Associative with identity and static or lightly updated** → blocks.
+* **Associative with identity and static or lightly updated** → Square Root Decomposition.
 * **Coordinate compress for Mo's.** Keep freq over compressed values to avoid huge arrays.
 * **Block size tuning:** Use $B = \sqrt{n}$ by default. For Mo's with $Q \gg n$, use $B = \frac{n}{\sqrt{Q}}$ for better constants.
 
@@ -423,11 +425,11 @@ This allows $O(1)$ updates to the global answer.
 
 | Type                    | How to tell                | What to output         | Shape          | Solver | Complexity |
 | ----------------------- | -------------------------- | ---------------------- | -------------- | ------ | ---------- |
-| Static range sum        | No updates, numeric sum    | Sum over $[l, r]$        | Blocks         | Blocks | $O(Q\sqrt{n})$ |
-| Static range min or gcd | No updates, associative op | Min or gcd over $[l, r]$ | Blocks         | Blocks | $O(Q\sqrt{n})$ |
+| Static range sum        | No updates, numeric sum    | Sum over $[l, r]$        | Blocks         | Square Root Decomposition | $O(Q\sqrt{n})$ |
+| Static range min or gcd | No updates, associative op | Min or gcd over $[l, r]$ | Blocks         | Square Root Decomposition | $O(Q\sqrt{n})$ |
 | Distinct count          | All queries known          | Number of distinct     | Sliding window | Mo's   | $O((n+Q)\sqrt{n})$ |
 | Weighted freq metric    | Depends on counts          | Scalar from freq       | Sliding window | Mo's   | $O((n+Q)\sqrt{n})$ |
-| Few point updates       | Small number of edits      | Aggregates             | Blocks         | Blocks | $O(Q\sqrt{n})$ |
+| Few point updates       | Small number of edits      | Aggregates             | Blocks         | Square Root Decomposition | $O(Q\sqrt{n})$ |
 
 ---
 
