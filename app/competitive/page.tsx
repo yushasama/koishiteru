@@ -15,32 +15,26 @@ export default function CompetitivePage() {
       isMain: true,
     },
     {
-      id: 'segment_trees_ii',
-      title: 'The Return of Segment Trees: Lazy and Beats',
-      readingTime: readingTimes.segment_trees_ii,
-      backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e"
-    },
-    {
       id: 'greedy_iii',
       title: 'Greedy III - Incremental',
       readingTime: readingTimes.greedy_iii,
-      backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e"
+      backgroundImage: "https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_ii',
       title: 'Greedy II - Interval',
       readingTime: readingTimes.greedy_ii,
-      backgroundImage: "https://plus.unsplash.com/premium_photo-1668650609933-68e7290ca9f8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_i',
       title: 'Greedy I - Selection',
       readingTime: readingTimes.greedy_i,
-      backgroundImage: "https://images.unsplash.com/photo-1644688389824-adbf547b229f?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1731778568197-bc4ce018c517?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'segment_trees_ii',
-      title: 'The Return of Segment Trees: Lazy and Beats',
+      title: 'Segment Trees II - Lazy and Beats',
       readingTime: readingTimes.segment_trees_ii,
       backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e?q=80&w=800&auto=format&fit=crop"
     },
