@@ -4,23 +4,23 @@ Plain segtree is fine when it is just point updates and clean range queries. Coo
 
 This is where lazy propagation comes in: tag the range now, push later when needed. And if even that starts struggling, like when updates depend on current values (chmin, chmax), bring out Segment Tree Beats to keep things clean without nuking your time.
 
-**Prerequisites**
+### **Prerequisites**
 You should be comfortable with baseline segment trees, here's a [primer on them.](../competitive/fenwick_segment_trees)
 
 ---
 
 ## **0) Core Definitions**
 
-**Segment Tree**
+### **Segment Tree**
 A binary tree over $[0..n-1]$ that stores an aggregate for each segment. Supports point updates and range queries in $O(\log n)$.
 
-**Lazy Segment Tree**
+### **Lazy Segment Tree**
 A segment tree that defers uniform range updates by storing a **lazy tag** at internal nodes. You record the tag at the covering node and propagate only when a query or deeper update needs the children. Each operation stays $O(\log n)$ even for range updates. Sometimes this is referred to as Segment Tree with Lazy Propagation.
 
-**Segment Tree Beats**
+### **Segment Tree Beats**
 A segment tree variant for value-dependent range operations such as $\mathrm{chmin}(x)$ or $\mathrm{chmax}(x)$. Each node tracks structure like $\max_1$, $\max_2$, $\mathrm{cnt}_{\max}$, and $\mathrm{sum}$ so a clamp update applies to an entire node when the clamp value lies strictly between the first and second extremes. Otherwise, descend and continue. Amortized $O(\log n)$ per operation; worst-case $O(\log^2 n)$ per operation.
 
-**Range style**
+### **Range style**
 Inclusive $[l, r]$ in all code.
 
 ---

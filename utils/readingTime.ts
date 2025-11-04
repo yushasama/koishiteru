@@ -69,7 +69,10 @@ export function getAllReadingTimes(): Record<string, string> {
     'binary_search',
     'square_root_decomposition',
     'bitmasks',
-    'segment_trees_ii'
+    'segment_trees_ii',
+    'greedy_i',
+    'greedy_ii',
+    'greedy_iii'
   ];
 
   const times: Record<string, string> = {};

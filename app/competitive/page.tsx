@@ -20,29 +20,53 @@ export default function CompetitivePage() {
       readingTime: readingTimes.segment_trees_ii,
       backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e"
     },
-        {
+    {
+      id: 'greedy_iii',
+      title: 'Greedy III - Incremental',
+      readingTime: readingTimes.greedy_iii,
+      backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e"
+    },
+    {
+      id: 'greedy_ii',
+      title: 'Greedy II - Interval',
+      readingTime: readingTimes.greedy_ii,
+      backgroundImage: "https://plus.unsplash.com/premium_photo-1668650609933-68e7290ca9f8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'greedy_i',
+      title: 'Greedy I - Selection',
+      readingTime: readingTimes.greedy_i,
+      backgroundImage: "https://images.unsplash.com/photo-1644688389824-adbf547b229f?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'segment_trees_ii',
+      title: 'The Return of Segment Trees: Lazy and Beats',
+      readingTime: readingTimes.segment_trees_ii,
+      backgroundImage: "https://images.unsplash.com/photo-1744708334926-9d27b0c8ca9e?q=80&w=800&auto=format&fit=crop"
+    },
+    {
       id: 'bitmasks',
       title: 'Hardmogging with Bitmasks',
       readingTime: readingTimes.bitmasks,
-      backgroundImage: "https://images.unsplash.com/photo-1658931419235-1b8aa5a44829"
+      backgroundImage: "https://images.unsplash.com/photo-1658931419235-1b8aa5a44829?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'square_root_decomposition',
       title: 'Square Root Decomposition and Mo\'s Algorithm',
       readingTime: readingTimes.square_root_decomposition,
-      backgroundImage: "https://images.unsplash.com/photo-1738463771395-4ca093b19e2c"
+      backgroundImage: "https://images.unsplash.com/photo-1738463771395-4ca093b19e2c?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'binary_search',
       title: 'Binary Search: The Boundary Hunter',
       readingTime: readingTimes.binary_search,
-      backgroundImage: "https://images.unsplash.com/photo-1541727687969-ce40493cd847"
+      backgroundImage: "https://images.unsplash.com/photo-1541727687969-ce40493cd847?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'max_flow',
       title: 'Max Flow',
       readingTime: readingTimes.max_flow,
-      backgroundImage: 'https://images.unsplash.com/photo-1738463738098-63ec4af1cf89?q=80&w=800&auto=format&fit=crop',
+      backgroundImage: 'https://images.unsplash.com/photo-1609083590460-7b8cc0ca65f8?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'matrix_exponentiation',
