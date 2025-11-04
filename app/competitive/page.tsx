@@ -24,7 +24,7 @@ export default function CompetitivePage() {
       id: 'greedy_ii',
       title: 'Greedy II - Interval',
       readingTime: readingTimes.greedy_ii,
-      backgroundImage: "https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1574788901656-6a9ee34a3fa7?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_i',
