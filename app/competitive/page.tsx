@@ -30,7 +30,7 @@ export default function CompetitivePage() {
       id: 'greedy_i',
       title: 'Greedy I - Selection',
       readingTime: readingTimes.greedy_i,
-      backgroundImage: "://images.unsplash.com/photo-1751317080054-fe0961b3f2a6?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1751317080054-fe0961b3f2a6?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'segment_trees_ii',
