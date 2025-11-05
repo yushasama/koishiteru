@@ -18,19 +18,19 @@ export default function CompetitivePage() {
       id: 'greedy_iii',
       title: 'Greedy III - Incremental',
       readingTime: readingTimes.greedy_iii,
-      backgroundImage: "https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1751317104165-7b2bcc33a41d?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_ii',
       title: 'Greedy II - Interval',
       readingTime: readingTimes.greedy_ii,
-      backgroundImage: "https://images.unsplash.com/photo-1574788901656-6a9ee34a3fa7?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1751317109192-1e2e893d7837?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_i',
       title: 'Greedy I - Selection',
       readingTime: readingTimes.greedy_i,
-      backgroundImage: "https://images.unsplash.com/photo-1731778568197-bc4ce018c517?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "://images.unsplash.com/photo-1751317080054-fe0961b3f2a6?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'segment_trees_ii',
@@ -60,7 +60,7 @@ export default function CompetitivePage() {
       id: 'max_flow',
       title: 'Max Flow',
       readingTime: readingTimes.max_flow,
-      backgroundImage: 'https://images.unsplash.com/photo-1609083590460-7b8cc0ca65f8?q=80&w=800&auto=format&fit=crop',
+      backgroundImage: 'https://images.unsplash.com/photo-1738463738098-63ec4af1cf89?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'matrix_exponentiation',
