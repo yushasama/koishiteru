@@ -1,4 +1,4 @@
-# **Game Theory – Nim, Heaps, and Grundy – One Clean Playbook**
+# **Game Theory – Nim and Grundy Games**
 
 So what exactly is Game Theory in the context of CP? Game theory problems are two-player logic puzzles under **perfect information**.
 

@@ -16,7 +16,7 @@ export default function CompetitivePage() {
     },
     {
       id: 'nim_grundy',
-      title: 'Nim & Grundy Games',
+      title: 'Game Theory - Nim and Grundy Games',
       readingTime: readingTimes.nim_grundy,
       backgroundImage: "https://images.unsplash.com/photo-1721331762508-13fe0743499f?q=80&w=800&auto=format&fit=crop"
     },
