@@ -6,9 +6,9 @@ Meet the second family member of greedy, interval. You simply sort interval endp
 * [Greedy I - Selection](../competitive/greedy_i)
 * [Greedy II - Interval (This One)](../competitive/greedy_ii)
 * [Greedy III - Incremental](../competitive/greedy_iii)
-* [Greedy IV - Threshold](../competitive/greedy_iv)
-* [Greedy V - Game](../competitive/greedy_v)
-* [Greedy VI - Adaptive](../competitive/greedy_vi)
+* [Greedy IV - Threshold Feasibility](../competitive/greedy_iv)
+* [Greedy V - Game & Competitive](../competitive/greedy_v)
+* [Greedy VI - Adaptive & Online](../competitive/greedy_vi)
 
 ---
 

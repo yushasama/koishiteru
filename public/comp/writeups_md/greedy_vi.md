@@ -2,6 +2,14 @@
 
 So this is our sixth member of the Greedy Family. Here, the greedy choice depends on evolving state. You pick what gives the biggest **incremental** benefit on what is still uncovered or most at risk right now. Think coverage, caching, and “pick the next best marginal gain” under feedback.
 
+## **Links to Series Content**
+* [Greedy I - Selection](../competitive/greedy_i)
+* [Greedy II - Interval](../competitive/greedy_ii)
+* [Greedy III - Incremental](../competitive/greedy_iii)
+* [Greedy IV - Threshold Feasibility](../competitive/greedy_iv)
+* [Greedy V - Game & Competitive](../competitive/greedy_v)
+* [Greedy VI - Adaptive & Online (This One)](../competitive/greedy_vi)
+
 ---
 
 ## **0) Core Definitions**

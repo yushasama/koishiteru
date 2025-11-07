@@ -6,9 +6,9 @@ So this is our fifth member of the Greedy Family. Two players alternate moves on
 * [Greedy I - Selection](../competitive/greedy_i)
 * [Greedy II - Interval](../competitive/greedy_ii)
 * [Greedy III - Incremental](../competitive/greedy_iii)
-* [Greedy IV - Threshold](../competitive/greedy_iv)
-* [Greedy V - Game (This One)](../competitive/greedy_v)
-* [Greedy VI - Adaptive](../competitive/greedy_vi)
+* [Greedy IV - Threshold Feasibility](../competitive/greedy_iv)
+* [Greedy V - Game & Competitive (This One)](../competitive/greedy_v)
+* [Greedy VI - Adaptive & Online](../competitive/greedy_vi)
 
 ---
 

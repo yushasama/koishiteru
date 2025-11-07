@@ -1,6 +1,6 @@
 # **Greedy IV - Threshold Feasibility**
 
-So this is our fourth part in greedy series. We binary search an answer $\theta$ and use a greedy check $P(\theta)$ to test feasibility. The set of feasible $\theta$ values must be monotone. You push the search boundary until you hit the first true or last true.
+So this is our fourth member of the Greedy Family. We binary search an answer $\theta$ and use a greedy check $P(\theta)$ to test feasibility. The set of feasible $\theta$ values must be monotone. You push the search boundary until you hit the first true or last true.
 
 > Prerequisite: Binary Search Refresher
 > We use half-open integer search $[lo, hi)$ and "first true" semantics throughout. For the full binary search playbook, see my writeup: ["Binary Search: The Boundary Hunter."](https://koishite.ru/competitive/binary_search)

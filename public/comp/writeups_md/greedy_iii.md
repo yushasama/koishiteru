@@ -6,9 +6,9 @@ So this is our third member of the Greedy Family, incremental. You build the sol
 * [Greedy I - Selection](../competitive/greedy_i)
 * [Greedy II - Interval](../competitive/greedy_ii)
 * [Greedy III - Incremental (This One)](../competitive/greedy_iii)
-* [Greedy IV - Threshold](../competitive/greedy_iv)
-* [Greedy V - Game](../competitive/greedy_v)
-* [Greedy VI - Adaptive](../competitive/greedy_vi)
+* [Greedy IV - Threshold Feasibility](../competitive/greedy_iv)
+* [Greedy V - Game & Competitive](../competitive/greedy_v)
+* [Greedy VI - Adaptive & Online](../competitive/greedy_vi)
 
 ---
 
