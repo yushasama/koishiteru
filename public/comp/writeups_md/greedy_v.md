@@ -1,6 +1,6 @@
 # **Greedy V - Game And Competitive**
 
-So this is our fifth member of the Greedy Family. Two players alternate moves on the same resource pool. You win by maximizing your margin under perfect play. Greedy in games is fragile. It works only when the state has a simple invariant or a dominance rule. Otherwise use DP or Sprague–Grundy.
+So this is our fifth member of the Greedy Family. Two players alternate moves on the same resource pool. You win by maximizing your margin under perfect play. Greedy in games is fragile. It works only when the state has a simple invariant or a dominance rule. Otherwise use DP or [Sprague-Grundy.](../competitive/nim_grundy)
 
 ## **Links to Series Content**
 * [Greedy I - Selection](../competitive/greedy_i)
