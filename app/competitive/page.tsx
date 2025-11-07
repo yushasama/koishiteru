@@ -19,7 +19,7 @@ export default function CompetitivePage() {
       title: 'Nim & Grundy Games',
       readingTime: readingTimes.nim_grundy,
       backgroundImage: "https://images.unsplash.com/photo-1721331762508-13fe0743499f?q=80&w=800&auto=format&fit=crop"
-    }
+    },
     {
       id: 'greedy_vi',
       title: 'Greedy VI - Incremental',
