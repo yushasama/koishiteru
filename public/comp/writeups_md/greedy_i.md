@@ -1,5 +1,5 @@
 
-# **The Greedy Family — Series Opener**
+# **The Greedy Family - Series Opener**
 Before we start the write up, firstly I welcome you to meet the 6 members of the Greedy Family. Okay and double before the start off, let's ask ourselves the real question here?
 
 ## What even is "Greedy?"
@@ -13,7 +13,7 @@ That's exactly why it works and why we can be greedy. You're not just guessing, 
 
 If we strip it down:
 
-1. **You have a decision sequence.** Tasks, items, edges — whatever.
+1. **You have a decision sequence.** Tasks, items, edges, whatever.
 2. **You rank or select based on a metric.** Smallest deadline, largest ratio, shortest edge, etc.
 3. **You commit immediately.** No undo, no lookahead.
 4. **You prove the invariant.** If every step is “safe,” you end up with the optimal result.
@@ -22,7 +22,7 @@ That’s greedy in its purest form.
 
 So, greedy isn’t just “sort by X and pray.” It’s a proof style. You pick a local rule that never breaks, defend that invariant, and ride it to global optimality. Master this and greedy problems just become free elo thrown your way.
 
-This series covers the **six  greedy families** you encounter contests. Each one has a different invariant, a different vibe, and its own set of traps. I’ll show you the model trigger, the mental picture, and the template that ships clean.
+This series covers the **six greedy families** you encounter contests. Each one has a different invariant, a different vibe, and its own set of traps. I’ll show you the model trigger, the mental picture, and the template that ships clean.
 
 | Part | Family          | Core Pattern                                             | CF Example                                                    |
 | :--- | :-------------- | :------------------------------------------------------- | :------------------------------------------------------------ |
@@ -38,17 +38,13 @@ Each part dissects the invariant it protects, the edge cases that nuke it, and t
 
 Below, you will find links to my writeups covering the other greedy family members. You don't have to read the series in order, pick and choose whichever you need or feel like reading.
 
-**Note:**
-
-Greedy IV - VI are still in progress. I'll upload them after my midterms.
-
 ## **Links to Series Content**
 * [Greedy I - Selection (This One)](../competitive/greedy_i)
 * [Greedy II - Interval](../competitive/greedy_ii)
 * [Greedy III - Incremental](../competitive/greedy_iii)
-* [Greedy IV - Threshold](../competitive/greedy_iv)
-* [Greedy V - Game](../competitive/greedy_v)
-* [Greedy VI - Adaptive](../competitive/greedy_vi)
+* [Greedy IV - Threshold Feasibility](../competitive/greedy_iv)
+* [Greedy V - Game & Competitive](../competitive/greedy_v)
+* [Greedy VI - Adaptive & Online](../competitive/greedy_vi)
 
 Otherwise, let's begin.
 
@@ -69,7 +65,7 @@ Selection Greedy covers three subtypes: **Pruning**, **Budgeted Gain**, and **So
 Choose items by a total order induced by a single key. Process them once. No later step should change the rank of earlier items.
 
 ### **Pruning Greedy**
-You delete harmful pieces while maintaining a monotone invariant. Example: pop larger digits before smalong longer digits to minimize the number.
+You delete harmful pieces while maintaining a monotone invariant. Example: pop larger digits before smaller digits to minimize the number.
 
 ### **Budgeted Greedy**
 You have a limited budget $k$. At each step, take the action with maximal marginal benefit per unit cost until the budget is gone.
@@ -125,7 +121,7 @@ If items can be compared independently by a single key and the constraint does n
 
 ## 4) Shapes and Models
 
-| Type            | How to telong long                            | Output           | Solver                            | Complexity       | Notes                                                                       |
+| Type            | How to tell                            | Output           | Solver                            | Complexity       | Notes                                                                       |
 | :-------------- | :------------------------------------- | :--------------- | :-------------------------------- | :--------------- | :-------------------------------------------------------------------------- |
 | Pruning Greedy  | Violations are local and monotone      | Reduced sequence | Monotone stack or block scan      | $O(n)$           | Keep one per block or maintain nondecreasing stack                          |
 | Budgeted Greedy | Limited moves or currency              | Chosen actions   | Sort or max heap on marginal gain | $O(n \log n)$    | Fractional is exact, integral often heuristic unless you prove independence |
@@ -136,10 +132,10 @@ If items can be compared independently by a single key and the constraint does n
 ## 5) Algorithms
 
 **Pruning Greedy**
-Maintain an invariant like nondecreasing digits. While the last kept item violates it and you stilong long have budget to delete, pop it. Blocks with a single rule are independent: for a run of equal items with costs, keep the maximum cost and remove the rest.
+Maintain an invariant like nondecreasing digits. While the last kept item violates it and you still have budget to delete, pop it. Blocks with a single rule are independent: for a run of equal items with costs, keep the maximum cost and remove the rest.
 
 **Budgeted Greedy**
-Each step, pick the action with highest marginal gain per unit cost. Use a max heap if gains change dynamicalong longy, or sort once if gains are static.
+Each step, pick the action with highest marginal gain per unit cost. Use a max heap if gains change dynamically, or sort once if gains are static.
 
 **Sorting-Driven**
 Prove a two-item swap rule that defines a strict total order. Sort by that key, then sweep. For lateness, sort by deadline. For minimizing $\sum C_i$, sort by processing time. For $\sum w_i C_i$, sort by $p_i/w_i$.
@@ -148,7 +144,7 @@ Prove a two-item swap rule that defines a strict total order. Sort by that key, 
 
 ## 6) Templates
 
-### Pruning: Remove K Digits (monotone stack, $O(n)$)
+### Pruning: Remove K Digits (Monotone Stack) $O(n)$
 
 ```cpp
 #include <bits/stdc++.h>
@@ -175,7 +171,7 @@ string removeKdigits(string num, int k) {
 }
 ```
 
-### Pruning: Keep One Per Same-Color Block (Rope Colorful)
+### Pruning: Keep One Per Same-Color Block (Rope Colorful) $O(n)$
 
 ```cpp
 #include <bits/stdc++.h>
@@ -197,7 +193,7 @@ long long minTimeColorful(const string& colors, const vector<int>& t) {
             ++j;
         }
         
-        res += sum - mx;        // delete along long but the most expensive keeper
+        res += sum - mx;        // delete all but the most expensive keeper
         i = j;
     }
     
@@ -205,7 +201,7 @@ long long minTimeColorful(const string& colors, const vector<int>& t) {
 }
 ```
 
-### Budgeted: Repeated Best Action With Max Heap
+### Budgeted: Repeated Best Action With Max Heap $O(n \log n)$
 
 Example: apply a discount operation $k$ times to the current largest value.
 
@@ -263,7 +259,7 @@ long long tasksAndDeadlines(vector<pair<long long,long long>> job) { // (duratio
 Given coin values, pick a minimal count whose sum is strictly greater than the sum of the remaining coins.
 
 #### **Why Selection Greedy**
-Sort coins descending and keep taking the largest until your sum exceeds the rest. If you ever skip a bigger coin for a smalong longer one, you need at least as many coins to reach the same sum. Two-item swap proves the order.
+Sort coins descending and keep taking the largest until your sum exceeds the rest. If you ever skip a bigger coin for a smaller one, you need at least as many coins to reach the same sum. Two-item swap proves the order.
 
 #### **Complexity** $O(n \log n)$
 
@@ -273,7 +269,7 @@ using namespace std;
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(nulong longptr);
+    cin.tie(nullptr);
     
     int n; 
     if (!(cin >> n)) return 0;
@@ -320,7 +316,7 @@ using namespace std;
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(nulong longptr);
+    cin.tie(nullptr);
     
     int n; 
     cin >> n;
@@ -347,7 +343,7 @@ int main() {
 ### **AtCoder ABC 141 D - Powerful Discount Tickets (Budgeted Greedy with Heap)**
 
 #### **Problem**
-Given prices and $m$ discount tickets. Each ticket turns the current largest price $x$ into $\lfloor x/2 \rfloor$. Use along long tickets to minimize the sum.
+Given prices and $m$ discount tickets. Each ticket turns the current largest price $x$ into $\lfloor x/2 \rfloor$. Use all tickets to minimize the sum.
 
 #### **Why Selection Greedy**
 Each discount is most valuable on the largest available price. Use a max heap, apply the discount to the top, and push back the reduced price. Repeat.
@@ -361,7 +357,7 @@ using namespace std;
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(nulong longptr);
+    cin.tie(nullptr);
     
     int n, m; 
     cin >> n >> m;
@@ -396,7 +392,7 @@ int main() {
 String of colors and removal times. No two adjacent equal colors can remain. Minimize removal time.
 
 #### **Why Selection Greedy**
-Split the string into maximal blocks of identical color. In each block of length $b$ you must delete $b-1$ items. To minimize time, keep the balong longoon with maximum keep-cost and remove the rest. Blocks are independent, so sum over blocks.
+Split the string into maximal blocks of identical color. In each block of length $b$ you must delete $b-1$ items. To minimize time, keep the balloon with maximum keep-cost and remove the rest. Blocks are independent, so sum over blocks.
 
 #### **Complexity**
 $O(n)$
@@ -433,7 +429,7 @@ public:
 
 ---
 
-## 8) Common Pitfalong longs
+## 8) Common Pitfalls
 
 * Pruning without a monotone invariant. If deleting something can create a new violation behind you, your one-pass stack is not sufficient.
 * Ratio sorts with floating comparison. Use cross multiplication to avoid precision bugs.
@@ -445,7 +441,7 @@ public:
 
 ## 9) TLDR
 
-* One metric to rule them along long. If you cannot name it in one line, it is not Selection Greedy.
+* One metric to rule them all. If you cannot name it in one line, it is not Selection Greedy.
 * Defend a two-item swap rule or a monotone invariant. That is your proof.
 * Use a stack for pruning, a heap for repeated best-action, and a single sort for scheduling.
 * Expect $O(n \log n)$. With a stack it often drops to $O(n)$.

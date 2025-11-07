@@ -2,6 +2,14 @@
 
 So this is our third member of the Greedy Family, incremental. You build the solution step by step by always adding the cheapest valid piece right now. Priority queues, BFS, and DSU will hard carry you. If a piece creates a cycle or violates safety, skip it.
 
+## **Links to Series Content**
+* [Greedy I - Selection](../competitive/greedy_i)
+* [Greedy II - Interval](../competitive/greedy_ii)
+* [Greedy III - Incremental (This One)](../competitive/greedy_iii)
+* [Greedy IV - Threshold](../competitive/greedy_iv)
+* [Greedy V - Game](../competitive/greedy_v)
+* [Greedy VI - Adaptive](../competitive/greedy_vi)
+
 ---
 
 ## 0) Core Definitions
@@ -115,9 +123,7 @@ for (int u = 0; u < n; ++u) {
 
 ## 6) Templates
 
-### **DSU: Disjoint Set Union (Union by Size, Path Compression)**
-
-**Complexity:** $O(\alpha(n))$ per op
+### **DSU: Disjoint Set Union (Union by Size, Path Compression) $O(\alpha(n))$ per op**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -151,9 +157,7 @@ struct DSU {
 
 ---
 
-### **Kruskal MST: Minimum Spanning Tree**
-
-**Complexity:** $O(m \log m)$
+### **Kruskal MST: Minimum Spanning Tree $O(m \log m)$**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -208,9 +212,7 @@ long long kruskal_mst(int n, vector<tuple<int, int, long long>> &edges) {
 
 ---
 
-### **Prim MST: Adjacency List Version**
-
-**Complexity:** $O(m \log n)$
+### **Prim MST: Adjacency List Version  $O(m \log n)$**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -252,9 +254,7 @@ long long prim_mst(int n, const vector<vector<pair<int, int>>> &adj, int start =
 
 ---
 
-### **Dijkstra: Shortest Paths With Parent Restore**
-
-**Complexity:** $O((n+m)\log n)$
+### **Dijkstra: Shortest Paths With Parent Restore $O((n+m)\log n)$**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -307,9 +307,7 @@ vector<int> restore_path(int target, const vector<int> &par) {
 
 ---
 
-### **0-1 BFS: Deque Implementation**
-
-**Complexity:** $O(n+m)$
+### **0-1 BFS: Deque Implementation $O(n+m)$**
 
 ```cpp
 #include <bits/stdc++.h>
@@ -347,9 +345,7 @@ vector<long long> zero_one_bfs(int n, int src, const vector<vector<pair<int, int
 
 ---
 
-### **Greedy Merge: Minimal Total Merge Cost (Huffman)**
-
-**Complexity:** $O(n \log n)$
+### **Greedy Merge: Minimal Total Merge Cost (Huffman) $O(n \log n)$**
 
 ```cpp
 #include <bits/stdc++.h>

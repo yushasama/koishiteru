@@ -15,6 +15,30 @@ export default function CompetitivePage() {
       isMain: true,
     },
     {
+      id: 'nim_grundy',
+      title: 'Nim & Grundy Games',
+      readingTime: readingTimes.nim_grundy,
+      backgroundImage: "https://images.unsplash.com/photo-1721331762508-13fe0743499f?q=80&w=800&auto=format&fit=crop"
+    }
+    {
+      id: 'greedy_vi',
+      title: 'Greedy VI - Incremental',
+      readingTime: readingTimes.greedy_iii,
+      backgroundImage: "https://images.unsplash.com/photo-1580313710210-82288c6ae40c?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'greedy_v',
+      title: 'Greedy V - Incremental',
+      readingTime: readingTimes.greedy_iii,
+      backgroundImage: "https://images.unsplash.com/photo-1642196010468-f609122899d4?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'greedy_iv',
+      title: 'Greedy IV - Incremental',
+      readingTime: readingTimes.greedy_iii,
+      backgroundImage: "https://images.unsplash.com/photo-1668162456452-11e6ca7c8608?q=80&w=800&auto=format&fit=crop"
+    },
+    {
       id: 'greedy_iii',
       title: 'Greedy III - Incremental',
       readingTime: readingTimes.greedy_iii,

@@ -1,31 +1,39 @@
-# Greedy II - Interval
+# **Greedy II - Interval**
 
 Meet the second family member of greedy, interval. You simply sort interval endpoints, then you either pick a compatible set, count overlaps, assign resources, or merge coverage. The invariant is time order. If you add weights, greedy usually breaks and you switch to DP.
 
+## **Links to Series Content**
+* [Greedy I - Selection](../competitive/greedy_i)
+* [Greedy II - Interval (This One)](../competitive/greedy_ii)
+* [Greedy III - Incremental](../competitive/greedy_iii)
+* [Greedy IV - Threshold](../competitive/greedy_iv)
+* [Greedy V - Game](../competitive/greedy_v)
+* [Greedy VI - Adaptive](../competitive/greedy_vi)
+
 ---
 
-## 0) Core Definitions
+## **0) Core Definitions**
 
-### Interval Scheduling
+### **Interval Scheduling**
 Pick the maximum number of non-overlapping intervals. Greedy by earliest finish is optimal.
 
-### Interval Partitioning
+### **Interval Partitioning**
 Assign a minimal number of resources so no overlapping intervals share a resource. Solve by a sweep with a min-heap of current end times.
 
-### Event Sweep
+### **Event Sweep**
 Convert intervals to point events (start, end), sort by time with a precise tie rule, scan while maintaining active count or sets.
 
-### Interval Union
+### **Interval Union**
 Merge overlapping intervals to produce disjoint blocks or compute total covered length.
 
-### Semantics
+### **Semantics**
 Decide your convention and keep it consistent:
 - Half-open $[s, e)$: end does not overlap the next start. Process end before start at equal times.
 - Closed $[s, e]$: equality overlaps. Process start before end at equal times.
 
 ---
 
-## 1) Constraints
+## **1) Constraints**
 
 - $n \le 2 \cdot 10^5$
 - Sort once: $O(n \log n)$
@@ -37,20 +45,20 @@ Greedy fails when weights on intervals matter or when choosing a short interval 
 
 ---
 
-## 2) Theory Bridge
+## **2) Theory Bridge**
 
-### Earliest Finish Is Optimal
+### **Earliest Finish Is Optimal**
 If your schedule picks interval $J$ first but there exists a compatible interval $I$ with $f(I) \le f(J)$, replacing $J$ with $I$ never reduces the remaining feasible set. Repeating this swap shows the schedule sorted by finish times is optimal.
 
-### Minimum Rooms Equals Peak Overlap
+### **Minimum Rooms Equals Peak Overlap**
 At any time $t$, you need at least as many rooms as the number of intervals active at $t$. A sweep that reuses the earliest finishing room whenever possible attains this bound, so it is minimal.
 
-### Tie Rules Are Part of the Proof
+### **Tie Rules Are Part of the Proof**
 Your event ordering defines overlap semantics. If you model $[s, e)$, an interval ending at $t$ frees a resource before another starting at $t$ uses it. The sort must reflect that.
 
 ---
 
-## 3) Spotting The Model
+## **3) Spotting The Model**
 
 | Statement clue | Technique |
 | :-- | :-- |
@@ -62,7 +70,7 @@ Your event ordering defines overlap semantics. If you model $[s, e)$, an interva
 
 ---
 
-## 4) Shapes and Models
+## **4) Shapes and Models**
 
 | Type | How to tell | Output | Solver | Complexity | Notes |
 | :-- | :-- | :-- | :-- | :-- | :-- |
@@ -73,7 +81,7 @@ Your event ordering defines overlap semantics. If you model $[s, e)$, an interva
 
 ---
 
-## 5) Algorithms
+## **5) Algorithms**
 
 **Max Non-Overlapping Intervals**  
 Sort by finish time. Keep an interval if its start $\ge$ last kept finish. Exchange argument certifies correctness.
@@ -89,9 +97,9 @@ Sort by start, extend the current block while next start $\le$ current end, othe
 
 ---
 
-## 6) Templates
+## **6) Templates**
 
-### Scheduling: Max Non-Overlapping by Earliest Finish
+### **Scheduling: Max Non-Overlapping by Earliest Finish**
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -114,7 +122,7 @@ int maxNonOverlap(vector<pair<long long,long long>> seg) {
 }
 ```
 
-### Partitioning: Min Rooms With Room Ids
+### **artitioning: Min Rooms With Room Ids**
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -134,6 +142,7 @@ pair<int, vector<int>> roomAllocation(vector<array<int,3>> a) {
     priority_queue<int, vector<int>, greater<int>> free_ids;
 
     vector<int> res(a.size());
+
     int next_id = 1;
     int peak = 0;
 
@@ -255,7 +264,7 @@ long long totalCoveredLength(vector<pair<long long,long long>> seg) {
 
 ---
 
-## 7) Worked Examples
+## **7) Worked Examples**
 
 ### **CSES - Movie Festival**
 
@@ -303,7 +312,7 @@ int main() {
 
 ---
 
-### CSES - Room Allocation
+### **CSES - Room Allocation**
 
 #### **Problem**
 Assign room ids to all intervals and print the minimum number of rooms used.
@@ -428,7 +437,7 @@ int main() {
 
 ---
 
-### LeetCode 56 - Merge Intervals
+### **LeetCode 56 - Merge Intervals**
 
 #### **Problem**
 Merge a list of intervals into disjoint blocks.
@@ -475,7 +484,7 @@ public:
 
 ---
 
-## 8) Common Pitfalls
+## **8) Common Pitfalls**
 
 - Wrong tie rule. Decide closed or half-open and sort events accordingly.
 - Sorting by start time for scheduling. Earliest finish wins for max non-overlap.
@@ -485,7 +494,7 @@ public:
 
 ---
 
-## 9) TLDR
+## **9) TLDR**
 
 - Scheduling: sort by end and keep if start $\ge$ last end.
 - Partitioning: sweep with a min-heap of ends and reuse rooms greedily.
@@ -495,7 +504,7 @@ public:
 
 ---
 
-## 10) Recommended Problems
+## **10) Recommended Problems**
 * [CSES - Movie Festival](https://cses.fi/problemset/task/1629/)
 * [CSES - Room Allocation](https://cses.fi/problemset/task/1164/)
 * [CSES - Restaurant Customers](https://cses.fi/problemset/task/1619/)
@@ -505,8 +514,7 @@ public:
 * [LeetCode 56 - Merge Intervals](https://leetcode.com/problems/merge-intervals/)
 
 
-## Glossary
-
+## **Glossary**
 - **Block scan**: linear pass that groups consecutive equal-key items into maximal blocks, processes each block independently, then advances. Used when constraints are local within runs.
 - **Monotone stack**: stack that maintains a monotone property (nondecreasing or nonincreasing). Push while keeping the property, pop when violated. Enables $O(n)$ pruning.
 - **Exchange argument**: two-item swap proof. Show that any adjacent inversion by the key cannot improve the objective, so the sorted order is optimal.

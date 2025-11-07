@@ -1,6 +1,6 @@
 # **Sniffing Out The Algo from Constraints**
 
-Being able to read the problem statement is cool, but **being able to read the constraints is what actually makes you mog**.
+Being able to read the problem statement is cool, but **being able to read the constraints is what makes you mog**.
 
 Imagine you're in a live contest, solving Div2D. You whip up a “genius” prefix sum solution, hit submit… and boom, TLE nukes your PC. Meanwhile some dude skimmed the problem statement and read $n \leq 10^5$, instantly knew prefix sums alone won’t scale, and pulled out a Fenwick Tree. he’s smurfing the whole contest w ACs while you’re still coping.
 

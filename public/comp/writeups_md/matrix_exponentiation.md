@@ -1,6 +1,6 @@
 # Matrix Exponentiation (When DP is Naive, Use Linear Algebra)
 
-Yep, you read that absolutely right: there exist problems where your clever dynamic programming solution is actually the **naive** solution.
+Yep, you read that absolutely right: there exist problems where your clever dynamic programming solution turns out to be the **naive** solution.
 
 Don’t believe me? Try solving this Fibonacci problem, https://cses.fi/problemset/task/1722 with DP & lmk if you get DP or not.
 

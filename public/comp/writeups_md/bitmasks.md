@@ -3,7 +3,7 @@ Bitmasks are like cheat codes for problems with subsets, toggles, or state track
 
 If a problem has "k things picked", "on/off switches", or "you can only use each once" vibes, there's a decent chance it’s bitmaskable. This writeup’s here to walk through the classic setups, the sick modeling tricks, and all the little ops that make bitmasks feel like black magic.
 
-You’ll walk out knowing how to toggle, subset iterate, popcount optimize, and tell when a problem’s asking for bitmask DP without actually saying it.
+You’ll walk out knowing how to toggle, subset iterate, popcount optimize, and tell when a problem’s asking for bitmask DP without explicitly saying it.
 
 ## **0) Core Definitions**
 
