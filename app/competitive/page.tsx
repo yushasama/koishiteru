@@ -22,19 +22,19 @@ export default function CompetitivePage() {
     },
     {
       id: 'greedy_vi',
-      title: 'Greedy VI - Incremental',
+      title: 'Greedy VI - Advanced & Online',
       readingTime: readingTimes.greedy_iii,
-      backgroundImage: "https://images.unsplash.com/photo-1580313710210-82288c6ae40c?q=80&w=800&auto=format&fit=crop"
+      backgroundImage: "https://images.unsplash.com/photo-1626553684728-ac5f563eefe7?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_v',
-      title: 'Greedy V - Incremental',
+      title: 'Greedy V - Game & Competitive',
       readingTime: readingTimes.greedy_iii,
       backgroundImage: "https://images.unsplash.com/photo-1642196010468-f609122899d4?q=80&w=800&auto=format&fit=crop"
     },
     {
       id: 'greedy_iv',
-      title: 'Greedy IV - Incremental',
+      title: 'Greedy IV - Threshold Feasibility',
       readingTime: readingTimes.greedy_iii,
       backgroundImage: "https://images.unsplash.com/photo-1668162456452-11e6ca7c8608?q=80&w=800&auto=format&fit=crop"
     },
