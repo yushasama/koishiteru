@@ -1,4 +1,4 @@
-# **Game Theory – Nim and Grundy Games**
+# **Game Theory – Nim & Grundy**
 
 So what exactly is Game Theory in the context of CP? Game theory problems are two-player logic puzzles under **perfect information**.
 
@@ -953,7 +953,72 @@ int grundy(int x, int y) {
 
 ---
 
-## **10) TLDR**
+## **9) Common Pitfalls**
+
+* Assuming every game is Grundy.
+* Forgetting termination (cycles break it).
+* Mixing up heap types with priority queues.
+* Ignoring misere all-ones case.
+* Using xor when moves affect multiple heaps.
+* Using sets for mex (use bool array).
+* Applying SG on partisan or scoring games.
+* Not recognizing disguised Nim in matchstick/position/divisor games.
+
+---
+
+## **10) Glossary (Core + Adjacent Techniques)**
+
+### **Core Game Theory Terms**
+
+* **DAG Model**: Game states form a directed acyclic graph so every play terminates.
+* **Impartial Game**: Both players have identical move options from any position.
+* **Partisan Game**: Players have different move sets (e.g., chess, checkers).
+* **Losing Position**: A position where the player to move will lose with optimal play ($g = 0$).
+* **Winning Position**: A position where the player to move can force a win ($g > 0$).
+* **mex**: Minimum excludant - the smallest non-negative integer not in a given set.
+* **Nim-Sum**: The xor of all heap sizes in a Nim game.
+* **Grundy Number**: The mex of all Grundy numbers reachable in one move; represents equivalent Nim heap size.
+* **Sprague-Grundy Theorem**: Every finite impartial game is equivalent to a Nim heap of size $g(s)$.
+* **Misere Play**: Last player to move loses (opposite of normal play).
+* **Normal Play**: Last player to move wins.
+
+### **Graph & Computation Terms**
+
+* **Topological Order**: An ordering of DAG nodes where all edges point forward. Compute Grundy values in reverse topological order so all children are processed before parents.
+* **Kahn's Algorithm**: BFS-based topological sort using in-degrees. Add nodes with in-degree 0 to queue, remove edges as you process.
+* **Reverse Topological Processing**: For Grundy computation, process nodes in reverse topo order (children before parents) so $g(t)$ is known when computing $g(s)$.
+* **State Space DP**: When state space is small and doesn't decompose into independent subgames, use direct DP with $\text{win}[s] = \exists t : \neg \text{win}[t]$.
+* **Memoization**: Cache computed game states to avoid recomputation in recursive Grundy functions.
+
+### **Optimization & Patterns**
+
+* **Periodicity**: Some Grundy sequences repeat after a certain point. If you detect the period, you can compute $g(n)$ for large $n$ without full DP.
+* **Symmetry Exploitation**: In split games or multi-dimensional games, use symmetry to reduce state space (e.g., only compute for $a \le b$ in splits).
+* **Parity Arguments**: In sequential or constrained Nim, sometimes only parity of position or count matters, not full xor.
+* **Greedy Observation**: In some variants, the first differing element or leading pile determines the winner without full computation.
+* **Precomputation**: For subtraction games with fixed move sets, precompute all Grundy values up to max $n$ once.
+
+### **Common Problem Patterns**
+
+* **Sequential Nim**: Must play on leftmost non-empty pile. Solution often reduces to parity or greedy argument about leading pile.
+* **Multi-dimensional Grundy**: Games on grids or with multiple parameters. Compute $g(x, y, \ldots)$ by enumerating all reachable states.
+* **Composite Games**: Multiple independent subgames played simultaneously. Total Grundy = xor of individual Grundy numbers.
+* **Token Movement on Graph**: Tokens on graph nodes, can move along edges. Compute Grundy for each node in reverse topo order.
+* **Divisor Game**: Remove proper divisors from current number. Build DAG of numbers, compute Grundy bottom-up.
+* **Subtraction Game**: Remove from fixed set of values $P$. DP with $g[x] = \mathrm{mex}\{g[x-p] : p \in P\}$.
+* **Split Game**: Divide heap into unequal parts. Use $g[x] = \mathrm{mex}\{g[a] \oplus g[b] : a + b = x, a \neq b\}$.
+
+### **Things That Are NOT Game Theory**
+
+* **Minimax with Scoring**: If accumulating points rather than "last move wins," use minimax DP on total scores, not Grundy.
+* **Probabilistic Games**: If moves involve randomness, Grundy doesn't apply. Use expectation DP.
+* **Incomplete Information**: If players can't see full board, not a perfect information game. Game theory techniques don't apply.
+* **Optimization Without Opponents**: If there's no adversary (just maximize/minimize some value), it's DP, not game theory.
+* **Cooperative Games**: If players work together rather than compete, different theory applies.
+
+---
+
+## **11) TLDR**
 
 * Game theory = two-player, perfect-information, optimal play.
 * Nim = xor of heap sizes; $0$ means losing.
@@ -965,10 +1030,12 @@ int grundy(int x, int y) {
 * Partisan or scoring games need minimax or score DP instead.
 * Misere only changes all-ones Nim.
 * Many problems are disguised Nim - look for heap-like structures.
+* Topological sort processes game DAGs in correct order.
+* Some games reduce to parity/greedy without full Grundy.
 
 ---
 
-## **11) Recommended Problems**
+## **12) Recommended Problems**
 
 * [CSES - Nim Game I](https://cses.fi/problemset/task/1730/)
 * [CSES - Stick Game](https://cses.fi/problemset/task/1729/)
