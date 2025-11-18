@@ -76,7 +76,13 @@ export function getAllReadingTimes(): Record<string, string> {
     'greedy_iv',
     'greedy_v',
     'greedy_vi',
-    'nim_grundy'
+    'nim_grundy',
+    'geometry_i',
+    'geometry_ii',
+    'geometry_iii',
+    'geometry_iv',
+    'geometry_v',
+    'geometry_vi'
   ];
 
   const times: Record<string, string> = {};

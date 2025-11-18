@@ -279,7 +279,9 @@ struct LazySegTree {
     void build(const vector<S>& a, int p = 1, int L = 0, int R = -1) {
         if (R == -1) R = n - 1;
         if (L == R) { st[p] = a[L]; return; }
+
         int M = (L + R) >> 1;
+        
         build(a, p << 1, L, M);
         build(a, p << 1 | 1, M + 1, R);
         pull(p);
@@ -291,15 +293,19 @@ struct LazySegTree {
 
     void apply(int p, const F& f, int L, int R) {
         st[p] = Lazy::mapping(f, st[p], R - L + 1);
+        
         if (marked[p]) lz[p] = Lazy::composition(f, lz[p]);
         else { lz[p] = f; marked[p] = true; }
     }
 
     void push(int p, int L, int R) {
         if (!marked[p] || L == R) return;
+        
         int M = (L + R) >> 1;
+        
         apply(p << 1, lz[p], L, M);
         apply(p << 1 | 1, lz[p], M + 1, R);
+
         lz[p] = Lazy::id();
         marked[p] = false;
     }
@@ -308,10 +314,13 @@ struct LazySegTree {
         if (R == -1) R = n - 1;
         if (qr < L || R < ql) return;
         if (ql <= L && R <= qr) { apply(p, f, L, R); return; }
+        
         push(p, L, R);
         int M = (L + R) >> 1;
+
         range_apply(ql, qr, f, p << 1, L, M);
         range_apply(ql, qr, f, p << 1 | 1, M + 1, R);
+        
         pull(p);
     }
 
@@ -432,14 +441,19 @@ using namespace std;
 
 int main(){
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n,q; if(!(cin>>n>>q)) return 0;
+    int n, q;
+    
+    if(!(cin>>n>>q)) return 0;
+
     vector<long long>a(n); for(auto&x:a)cin>>x;
     LazyAddSum seg(n); seg.build(a);
+    
     while(q--){
         int t; cin>>t;
         if(t==1){ int l,r; long long x; cin>>l>>r>>x; seg.range_add(l,r,x); }
         else{ int l,r; cin>>l>>r; cout<<seg.range_sum(l,r)<<"\n"; }
     }
+    
     return 0;
 }
 ```
@@ -461,14 +475,19 @@ using namespace std;
 
 int main(){
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n,q; if(!(cin>>n>>q)) return 0;
+    int n,q;
+    
+    if(!(cin>>n>>q)) return 0;
     vector<long long>a(n); for(auto&x:a)cin>>x;
     BeatsChMinSum seg(n); seg.build(a);
+    
     while(q--){
         int t; cin>>t;
+    
         if(t==1){ int l,r; long long x; cin>>l>>r>>x; seg.range_chmin(l,r,x); }
         else{ int l,r; cin>>l>>r; cout<<seg.range_sum(l,r)<<"\n"; }
     }
+    
     return 0;
 }
 ```

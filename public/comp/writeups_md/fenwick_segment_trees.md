@@ -115,38 +115,40 @@ struct Fenwick {
 ## Segment Tree
 
 ```cpp
-class SegmentTree {
-private:
-  int n;
-  vector<int> tree;
+struct SegmentTree {
+    int n;
+    vector<int> tree;
 
-public:
-  SegmentTree(int sz) {
-    n = 1;
-    while (n < sz) n <<= 1;
-    tree.assign(2 * n, 0); // iterative style (~2n space)
-  }
-
-  void update(int i, int val) {
-    i += n;
-    tree[i] = max(tree[i], val);
-    while (i > 1) {
-      i >>= 1;
-      tree[i] = max(tree[i << 1], tree[i << 1 | 1]);
+    SegmentTree(int sz) {
+        n = 1;
+        while (n < sz) n <<= 1;
+        tree.assign(2 * n, 0); 
     }
-  }
 
-  int query(int l, int r) {
-    l += n, r += n;
-    int res = 0;
-    while (l <= r) {
-      if (l & 1) res = max(res, tree[l++]);
-      if (!(r & 1)) res = max(res, tree[r--]);
-      l >>= 1, r >>= 1;
+    // point update: a[i] = max(a[i], val)
+    void update(int i, int val) {
+        i += n;
+        tree[i] = max(tree[i], val);
+        for (i >>= 1; i >= 1; i >>= 1) {
+            tree[i] = max(tree[i << 1], tree[i << 1 | 1]);
+        }
     }
-    return res;
-  }
+
+    // range max on [l, r]
+    int query(int l, int r) {
+        int res = 0;
+        l += n;
+        r += n;
+        while (l <= r) {
+            if (l & 1) res = max(res, tree[l++]);
+            if (!(r & 1)) res = max(res, tree[r--]);
+            l >>= 1;
+            r >>= 1;
+        }
+        return res;
+    }
 };
+
 ```
 **Notes:**
 
@@ -307,6 +309,7 @@ vector<long long> solve(vector<int>& arr) {
     auto get = [&](int x) {
         return int(lower_bound(vals.begin(), vals.end(), x) - vals.begin()) + 1;
     };
+    
     int m = vals.size();
 
     Fenwick cnt(m), sum(m);

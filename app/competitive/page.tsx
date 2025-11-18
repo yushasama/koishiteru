@@ -15,6 +15,42 @@ export default function CompetitivePage() {
       isMain: true,
     },
     {
+      id: 'geometry_vi',
+      title: 'Geometry VI - Advanced Rotations and Tricks',
+      readingTime: readingTimes.geometry_vi,
+      backgroundImage: "https://images.unsplash.com/photo-1607457632731-266db62789fa?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'geometry_v',
+      title: 'Geometry V - Circles, Arcs and Tangents',
+      readingTime: readingTimes.geometry_v,
+      backgroundImage: "https://images.unsplash.com/photo-1605478264999-8d1cd66e9c78?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'geometry_iv',
+      title: 'Geometry IV - Sweep Line and Closest Pair',
+      readingTime: readingTimes.geometry_iv,
+      backgroundImage: "https://images.unsplash.com/photo-1605478264999-8d1cd66e9c78?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'geometry_iii',
+      title: 'Geometry III - Polygons and Convex Hull',
+      readingTime: readingTimes.geometry_iii,
+      backgroundImage: "https://images.unsplash.com/photo-1608501821300-4f99e58bba77?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'geometry_ii',
+      title: 'Geometry II - Lines, Cuts, and Orientation',
+      readingTime: readingTimes.geometry_ii,
+      backgroundImage: "https://images.unsplash.com/photo-1606162490200-212b6bb8e371?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 'geometry_i',
+      title: 'Geometry I - Distance and Movement',
+      readingTime: readingTimes.geometry_i,
+      backgroundImage: "https://images.unsplash.com/photo-1629487015513-7075665af4b9?q=80&w=800&auto=format&fit=crop"
+    },
+    {
       id: 'nim_grundy',
       title: 'Game Theory - Nim and Grundy Games',
       readingTime: readingTimes.nim_grundy,

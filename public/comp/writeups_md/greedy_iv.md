@@ -29,15 +29,6 @@ Find the smallest $\theta$ with $P(\theta)=\text{true}$ or the largest $\theta$ 
 ### **Answer Space**
 What you are searching: time, speed, capacity, distance, count. Integers use discrete search. Reals use fixed iterations to reach tolerance.
 
-```mermaid
-flowchart LR
-  A[lo] -- mid --> M{P(mid)?}
-  M -- true --> H[hi = mid]
-  M -- false --> L[lo = mid + 1]
-  H --> A
-  L --> A
-```
-
 ---
 
 ## **1) Constraints**
@@ -84,7 +75,6 @@ The greedy checks work because contributions are nonnegative and local: adding m
 | Type                    | How to tell                    | Output                     | Solver                                  | Complexity       | Notes                      |
 | :---------------------- | :----------------------------- | :------------------------- | :-------------------------------------- | :--------------- | :------------------------- |
 | Min time to quota       | Production increases with time | Smallest $T$               | BS on $T$ + sum $\lfloor T/t_i \rfloor$ | $O(n \log U)$    | CSES Factory Machines      |
-| Max equal cut length    | Pieces decrease with length    | Largest $L$                | BS on $L$ + sum $\lfloor a_i/L \rfloor$ | $O(n \log U)$    | CSES Ropes                 |
 | Min largest segment sum | Splits decrease with cap       | Smallest cap $C$           | BS on $C$ + greedy partition            | $O(n \log U)$    | Classic load balancing     |
 | Max craftable items     | Deficit increases with target  | Largest $x$                | BS on $x$ + sum deficits                | $O(n \log U)$    | CF Magic Powder 2          |
 | Largest affordable $N$  | Cost increases with $N$        | Largest $N$                | BS on $N$ + cost                        | $O(\log U)$      | ABC 146 C Buy an Integer   |
@@ -104,7 +94,6 @@ Largest $\theta$ with $P(\theta)=\text{true}$. Use closed $[lo, hi]$ or keep hal
 
 ### **Safety Checks**
 
-* Count pieces under length $L$ by $\sum \lfloor a_i/L \rfloor$.
 * Count segments needed under cap $C$ with one pass, starting a new segment on overflow.
 * Sum production $\sum \lfloor T/t_i \rfloor$ and compare to target.
 * Sum per-ingredient deficits for target $x$ and compare to stock plus magic powder.
@@ -173,17 +162,6 @@ bool can_split_with_cap(const vector<long long> &a, int max_segments, long long 
     return segments <= max_segments;
 }
 
-// Pieces obtainable from ropes at length L
-long long pieces_with_length(const vector<long long> &rope, long long L) {
-    if (L == 0) return LLONG_MAX; // define as trivially feasible
-    long long cnt = 0;
-    for (int i = 0; i < (int)rope.size(); ++i) {
-        cnt += rope[i] / L;
-        if (cnt < 0) return LLONG_MAX; // overflow guard
-    }
-    return cnt;
-}
-
 // Total production by time T given machine times t[i]
 long long produced_by_time(const vector<long long> &t, long long T) {
     long long total = 0;
@@ -248,60 +226,6 @@ int main() {
         long long mid = lo + (hi - lo) / 2;
         if (feasible(mid)) hi = mid;
         else lo = mid + 1;
-    }
-    cout << lo << "\n";
-}
-```
-
----
-
-### **Ropes - CSES**
-
-#### **Problem**
-
-Given rope lengths and an integer $k$, cut into equal lengths $L$ to obtain at least $k$ pieces. Maximize $L$.
-
-#### **Why Threshold Feasibility**
-
-Piece count $\sum \lfloor a_i/L \rfloor$ is nonincreasing in $L$. Binary search the largest feasible $L$.
-
-#### **Complexity**
-
-$O(n \log U)$ with $U = \max(a_i)$.
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n, k;
-    cin >> n >> k;
-
-    vector<long long> a(n);
-    long long hi = 0;
-    for (int i = 0; i < n; ++i) {
-        cin >> a[i];
-        hi = max(hi, a[i]);
-    }
-
-    auto feasible = [&](long long L) -> bool {
-        if (L == 0) return true;
-        long long cnt = 0;
-        for (int i = 0; i < n; ++i) {
-            cnt += a[i] / L;
-            if (cnt >= k) return true;
-        }
-        return false;
-    };
-
-    long long lo = 0;
-    while (lo < hi) {
-        long long mid = lo + (hi - lo + 1) / 2; // bias up for max-true
-        if (feasible(mid)) lo = mid;
-        else hi = mid - 1;
     }
     cout << lo << "\n";
 }
@@ -494,7 +418,7 @@ public:
 
 * Model as "find boundary where $P(\theta)$ flips."
 * Use half-open $[lo, hi)$ and first-true as your default.
-* Write linear greedy checks: pack under cap, count pieces, sum outputs, sum deficits.
+* Write linear greedy checks: pack under cap, sum outputs, sum deficits.
 * Guard every product and sum with 64-bit, use `__int128` for $a_i \cdot x$.
 * Compute tight bounds; if unsure, lift.
 * Expect $O(n \log U)$. The only hard part is the predicate.
@@ -505,7 +429,6 @@ public:
 ## **10) Recommended Problems**
 
 * [CSES - Factory Machines](https://cses.fi/problemset/task/1620/)
-* [CSES - Ropes](https://cses.fi/problemset/task/1191/)
 * [Codeforces 670D2 - Magic Powder 2](https://codeforces.com/problemset/problem/670/D2)
 * [Codeforces 1201C - Maximum Median](https://codeforces.com/problemset/problem/1201/C)
 * [AtCoder ABC 146 C - Buy an Integer](https://atcoder.jp/contests/abc146/tasks/abc146_c)
