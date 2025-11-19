@@ -670,7 +670,7 @@ int main() {
 
 ---
 
-### Problem 6: Fractal Painting
+### ICPC Southern California Regionals 2025 - Fractal Painting
 
 #### Problem
 
