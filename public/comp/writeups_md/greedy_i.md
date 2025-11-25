@@ -255,6 +255,10 @@ long long tasksAndDeadlines(vector<pair<long long,long long>> job) { // (duratio
 
 ### **Codeforces 160A - Twins (Budgeted Greedy by Sorting Descending)**
 
+#### **Problem Link**
+
+https://codeforces.com/problemset/problem/160/A
+
 #### **Problem**
 Given coin values, pick a minimal count whose sum is strictly greater than the sum of the remaining coins.
 
@@ -301,6 +305,10 @@ int main() {
 
 ### **CSES - Tasks and Deadlines (Sorting-Driven by Processing Time)**
 
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1630
+
 #### **Problem**
 Each job has duration $p_i$ and deadline $d_i$. Maximize $\sum (d_i - C_i)$ where $C_i$ is completion time.
 
@@ -341,6 +349,10 @@ int main() {
 ---
 
 ### **AtCoder ABC 141 D - Powerful Discount Tickets (Budgeted Greedy with Heap)**
+
+#### **Problem Link**
+
+https://atcoder.jp/contests/abc141/tasks/abc141_d
 
 #### **Problem**
 Given prices and $m$ discount tickets. Each ticket turns the current largest price $x$ into $\lfloor x/2 \rfloor$. Use all tickets to minimize the sum.
@@ -387,6 +399,10 @@ int main() {
 ---
 
 ### **LeetCode 1578 - Minimum Time to Make Rope Colorful (Pruning by Blocks)**
+
+#### **Problem Link**
+
+https://leetcode.com/problems/minimum-time-to-make-rope-colorful/
 
 #### **Problem**
 String of colors and removal times. No two adjacent equal colors can remain. Minimize removal time.

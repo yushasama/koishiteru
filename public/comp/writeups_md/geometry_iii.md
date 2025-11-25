@@ -43,6 +43,43 @@ Everything reduces to a few standard passes over a well formed boundary.
 
 ---
 
+## Series Roadmap
+
+* **Geometry I - Distance and Movement (This One)**
+  Movement rules, Manhattan, Chebyshev, rotated grids, hex grids, mixed metrics, linear forms tricks.
+
+* **Geometry II - Lines, Cuts, and Orientation**
+  Cross products, orientation tests, line intersection, half-planes, point-line distance, robust predicates.
+
+* **Geometry III - Polygons and Convex Hull**
+  Simple polygons, shoelace, convex hulls, point in polygon, supporting lines.
+
+* **Geometry IV - Sweep Line and Closest Pair**
+  Event sweeps, segment intersection, closest pair in O(n log n), rectangle union, offline queries.
+
+* **Geometry V - Circles, Arcs and Tangents**
+  Circle-line intersection, circle-circle intersection, tangents, arcs, angles.
+
+* **Geometry VI - Similarity and Affine Geometry** Similarity transforms, scaling, fractals, affine maps, barycentric tricks.
+
+* **Geometry VII - Dynamic Geometry and Line Containers** Convex hull trick, Li Chao tree, dynamic upper/lower hull maintenance, half-plane intersection via deque, geometry with segment trees.
+
+* **Geometry VIII - Numerical Stability and Robust Geometry** EPS discipline, exact vs floating comparisons, robust orientation, overflow control, safe predicate structure.
+---
+
+## Links to Series Content
+
+* [Geometry I - Distance and Movement](../competitive/geometry_i)
+* [Geometry II - Lines, Cuts, and Orientation (This One)](../competitive/geometry_ii)
+* [Geometry III - Polygons and Convex Hull](../competitive/geometry_iii)
+* [Geometry IV - Sweep Line and Closest Pair](../competitive/geometry_iv)
+* [Geometry V - Circles, Arcs and Tangents](../competitive/geometry_v)
+* [Geometry VI - Similarity and Affine Geometry](../competitive/geometry_vi)
+* [Geometry VII - Dynamic Geometry and Line Containers](../competitive/geometry_vii)
+* [Geometry VIII - Numerical Stability and Robust Geometry](../competitive/geometry_viii)
+
+---
+
 ## 0) Core Definitions
 
 **Simple polygon**
@@ -250,7 +287,8 @@ bool point_in_poly(const vector<P>& poly, P q) {
     bool c = false;
 
     for (int i = 0, j = n - 1; i < n; j = i++) {
-        P a = poly[i], b = poly[j];
+        P a = poly[i];
+        P b = poly[j];
         bool up = (a.y > q.y) != (b.y > q.y);
 
         if (up) {
@@ -302,7 +340,11 @@ long long convex_diameter_sq(const vector<P>& h) {
 
 ## 7) Worked Examples
 
-### Convex Hull Builder — Kattis convexhull
+### Convex Hull Builder - Kattis convexhull
+
+#### Problem Link
+
+https://open.kattis.com/problems/convexhull
 
 #### Problem
 
@@ -326,21 +368,32 @@ struct P {
     bool operator==(const P& o) const { return x == o.x && y == o.y; }
 };
 
-P operator-(P a, P b) { return {a.x - b.x, a.y - b.y}; }
-long long cross(P a, P b) { return a.x * b.y - a.y * b.x; }
-long long cross(P a, P b, P c) { return cross(b - a, c - a); }
+P operator-(P a, P b) {
+    return {a.x - b.x, a.y - b.y};
+}
+
+long long cross(P a, P b) {
+    return a.x * b.y - a.y * b.x;
+}
+
+long long cross(P a, P b, P c) {
+    return cross(b - a, c - a);
+}
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int n;
+
     if (!(cin >> n)) return 0;
+    
     vector<P> a(n);
     for (auto& p : a) cin >> p.x >> p.y;
 
     sort(a.begin(), a.end());
     a.erase(unique(a.begin(), a.end()), a.end());
+
     if (a.size() <= 1) {
         for (auto& p : a) cout << p.x << " " << p.y << "\n";
         return 0;
@@ -353,20 +406,24 @@ int main() {
                cross(lo[lo.size() - 2], lo.back(), p) < 0) {
             lo.pop_back();
         }
+
         lo.push_back(p);
     }
 
     for (int i = (int)a.size() - 1; i >= 0; i--) {
         auto p = a[i];
+
         while (up.size() >= 2 &&
                cross(up[up.size() - 2], up.back(), p) < 0) {
             up.pop_back();
         }
+        
         up.push_back(p);
     }
 
     lo.pop_back();
     up.pop_back();
+
     lo.insert(lo.end(), up.begin(), up.end());
 
     for (auto& p : lo) cout << p.x << " " << p.y << "\n";
@@ -375,7 +432,11 @@ int main() {
 
 ---
 
-### Point in Polygon — Kattis pointinpolygon
+### Point in Polygon - Kattis pointinpolygon
+
+#### Problem Link
+
+https://open.kattis.com/problems/pointinpolygon
 
 #### Problem
 
@@ -418,14 +479,14 @@ bool pip(const vector<P>& poly, P q) {
     bool c = false;
 
     for (int i = 0, j = n - 1; i < n; j = i++) {
-        P a = poly[i], b = poly[j];
+        P a = poly[i];
+        P b = poly[j];
         bool up = (a.y > q.y) != (b.y > q.y);
-        
+
         if (up) {
             long double xint = a.x +
                 (long double)(b.x - a.x) * (q.y - a.y) / (long double)(b.y - a.y);
-        
-          if (xint > q.x) c = !c;
+            if (xint > q.x) c = !c;
         }
     }
     return c;
@@ -444,7 +505,9 @@ int main() {
 
     while (q--) {
         P r;
+
         cin >> r.x >> r.y;
+
         cout << (pip(poly, r) ? "INSIDE\n" : "OUTSIDE\n");
     }
 }
@@ -452,7 +515,11 @@ int main() {
 
 ---
 
-### Polygon Containment — Codeforces 166B Polygon
+### Polygon Containment - Codeforces 166B Polygon
+
+#### Problem Link
+
+https://codeforces.com/problemset/problem/166/B
 
 #### Problem
 
@@ -511,10 +578,11 @@ bool strict_pip(const vector<P>& poly, P q) { // strict inside only
     bool c = false;
 
     for (int i = 0, j = n - 1; i < n; j = i++) {
-        P a = poly[i], b = poly[j];
-        
+        P a = poly[i];
+        P b = poly[j];
+
         bool up = (a.y > q.y) != (b.y > q.y);
-    
+
         if (up) {
             long double xint = a.x +
                 (long double)(b.x - a.x) * (q.y - a.y) / (long double)(b.y - a.y);
@@ -531,11 +599,11 @@ bool any_inter(const vector<P>& A, const vector<P>& B) {
     for (int i = 0; i < n; i++) {
         P a = A[i];
         P b = A[(i + 1) % n];
-    
-    for (int j = 0; j < m; j++) {
+
+        for (int j = 0; j < m; j++) {
             P c = B[j];
             P d = B[(j + 1) % m];
-    
+
             if (seg_inter(a, b, c, d)) return true;
         }
     }
@@ -570,7 +638,11 @@ int main() {
 
 ---
 
-### Convex Diameter — Rotating Calipers
+### Convex Diameter - Rotating Calipers
+
+#### Problem Link
+
+https://open.kattis.com/problems/convexhull
 
 #### Problem
 
@@ -660,79 +732,13 @@ int main() {
 
     int n;
     if (!(cin >> n)) return 0;
+
     vector<P> a(n);
     for (auto& p : a) cin >> p.x >> p.y;
 
     vector<P> h = hull(a);
+
     cout << fixed << setprecision(10) << sqrt((long double)diameter_sq(h)) << "\n";
-}
-```
-
----
-
-### ICPC Southern California Regionals 2025 - Fractal Painting
-
-#### Problem
-
-We have vectors
-
-* $a = \overrightarrow{A} = (x_0, y_0)$ from $(0,0)$ to $(x_0,y_0)$
-* $b = \overrightarrow{B} = (x_1 - x_0,, y_1 - y_0)$ from $(x_0,y_0)$ to $(x_1,y_1)$
-* $c = \overrightarrow{C} = (x_2 - x_0,, y_2 - y_0)$ from $(x_0,y_0)$ to $(x_2,y_2)$
-
-From $(x_1,y_1)$ draw $D,E$ such that $(A,B,C)$ is similar to $(B,D,E)$, and from $(x_2,y_2)$ draw $F,G$ such that $(A,B,C)$ is similar to $(C,F,G)$. Repeat forever. Decide if the entire painting fits inside some finite rectangle.
-
-#### Why Polygons and Hulls
-
-Similarity system with two ratios $r_b = \lVert b\rVert/\lVert a\rVert$ and $r_c = \lVert c\rVert/\lVert a\rVert$. Bounded iff both ratios are strictly less than $1$.
-
-#### Key Idea
-
-$$
-\max{\lVert b\rVert, \lVert c\rVert} < \lVert a\rVert
-\quad\Longleftrightarrow\quad r_b<1 \text{ and } r_c<1
-$$
-Compare squared norms:
-$$
-\lVert a\rVert^2 = x_0^2 + y_0^2,\quad
-\lVert b\rVert^2 = (x_1-x_0)^2 + (y_1-y_0)^2,\quad
-\lVert c\rVert^2 = (x_2-x_0)^2 + (y_2-y_0)^2
-$$
-Answer YES iff $\lVert b\rVert^2 < \lVert a\rVert^2$ and $\lVert c\rVert^2 < \lVert a\rVert^2$.
-
-#### Complexity
-
-$O(1)$ per test case.
-
-#### Code
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-long long sq(long long x) { return x * x; }
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int T;
-    if (!(cin >> T)) return 0;
-
-    while (T--) {
-        long long x0, y0, x1, y1, x2, y2;
-        cin >> x0 >> y0 >> x1 >> y1 >> x2 >> y2;
-
-        long long a2 = sq(x0) + sq(y0);
-        long long bx = x1 - x0, by = y1 - y0;
-        long long cx = x2 - x0, cy = y2 - y0;
-        long long b2 = sq(bx) + sq(by);
-        long long c2 = sq(cx) + sq(cy);
-
-        bool ok = (b2 < a2) && (c2 < a2);
-        cout << (ok ? "YES\n" : "NO\n");
-    }
-    return 0;
 }
 ```
 

@@ -439,19 +439,38 @@ using namespace std;
 
 // Paste LazyAddSum from section 6A.
 
-int main(){
-    ios::sync_with_stdio(false); cin.tie(nullptr);
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n, q;
     
-    if(!(cin>>n>>q)) return 0;
+    if (!(cin >> n >> q)) return 0;
 
-    vector<long long>a(n); for(auto&x:a)cin>>x;
-    LazyAddSum seg(n); seg.build(a);
+    vector<long long> a(n);
     
-    while(q--){
-        int t; cin>>t;
-        if(t==1){ int l,r; long long x; cin>>l>>r>>x; seg.range_add(l,r,x); }
-        else{ int l,r; cin>>l>>r; cout<<seg.range_sum(l,r)<<"\n"; }
+    for (auto& x : a) cin >> x;
+
+    LazyAddSum seg(n);
+    seg.build(a);
+
+    while (q--) {
+        int t;
+        cin >> t;
+
+        if (t == 1) {
+            int l, r;
+            long long x;
+            
+            cin >> l >> r >> x;
+            seg.range_add(l, r, x);
+
+        } else {
+            int l, r;
+            
+            cin >> l >> r;
+            cout << seg.range_sum(l, r) << "\n";
+        }
     }
     
     return 0;
@@ -473,21 +492,39 @@ using namespace std;
 
 // Paste BeatsChMinSum from section 6B.
 
-int main(){
-    ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n,q;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, q;
+
+    if (!(cin >> n >> q)) return 0;
+
+    vector<long long> a(n);
     
-    if(!(cin>>n>>q)) return 0;
-    vector<long long>a(n); for(auto&x:a)cin>>x;
-    BeatsChMinSum seg(n); seg.build(a);
+    for (auto& x : a) cin >> x;
     
-    while(q--){
-        int t; cin>>t;
-    
-        if(t==1){ int l,r; long long x; cin>>l>>r>>x; seg.range_chmin(l,r,x); }
-        else{ int l,r; cin>>l>>r; cout<<seg.range_sum(l,r)<<"\n"; }
+    BeatsChMinSum seg(n);
+    seg.build(a);
+
+    while (q--) {
+        int t;
+        cin >> t;
+
+        if (t == 1) {
+            int l, r;
+            long long x;
+
+            cin >> l >> r >> x;
+            
+            seg.range_chmin(l, r, x);
+        } else {
+            int l, r;
+            cin >> l >> r;
+            
+            cout << seg.range_sum(l, r) << "\n";
+        }
     }
-    
+
     return 0;
 }
 ```

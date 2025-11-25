@@ -164,6 +164,10 @@ string nim_winner(const vector<long long> &heaps) {
 
 ### **Game With Sticks - Codeforces 451A**
 
+#### **Problem Link**
+
+https://codeforces.com/problemset/problem/451/A
+
 #### **Problem**
 
 There is an $n \times m$ grid of intersections. Players alternately remove one unused intersection and all sticks incident to it. The one who cannot move loses. Print the winner names given in the statement.
@@ -196,6 +200,10 @@ int main() {
 ---
 
 ### **01 Game - Codeforces 1373B**
+
+#### **Problem Link**
+
+https://codeforces.com/problemset/problem/1373/B
 
 #### **Problem**
 

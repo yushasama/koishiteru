@@ -39,8 +39,12 @@ That is the whole game. You take a messy figure, slice it along a direction, dro
 * **Geometry III - Polygons and Convex Hull** Simple polygons, shoelace, convex hulls, point in polygon, supporting lines.
 * **Geometry IV - Sweep Line and Closest Pair** Event sweeps, segment intersection, closest pair in $O(n \log n)$, rectangle union, offline queries.
 * **Geometry V - Circles, Arcs and Tangents** Circle-line intersection, circle-circle intersection, tangents, arcs, angles.
-* **Geometry VI - Advanced Rotations and Tricks** Non-axis metrics, mixed coordinate systems, weird grids, more transforms like "San Francisco", Manhattan triangles, and contest-style hacks.
 
+* **Geometry VI - Similarity and Affine Geometry** Similarity transforms, scaling, fractals, affine maps, barycentric tricks.
+
+* **Geometry VII - Dynamic Geometry and Line Containers** Convex hull trick, Li Chao tree, dynamic upper/lower hull maintenance, half-plane intersection via deque, geometry with segment trees.
+
+* **Geometry VIII - Numerical Stability and Robust Geometry** EPS discipline, exact vs floating comparisons, robust orientation, overflow control, safe predicate structure.
 ---
 
 ## Links to Series Content
@@ -50,21 +54,23 @@ That is the whole game. You take a messy figure, slice it along a direction, dro
 * [Geometry III - Polygons and Convex Hull](../competitive/geometry_iii)
 * [Geometry IV - Sweep Line and Closest Pair](../competitive/geometry_iv)
 * [Geometry V - Circles, Arcs and Tangents](../competitive/geometry_v)
-* [Geometry VI - Advanced Rotations and Tricks](../competitive/geometry_vi)
+* [Geometry VI - Similarity and Affine Geometry](../competitive/geometry_vi)
+* [Geometry VII - Dynamic Geometry and Line Containers](../competitive/geometry_vii)
+* [Geometry VIII - Numerical Stability and Robust Geometry](../competitive/geometry_viii)
 
 ---
 
 ## 0) Core Definitions
 
-**Cross Product**
+### **Cross Product**
 
 For vectors $a$, $b$:
 
-$$\text{cross}(a, b) = a_x b_y - a_y b_x$$
+### $$\text{cross}(a, b) = a_x b_y - a_y b_x$$
 
 Sign gives turn direction.
 
-**Orientation**
+### **Orientation**
 
 For points $a$, $b$, $c$:
 
@@ -72,13 +78,13 @@ $$\text{orient}(a, b, c) = \text{cross}(b - a, c - a)$$
 
 $\text{orient} > 0$ left, $\text{orient} < 0$ right, $\text{orient} = 0$ collinear.
 
-**Dot Product**
+### **Dot Product**
 
 $$\text{dot}(a, b) = a_x b_x + a_y b_y$$
 
 Used for projections and distances.
 
-**Segment Intersection Conditions**
+### **Segment Intersection Conditions**
 
 Segments $AB$ and $CD$ intersect if:
 
@@ -86,7 +92,7 @@ Segments $AB$ and $CD$ intersect if:
 * $\text{orient}(C,D,A)$ and $\text{orient}(C,D,B)$ have opposite signs,
 * or they are collinear and the projections on both axes overlap.
 
-**Projection onto Segment**
+### **Projection onto Segment**
 
 Project $P$ to $AB$:
 
@@ -256,13 +262,25 @@ High level algorithm:
 ### Segment Intersection Template
 
 ```cpp
-struct P { long long x, y; };
-P operator-(P a, P b) { return {a.x - b.x, a.y - b.y}; }
-long long cross(P a, P b) { return a.x * b.y - a.y * b.x; }
-long long orient(P a, P b, P c) { return cross(b - a, c - a); }
+struct P {
+    long long x, y;
+};
+
+P operator-(P a, P b) {
+    return {a.x - b.x, a.y - b.y};
+}
+
+long long cross(P a, P b) {
+    return a.x * b.y - a.y * b.x;
+}
+
+long long orient(P a, P b, P c) {
+    return cross(b - a, c - a);
+}
 
 bool on_seg(P a, P b, P p) {
     if (orient(a, b, p) != 0) return false;
+
     return min(a.x, b.x) <= p.x && p.x <= max(a.x, b.x) &&
            min(a.y, b.y) <= p.y && p.y <= max(a.y, b.y);
 }
@@ -272,10 +290,12 @@ bool seg_inter(P a, P b, P c, P d) {
     long long o2 = orient(a, b, d);
     long long o3 = orient(c, d, a);
     long long o4 = orient(c, d, b);
+
     if (o1 == 0 && on_seg(a, b, c)) return true;
     if (o2 == 0 && on_seg(a, b, d)) return true;
     if (o3 == 0 && on_seg(c, d, a)) return true;
     if (o4 == 0 && on_seg(c, d, b)) return true;
+
     return (o1 > 0) != (o2 > 0) && (o3 > 0) != (o4 > 0);
 }
 ```
@@ -285,18 +305,31 @@ bool seg_inter(P a, P b, P c, P d) {
 ### Projection Template
 
 ```cpp
-struct D { double x, y; };
-D operator-(D a, D b) { return {a.x - b.x, a.y - b.y}; }
-double dot(D a, D b) { return a.x * b.x + a.y * b.y; }
+struct D {
+    double x, y;
+};
+
+D operator-(D a, D b) {
+    return { a.x - b.x, a.y - b.y };
+}
+
+double dot(D a, D b) {
+    return a.x * b.x + a.y * b.y;
+}
 
 double dist_seg(D a, D b, D p) {
     D ab = b - a;
     D ap = p - a;
+
     double t = dot(ap, ab) / dot(ab, ab);
+
     t = max(0.0, min(1.0, t));
+
     D q = {a.x + t * ab.x, a.y + t * ab.y};
+
     double dx = p.x - q.x;
     double dy = p.y - q.y;
+
     return sqrt(dx * dx + dy * dy);
 }
 ```
@@ -308,6 +341,7 @@ double dist_seg(D a, D b, D p) {
 ```cpp
 long double projectY(long double L, long double W, long double x, long double y) {
     long double t = (W - L) / (x - L);
+    
     return t * y;
 }
 
@@ -321,6 +355,10 @@ long double projectY(long double L, long double W, long double x, long double y)
 
 ### Segment Intersection – Codeforces 16E
 
+#### Problem Link
+
+https://codeforces.com/problemset/problem/16/E
+
 Use the segment intersection primitive to decide if two segments intersect, including endpoints and overlaps.
 
 #### Complexity
@@ -332,13 +370,19 @@ Use the segment intersection primitive to decide if two segments intersect, incl
 #include <bits/stdc++.h>
 using namespace std;
 
-struct P { long long x, y; };
+struct P {
+    long long x, y;
+};
+
 P operator-(P a, P b) { return {a.x - b.x, a.y - b.y}; }
+
 long long cross(P a, P b) { return a.x * b.y - a.y * b.x; }
+
 long long orient(P a, P b, P c) { return cross(b - a, c - a); }
 
 bool on_seg(P a, P b, P p) {
     if (orient(a, b, p) != 0) return false;
+
     return min(a.x, b.x) <= p.x && p.x <= max(a.x, b.x) &&
            min(a.y, b.y) <= p.y && p.y <= max(a.y, b.y);
 }
@@ -348,20 +392,28 @@ bool seg_inter(P a, P b, P c, P d) {
     long long o2 = orient(a, b, d);
     long long o3 = orient(c, d, a);
     long long o4 = orient(c, d, b);
+
     if (o1 == 0 && on_seg(a, b, c)) return true;
     if (o2 == 0 && on_seg(a, b, d)) return true;
     if (o3 == 0 && on_seg(c, d, a)) return true;
     if (o4 == 0 && on_seg(c, d, b)) return true;
+
     return (o1 > 0) != (o2 > 0) && (o3 > 0) != (o4 > 0);
 }
 
 int main() {
-    ios::sync_with_stdio(false); cin.tie(nullptr);
-    int t; cin >> t;
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+
     while (t--) {
         P a, b, c, d;
+
         cin >> a.x >> a.y >> b.x >> b.y;
         cin >> c.x >> c.y >> d.x >> d.y;
+
         cout << (seg_inter(a, b, c, d) ? "YES\n" : "NO\n");
     }
 }
@@ -370,6 +422,10 @@ int main() {
 ---
 
 ### Many Segment Intersections – AtCoder ABC259 F
+
+#### Problem Link
+
+https://atcoder.jp/contests/abc259/tasks/abc259_f
 
 Repeatedly apply segment intersection to count how many pairs of segments intersect.
 
@@ -406,8 +462,10 @@ bool seg_inter(P a, P b, P c, P d) {
 }
 
 int main() {
-    ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; cin >> n;
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    cin >> n;
     vector<pair<P, P>> seg(n);
     for (int i = 0; i < n; i++) {
         cin >> seg[i].first.x >> seg[i].first.y;
@@ -428,6 +486,10 @@ int main() {
 ---
 
 ### We Need More Bosses – Codeforces 1000E
+
+#### Problem Link
+
+https://codeforces.com/problemset/problem/1000/E
 
 Find bridges, compress components, build the bridge tree, and compute its diameter.
 
@@ -493,14 +555,16 @@ pair<int, int> farthest(int start, const vector<vector<int>>& tree) {
 }
 
 int main() {
-    ios::sync_with_stdio(false); cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
     cin >> n >> m;
     g.assign(n + 1, {});
     tin.assign(n + 1, 0);
     low.assign(n + 1, 0);
     is_bridge.assign(m, 0);
     for (int i = 0; i < m; i++) {
-        int u, v; cin >> u >> v;
+        int u, v;
+        cin >> u >> v;
         g[u].push_back({v, i});
         g[v].push_back({u, i});
     }
@@ -542,6 +606,10 @@ int main() {
 
 ### Shadow Line – ICPC NAC 2024 Problem K
 
+#### Problem Link
+
+https://open.kattis.com/problems/shadowline
+
 Compute the measure of light positions $L \le 0$ such that the union of projected intervals on the wall is exactly one interval.
 
 #### Complexity
@@ -563,20 +631,31 @@ long double projectY(long double L, long double W, long double x, long double y)
 }
 
 int main() {
-    ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; long double W;
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    long double W;
+
     if (!(cin >> n >> W)) return 0;
+
     vector<Seg> seg(n);
+
     for (int i = 0; i < n; i++) {
         long double xi, yl, yh;
+
         cin >> xi >> yl >> yh;
+
         seg[i] = {xi, yl, yh};
     }
+
     const long double NEG_INF = -1e30L;
 
     // Collect endpoints
     int E = 2 * n;
+
     vector<long double> ex(E), ey(E);
+    
     for (int i = 0; i < n; i++) {
         ex[2 * i] = seg[i].x; ey[2 * i] = seg[i].y1;
         ex[2 * i + 1] = seg[i].x; ey[2 * i + 1] = seg[i].y2;
@@ -584,6 +663,7 @@ int main() {
 
     vector<long double> crit;
     crit.reserve(2 + (size_t)E * (E - 1) / 2);
+
     crit.push_back(NEG_INF);
     crit.push_back(0.0L);
 
@@ -592,75 +672,93 @@ int main() {
         for (int j = i + 1; j < E; j++) {
             long double ya = ey[i];
             long double yb = ey[j];
+
             if (fabsl(yb - ya) < 1e-18L) continue;
+
             long double xa = ex[i];
             long double xb = ex[j];
+
             long double L = (yb * xa - ya * xb) / (yb - ya);
+
             if (L <= 0.0L) crit.push_back(L);
         }
     }
 
     sort(crit.begin(), crit.end());
+
     crit.erase(
         unique(crit.begin(), crit.end(), [](long double a, long double b) {
             return fabsl(a - b) < 1e-15L;
         }),
+
         crit.end()
     );
 
     auto countMerged = [&](long double L) -> int {
         vector<pair<long double, long double>> iv;
         iv.reserve(n);
+
         for (int i = 0; i < n; i++) {
             long double yA = projectY(L, W, seg[i].x, seg[i].y1);
             long double yB = projectY(L, W, seg[i].x, seg[i].y2);
+
             if (yA > yB) swap(yA, yB);
+
             iv.emplace_back(yA, yB);
         }
+
         sort(iv.begin(), iv.end());
+
         int cnt = 1;
+
         long double curL = iv[0].first;
         long double curR = iv[0].second;
+
         for (int i = 1; i < n; i++) {
             if (iv[i].first > curR) {
                 cnt++;
                 curL = iv[i].first;
                 curR = iv[i].second;
-            } else {
-                if (iv[i].second > curR) {
+              }
+            
+            if (iv[i].second > curR) {
                     curR = iv[i].second;
-                }
             }
         }
+
         return cnt;
     };
 
     // Check the unbounded region near -infinity
     if (countMerged(NEG_INF) == 1) {
         cout << "-1\n";
+
         return 0;
     }
 
     long double ans = 0.0L;
+
     for (int i = 0; i + 1 < (int)crit.size(); i++) {
         long double L1 = crit[i];
         long double L2 = crit[i + 1];
+
         if (L2 <= -1e25L) continue;
         if (L1 >= 0.0L) continue;
         if (L2 <= L1) continue;
 
         long double a = max(L1, NEG_INF / 10.0L);
         long double b = min(L2, 0.0L);
+
         if (b <= a) continue;
 
         long double mid = (a + b) * 0.5L;
+        
         if (countMerged(mid) == 1) {
             ans += (b - a);
         }
     }
 
-    cout.setf(ios::fixed);
-    cout << setprecision(10) << ans << "\n";
+    cout << fixed << setprecision(10) << ans << "\n";
 }
 ```
 

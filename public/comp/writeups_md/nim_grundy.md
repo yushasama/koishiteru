@@ -611,6 +611,10 @@ int main() {
 
 ### **CSES - Nim Game I**
 
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1730
+
 **Problem:** Given heap sizes $a_1,\dots,a_n$, decide who wins.
 
 **Why Nim:** Each heap is independent. XOR decides.
@@ -635,6 +639,10 @@ cout << (xr ? "First\n" : "Second\n");
 ---
 
 ### **CSES - Stick Game**
+
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1729
 
 **Problem:** One heap, allowed removals $P=\{p_1,\dots,p_k\}$. Print W/L for each $x \le n$.
 
@@ -678,6 +686,10 @@ cout << "\n";
 ---
 
 ### **CSES - Grundy's Game**
+
+#### **Problem Link**
+
+https://cses.fi/problemset/task/2207
 
 **Problem:** Split a heap of size $x$ into two unequal parts. If you can't move, you lose.
 

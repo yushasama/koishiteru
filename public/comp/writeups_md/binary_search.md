@@ -277,7 +277,13 @@ Greedy $O(n)$ inside binary search is ideal.
 
 ## **8) Worked Example**
 
-**Problem:** [LeetCode 875. Koko Eating Bananas]
+### LeetCode 875 - Koko Eating Bananas
+
+#### Problem Link
+
+https://leetcode.com/problems/koko-eating-bananas/
+
+**Problem:**
 Find minimal speed `k` so Koko eats all piles within `h` hours.
 
 **Why binary search fits:**

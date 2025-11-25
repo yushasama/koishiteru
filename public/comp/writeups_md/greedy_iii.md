@@ -377,6 +377,10 @@ long long huffman_min_cost(const vector<long long> &freq) {
 
 ### **Stick Divisions - CSES**
 
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1161
+
 #### **Problem**
 Given $n$ stick lengths, repeatedly join any two sticks into one with cost equal to their sum. Output the minimal total cost.
 
@@ -422,6 +426,10 @@ int main() {
 ---
 
 ### **Road Reparation - CSES**
+
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1675
 
 #### **Problem**
 Given $n$ cities and $m$ roads with costs, connect all cities with minimum total repair cost or print IMPOSSIBLE.
@@ -508,6 +516,10 @@ int main() {
 
 ### **Dijkstra? - Codeforces 20C**
 
+#### **Problem Link**
+
+https://codeforces.com/problemset/problem/20/C
+
 #### **Problem**
 Find the shortest path from node 1 to node $n$ in an undirected graph with nonnegative weights. Print the path or -1 if unreachable.
 
@@ -583,6 +595,10 @@ int main() {
 ---
 
 ### **Minimum Cost to Connect Sticks - LeetCode 1167**
+
+#### **Problem Link**
+
+https://leetcode.com/problems/minimum-cost-to-connect-sticks/
 
 #### **Problem**
 Given a multiset of stick lengths, repeatedly connect any two sticks. Connecting sticks of lengths $a$ and $b$ costs $a + b$. Return the minimal total cost to connect all sticks.

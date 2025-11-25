@@ -546,7 +546,11 @@ After understanding flow networks, residual graphs, and augmenting paths:
 
 ## 8) Worked Example - LeetCode 1349: Maximum Students Taking Exam
 
-### **[Problem](https://leetcode.com/problems/maximum-students-taking-exam/)**
+### Problem
+
+#### Problem Link
+
+https://leetcode.com/problems/maximum-students-taking-exam/
 
 Given a classroom grid `seats[i][j]` with `'.'` (usable) and `'#'` (broken), place as many students as possible so no two can "cheat" (conflict). A conflict edge exists between seats that are horizontally adjacent or diagonally adjacent in neighboring rows. Return the maximum number of students you can seat.
 

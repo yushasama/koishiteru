@@ -179,6 +179,10 @@ long long produced_by_time(const vector<long long> &t, long long T) {
 
 ### **Factory Machines - CSES**
 
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1620
+
 #### **Problem**
 
 Given machine times $t_i$ and a target $x$, find the minimum time $T$ to produce at least $x$ items.
@@ -234,6 +238,10 @@ int main() {
 ---
 
 ### **Magic Powder 2 - Codeforces 670D2**
+
+#### **Problem Link**
+
+https://codeforces.com/problemset/problem/670/D2
 
 #### **Problem**
 
@@ -296,6 +304,10 @@ int main() {
 
 ### **Buy an Integer - AtCoder ABC 146 C**
 
+#### **Problem Link**
+
+https://atcoder.jp/contests/abc146/tasks/abc146_c
+
 #### **Problem**
 
 Find the largest $N$ such that $a \cdot N + b \cdot \text{digits}(N) \le X$.
@@ -344,6 +356,10 @@ int main() {
 ---
 
 ### **Koko Eating Bananas - LeetCode 875**
+
+#### **Problem Link**
+
+https://leetcode.com/problems/koko-eating-bananas/
 
 #### **Problem**
 

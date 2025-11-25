@@ -139,7 +139,11 @@ It’s just indexing. Align it with your base case. **Don’t overthink**, pick 
 
 ---
 
-## 3) **Worked Example: Fibonacci (2×2)**
+## 3) **Worked Example: Fibonacci Numbers (2×2)**
+
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1722
 
 Recurrence: $F(n)=F(n-1)+F(n-2)$, with $F(0)=0,\;F(1)=1$.
 

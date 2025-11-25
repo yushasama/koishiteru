@@ -268,6 +268,10 @@ long long totalCoveredLength(vector<pair<long long,long long>> seg) {
 
 ### **CSES - Movie Festival**
 
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1629
+
 #### **Problem**
 Pick the maximum number of non-overlapping movies.
 
@@ -313,6 +317,10 @@ int main() {
 ---
 
 ### **CSES - Room Allocation**
+
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1164
 
 #### **Problem**
 Assign room ids to all intervals and print the minimum number of rooms used.
@@ -389,7 +397,11 @@ int main() {
 
 ### **CSES - Restaurant Customers**
 
-### **Problem**
+#### **Problem Link**
+
+https://cses.fi/problemset/task/1619
+
+#### **Problem**
 Given arrivals and departures, find the maximum number of customers present at once.
 
 #### **Why Interval Greedy**
@@ -438,6 +450,10 @@ int main() {
 ---
 
 ### **LeetCode 56 - Merge Intervals**
+
+#### **Problem Link**
+
+https://leetcode.com/problems/merge-intervals/
 
 #### **Problem**
 Merge a list of intervals into disjoint blocks.

@@ -43,19 +43,26 @@ Whenever the statement is basically "movement rules plus big coordinates", you a
 * **Geometry V - Circles, Arcs and Tangents**
   Circle-line intersection, circle-circle intersection, tangents, arcs, angles.
 
-* **Geometry VI - Advanced Rotations and Tricks**
-  Non-axis metrics, mixed coordinate systems, weird grids, more transforms like "San Francisco", Manhattan triangles, and contest-style hacks.
+* **Geometry VI - Similarity and Affine Geometry**
+Similarity transforms, scaling, fractals, affine maps, barycentric tricks.
 
+* **Geometry VII - Dynamic Geometry and Line Containers**
+Convex hull trick, Li Chao tree, dynamic upper/lower hull maintenance, half-plane intersection via deque, geometry with segment trees.
+
+* **Geometry VIII - Numerical Stability and Robust Geometry**
+EPS discipline, exact vs floating comparisons, robust orientation, overflow control, safe predicate structure.
 ---
 
 ## Links to Series Content
 
-* [Geometry I - Distance and Movement (This One)](../competitive/geometry_i)
-* [Geometry II - Lines, Cuts, and Orientation](../competitive/geometry_ii)
+* [Geometry I - Distance and Movement](../competitive/geometry_i)
+* [Geometry II - Lines, Cuts, and Orientation (This One)](../competitive/geometry_ii)
 * [Geometry III - Polygons and Convex Hull](../competitive/geometry_iii)
 * [Geometry IV - Sweep Line and Closest Pair](../competitive/geometry_iv)
 * [Geometry V - Circles, Arcs and Tangents](../competitive/geometry_v)
-* [Geometry VI - Advanced Rotations and Tricks](../competitive/geometry_vi)
+* [Geometry VI - Similarity and Affine Geometry](../competitive/geometry_vi)
+* [Geometry VII - Dynamic Geometry and Line Containers](../competitive/geometry_vii)
+* [Geometry VIII - Numerical Stability and Robust Geometry](../competitive/geometry_viii)
 
 ---
 
@@ -205,7 +212,7 @@ San Francisco Distances is the typical example.
 
 ---
 
-### Hex grid as 3D L1
+### Hex Grid as 3D L1
 
 Hex grids become easy if you stop drawing hexagons and just use cube coordinates with $x + y + z = 0$.
 Distance to a point is:
@@ -362,7 +369,7 @@ long long chebyshev(long long x1, long long y1,
 ### Rotated coordinates
 
 ```cpp
-pair<long long,long long> to_uv(long long x, long long y) {
+pair<long long, long long> to_uv(long long x, long long y) {
     return {x + y, x - y};
 }
 ```
@@ -385,7 +392,7 @@ long long hex_dist(long long x1, long long y1, long long z1,
 ### Manhattan farthest pair
 
 ```cpp
-long long farthest_manhattan(const vector<pair<long long,long long>>& pts) {
+long long farthest_manhattan(const vector<pair<long long, long long>>& pts) {
     const long long INF = (long long)4e18;
     long long mx1 = -INF, mn1 = INF;
     long long mx2 = -INF, mn2 = INF;
@@ -393,14 +400,19 @@ long long farthest_manhattan(const vector<pair<long long,long long>>& pts) {
     long long mx4 = -INF, mn4 = INF;
 
     for (auto [x, y] : pts) {
-        long long f1 =  x + y;
-        long long f2 =  x - y;
+        long long f1 = x + y;
+        long long f2 = x - y;
         long long f3 = -x + y;
         long long f4 = -x - y;
-        mx1 = max(mx1, f1); mn1 = min(mn1, f1);
-        mx2 = max(mx2, f2); mn2 = min(mn2, f2);
-        mx3 = max(mx3, f3); mn3 = min(mn3, f3);
-        mx4 = max(mx4, f4); mn4 = min(mn4, f4);
+
+        mx1 = max(mx1, f1);
+        mn1 = min(mn1, f1);
+        mx2 = max(mx2, f2);
+        mn2 = min(mn2, f2);
+        mx3 = max(mx3, f3);
+        mn3 = min(mn3, f3);
+        mx4 = max(mx4, f4);
+        mn4 = min(mn4, f4);
     }
 
     return max({mx1 - mn1, mx2 - mn2, mx3 - mn3, mx4 - mn4});
@@ -411,11 +423,11 @@ long long farthest_manhattan(const vector<pair<long long,long long>>& pts) {
 
 ## 7) Worked Examples
 
-All worked problems now use the richer template.
-
----
-
 ### AtCoder ABC178 E - Dist Max
+
+#### Problem Link
+
+https://atcoder.jp/contests/abc178/tasks/abc178_e
 
 #### Problem Description
 
@@ -481,14 +493,20 @@ int main() {
     for (int i = 0; i < n; ++i) {
         ll x, y;
         cin >> x >> y;
-        ll f1 =  x + y;
-        ll f2 =  x - y;
+
+        ll f1 = x + y;
+        ll f2 = x - y;
         ll f3 = -x + y;
         ll f4 = -x - y;
-        mx1 = max(mx1, f1); mn1 = min(mn1, f1);
-        mx2 = max(mx2, f2); mn2 = min(mn2, f2);
-        mx3 = max(mx3, f3); mn3 = min(mn3, f3);
-        mx4 = max(mx4, f4); mn4 = min(mn4, f4);
+
+        mx1 = max(mx1, f1);
+        mn1 = min(mn1, f1);
+        mx2 = max(mx2, f2);
+        mn2 = min(mn2, f2);
+        mx3 = max(mx3, f3);
+        mn3 = min(mn3, f3);
+        mx4 = max(mx4, f4);
+        mn4 = min(mn4, f4);
     }
 
     ll ans = max({mx1 - mn1, mx2 - mn2, mx3 - mn3, mx4 - mn4});
@@ -506,6 +524,10 @@ int main() {
 ---
 
 ### AtCoder Typical90 036 - Max Manhattan Distance
+
+#### Problem Link
+
+https://atcoder.jp/contests/typical90/tasks/typical90_aj
 
 #### Problem Description
 
@@ -548,266 +570,214 @@ Use the same code as in ABC178 E, possibly wrapped in your own IO.
 
 ---
 
-### Kattis - hex
+### Kattis - Honeycomb Walk
+
+#### Problem Link
+
+https://open.kattis.com/problems/honey
 
 #### Problem Description
 
-You are given a path on a hex grid as a comma separated list of directions such as `"n,ne,se,s,sw,nw"`.
-Tasks usually include:
+You are given an integer $n$ representing how many steps a larva takes on a hex grid.
 
-* Distance from the origin after following all steps.
-* Maximum distance from the origin reached at any point along the path.
+At each step, it may move to any of the six adjacent cells.
+After exactly $n$ steps, the larva must return to its original starting cell.
 
-You move on a regular hex grid with six possible directions.
+Your task is to compute the number of distinct walks of length $n$ that start and end at the origin.
 
 #### Why Distance and Movement
 
-Pure "hex grid distance" problem.
-Perfect for introducing cube coordinates and the 3D L1 metric.
+Even though the problem asks for a count rather than a distance, the underlying structure is the same as any hex-grid movement problem:
 
-#### Key Idea / Transform
+* six uniform adjacent directions,
+* cube coordinates with a linear invariant,
+* movement behavior identical to standard hex geometry,
+* reachable radius after $s$ steps is at most $s$.
 
-Use cube coordinates $(x, y, z)$ with the invariant:
+This makes cube coordinates perfect for modeling the state transitions and performing a dynamic programming walk-count.
 
-$$x + y + z = 0$$
+### Key Idea / Transform
 
-Pick a direction system like:
+We use **cube coordinates** $(x, y, z)$ on a hex grid, which satisfy the invariant:
 
-* n:  $y += 1, z -= 1$
-* ne: $x += 1, z -= 1$
-* se: $x += 1, y -= 1$
-* s:  $y -= 1, z += 1$
-* sw: $x -= 1, z += 1$
-* nw: $x -= 1, y += 1$
+$$
+x + y + z = 0.
+$$
 
-Distance from origin is:
+The six canonical cube-coordinate move vectors are:
 
-$$d = \max(|x|, |y|, |z|)$$
+$$
+\begin{aligned}
+\text{n}  &: (0,; +1,; -1), \
+\text{ne} &: (+1,; 0,; -1), \
+\text{se} &: (+1,; -1,; 0), \
+\text{s}  &: (0,; -1,; +1), \
+\text{sw} &: (-1,; 0,; +1), \
+\text{nw} &: (-1,; +1,; 0).
+\end{aligned}
+$$
 
-#### Solution Outline
+Because the constraint $x + y + z = 0$ implies
 
-1. Initialize $x = y = z = 0$, $\text{best} = 0$.
-2. Parse the input line and split by commas into steps.
-3. For each step, update the cube coordinates according to the chosen direction mapping.
-4. After each step:
+$$
+z = -x - y,
+$$
 
-   * Compute current distance using $d = \max(|x|, |y|, |z|)$
-   * Update best if you need the maximum reached
-5. At the end:
-
-   * Output final distance for "distance from origin"
-   * Output best if the problem asks for the maximum reached
-
-#### Complexity
-
-* Time: $O(L)$ where $L$ is the number of steps
-* Memory: $O(1)$
-
-#### Code
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-using ll = long long;
-
-ll hex_dist(ll x1, ll y1, ll z1,
-            ll x2, ll y2, ll z2) {
-    return max({llabs(x1 - x2),
-                llabs(y1 - y2),
-                llabs(z1 - z2)});
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    string s;
-    if (!getline(cin, s)) return 0;
-    stringstream ss(s);
-
-    ll x = 0, y = 0, z = 0;
-    ll best = 0;
-
-    string step;
-    while (getline(ss, step, ',')) {
-        if (step == "n")       { y += 1; z -= 1; }
-        else if (step == "ne") { x += 1; z -= 1; }
-        else if (step == "se") { x += 1; y -= 1; }
-        else if (step == "s")  { y -= 1; z += 1; }
-        else if (step == "sw") { x -= 1; z += 1; }
-        else if (step == "nw") { x -= 1; y += 1; }
-
-        best = max(best, hex_dist(0, 0, 0, x, y, z));
-    }
-
-    cout << hex_dist(0, 0, 0, x, y, z) << "\n";
-    // If needed:
-    // cout << best << "\n";
-    return 0;
-}
-```
-
-#### Notes
-
-* Once you know cube coordinates, any "hex shortest path" becomes trivial.
-* The main pitfall is mixing axial and cube coordinates incorrectly and breaking $x + y + z = 0$.
-* Many grid problems that "look" annoying turn into simple L1 after the right coordinate mapping.
+we can drop $z$ and store only the pair $(x, y)$.
 
 ---
 
-### ICPC SoCal - San Francisco Distances
+### Deriving the 2D Move Rules
 
-#### Problem Description
+We convert each cube move $(\Delta x, \Delta y, \Delta z)$ into a 2D update.
 
-Model San Francisco as:
+#### n:
 
-* South of Market Street $(y \ge 0)$: axis-aligned grid with Manhattan streets.
-* North of Market Street: 45 degree rotated grid with equally spaced diagonals.
+$$
+(x', y') = (x + 0,; y + 1)
+$$
 
-You can only walk along streets and only switch grids where streets coincide along Market Street.
-Each query gives two points:
+#### ne:
 
-* $(X_1, Y_1, D_1)$ and $(X_2, Y_2, D_2)$
-* $D$ is 'S' for South coordinates and 'N' for North coordinates
-* Need the shortest walking distance between the two points.
+$$
+(x', y') = (x + 1,; y)
+$$
 
-#### Why Distance and Movement
+#### se:
 
-This is the canonical "mixed metrics on a boundary" problem.
+$$
+(x', y') = (x + 1,; y - 1)
+$$
 
-* South: Manhattan norm.
-* North: rotated Manhattan that becomes Chebyshev in the right coordinates.
-* Paths can be all south, all north, or cross the boundary once.
+#### s:
 
-Perfect training for spotting when a shortest path has to cross a 1D boundary and the optimum crossing point lives in a finite candidate set.
+$$
+(x', y') = (x,; y - 1)
+$$
 
-#### Key Idea / Transform
+#### sw:
 
-1. South region: standard $L_1$ on integer grid.
+$$
+(x', y') = (x - 1,; y)
+$$
 
-   $$d_S((x_1, y_1), (x_2, y_2)) = |x_1 - x_2| + |y_1 - y_2|$$
+#### nw:
 
-2. North region: 45 degree rotated grid, each step has length $\sqrt{2}$.
-   In the north's integer coordinates, distance is:
+$$
+(x', y') = (x - 1,; y + 1)
+$$
 
-   $$d_N((x_1,y_1),(x_2,y_2)) = \sqrt{2} \cdot \max(|x_1 - x_2|, |y_1 - y_2|)$$
+Thus our final 2D transitions are:
 
-   So it behaves like Chebyshev times $\sqrt{2}$.
+$$
+\begin{aligned}
+\text{n}  &: (x,; y+1), \
+\text{ne} &: (x+1,; y), \
+\text{se} &: (x+1,; y-1), \
+\text{s}  &: (x,; y-1), \
+\text{sw} &: (x-1,; y), \
+\text{nw} &: (x-1,; y+1).
+\end{aligned}
+$$
 
-3. If one point is south and the other is north, any shortest path crosses Market Street at some $(t, 0)$.
-   Distance is:
+### DP Formulation
 
-   $$D(t) = d_S(A, (t, 0)) + d_N((t, 0), B)$$
+Define
 
-   This is piecewise linear in $t$, and its breakpoints occur at a small set of $x$ values defined by absolute value transitions.
+$$
+dp[s][x][y] = \text{number of walks of length } s \text{ ending at } (x, y).
+$$
 
-#### Solution Outline
+Initial condition:
 
-1. If both points are south, answer is $d_S$.
+$$
+dp[0][0][0] = 1.
+$$
 
-2. If both points are north, answer is $d_N$.
+Maximum absolute coordinate after $n$ steps is at most $n \le 14$, so a $41 \times 41$ grid (after adding an offset) is more than sufficient.
 
-3. Otherwise, ensure point $A$ is south and $B$ is north by swapping if needed.
+We want the number of closed walks:
 
-4. Let $A = (X_S, Y_S)$, $B = (X_N, Y_N)$.
+$$
+\text{answer} = dp[n][0][0].
+$$
 
-5. Define a lambda `check(t)` that computes:
+### Solution Outline
 
-   $$D(t) = |X_S - t| + |Y_S - 0| + \sqrt{2} \cdot \max(|t - X_N|, |0 - Y_N|)$$
+1. Create a 3D DP array $dp[s][x][y]$ for $0 \le s \le 14$ and $-14 \le x, y \le 14$ (offset to nonnegative indices).
+2. Set $dp[0][0][0] = 1$.
+3. For each step $s$, distribute $dp[s][x][y]$ to its six neighbors.
+4. Output $dp[n][0][0]$ for each test case.
 
-6. The absolute functions change regime at these candidate $t$ values:
+### Complexity
 
-   * $t = X_S$ (south part flips sign)
-   * $t = X_N$ (north x difference changes sign)
-   * $t = X_N + Y_N$
-   * $t = X_N - Y_N$
+* Time: $O(n R^2)$ with $R = 14$
+* Memory: $O(R^2)$
 
-   These last two come from where $|t - X_N|$ and $|Y_N|$ swap which is larger in the max.
+Both extremely small.
 
-7. Evaluate $D$ at those candidates and take the minimum.
-
-8. Print with appropriate precision.
-
-#### Complexity
-
-* Time: $O(1)$ per query
-* Memory: $O(1)$
-
-#### Code
+### Code
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-double distS(double x1, double y1, double x2, double y2) {
-    return fabs(x1 - x2) + fabs(y1 - y2);
-}
+static const int MAXN = 14;
+static const int OFF = 20;
 
-double distN(double x1, double y1, double x2, double y2) {
-    return sqrt(2.0) * max(fabs(x1 - x2), fabs(y1 - y2));
-}
+int dx[6] = {0, 1, 1, 0, -1, -1};
+int dy[6] = {1, 0, -1, -1, 0, 1};
+
+long long dp[MAXN+1][41][41];
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int Q;
-    cin >> Q;
-    cout << fixed << setprecision(12);
+    dp[0][OFF][OFF] = 1;
 
-    while (Q--) {
-        long long X1, Y1, X2, Y2;
-        char D1, D2;
-        cin >> X1 >> Y1 >> D1 >> X2 >> Y2 >> D2;
+    for (int s = 0; s < MAXN; s++) {
+        for (int x = 0; x <= 40; x++) {
+            for (int y = 0; y <= 40; y++) {
+                long long v = dp[s][x][y];
+                if (!v) continue;
 
-        // both south
-        if (D1 == 'S' && D2 == 'S') {
-            cout << distS(X1, Y1, X2, Y2) << "\n";
-            continue;
+                for (int d = 0; d < 6; d++) {
+                    int nx = x + dx[d];
+                    int ny = y + dy[d];
+                    dp[s+1][nx][ny] += v;
+                }
+            }
         }
-        // both north
-        if (D1 == 'N' && D2 == 'N') {
-            cout << distN(X1, Y1, X2, Y2) << "\n";
-            continue;
-        }
+    }
 
-        // ensure A is south and B is north
-        if (D1 == 'N') {
-            swap(X1, X2);
-            swap(Y1, Y2);
-            swap(D1, D2);
-        }
-
-        double best = 1e100;
-        double XS = X1, YS = Y1;
-        double XN = X2, YN = Y2;
-
-        auto check = [&](double t) {
-            double val = distS(XS, YS, t, 0.0) + distN(t, 0.0, XN, YN);
-            best = min(best, val);
-        };
-
-        check(XS);
-        check(XN);
-        check(XN + YN);
-        check(XN - YN);
-
-        cout << best << "\n";
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        cout << dp[n][OFF][OFF] << "\n";
     }
 
     return 0;
 }
 ```
 
-#### Notes
+### Notes
 
-* The "hard" part of this problem is identifying the correct small set of candidate $t$ values.
-* This pattern appears in various forms: mixing Euclidean with Manhattan, mixing different speeds, etc.
-* Once you get comfortable deriving breakpoints from absolute values, these problems stop being scary.
+* Once you know cube coordinates, *hex-grid movement becomes algebra*, not geometry.
+* The main pitfall is breaking the invariant $x + y + z = 0$ when deriving simplified coordinate systems.
+* Many hex-grid problems that look combinatorial become simple DP once the correct cube mapping is applied.
+* Closed-walk counting is a direct consequence of summing transitions; no geometry tricks are needed.
+* The reachable radius after $n$ steps is at most $n$, keeping the DP small and safe.
 
 ---
 
 ### Codeforces 1979E - Manhattan Triangle
+
+#### Problem Link
+
+https://codeforces.com/contest/1979/problem/E
 
 #### Problem Description
 
@@ -1015,6 +985,10 @@ int main() {
 ---
 
 ### Codeforces 1093G - Multidimensional Queries
+
+#### Problem Link
+
+https://codeforces.com/problemset/problem/1093/G
 
 #### Problem Description
 
@@ -1224,7 +1198,7 @@ int main() {
     while (q--) {
         int type;
         cin >> type;
-        
+
         if (type == 1) {
             int i;
             cin >> i;

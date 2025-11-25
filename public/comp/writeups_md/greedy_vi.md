@@ -95,10 +95,6 @@ Maintain a doubly linked list with most-recent at the front and a hashmap from k
 
 ## **6) Templates**
 
-Got it — here’s a clean, ready-to-paste version that fits your blog tone and keeps it sharp and technical:
-
----
-
 ### **Rule of Thumb: Bit Math**
 
 Why does our bit logic uses `uint64_t` and not `long long`?
@@ -266,6 +262,10 @@ struct LRUCache {
 
 ### **Cutting Out - Codeforces 1077D**
 
+#### **Problem Link**
+
+https://codeforces.com/problemset/problem/1077/D
+
 #### **Problem**
 
 Given a multiset of values and an integer $k$, build a sequence of length $k$ by repeating values, but all values should appear the same number of times $t$ (maximize $t$). Output any valid sequence.
@@ -370,6 +370,10 @@ int main() {
 
 ### **LRU Cache - LeetCode 146**
 
+#### **Problem Link**
+
+https://leetcode.com/problems/lru-cache/
+
 #### **Problem**
 
 Design a cache with capacity $K$ that supports `get` and `put`. Evict least recently used on overflow.
@@ -427,6 +431,10 @@ struct LRUCache {
 ---
 
 ### **Assign Cookies - LeetCode 455**
+
+#### **Problem Link**
+
+https://leetcode.com/problems/assign-cookies/
 
 #### **Problem**
 
