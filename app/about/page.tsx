@@ -137,6 +137,20 @@ export default function About() {
         <section id="experiences" className="flex flex-col justify-start w-full mb-16">
           <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl pb-4 font-heebo">Experience</div>
           <Experiences
+          companyName="Zwei Labs"
+          role="Software Engineer Intern"
+          startDate="10/25"
+          endDate="PRESENT"
+          details={
+            <>
+            Built and designed distributed backend systems supporting real-time trading operations on prediction markets. 
+            Designed a decimal-safe math library to eliminate floating-point drift and ensure consistent results for high-frequency workloads. 
+            Built a high-throughput backend to update quotes and track inventory, reducing end-to-end response latency under continuous trading load.
+            Built a concurrent routing layer to manage multiple real-time market feeds asynchronously, scaling with increased data volume without blocking.
+            </>
+          }
+          />
+          <Experiences
             companyName="Beach Investment Group"
             role="Quantitative Developer Intern"
             startDate="6/2024"
@@ -157,7 +171,19 @@ export default function About() {
         {/* PROJECTS */}
         <section id="projects" className="flex flex-col justify-start w-full">
           <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl pb-4 font-heebo">Projects & Ventures</div>
-
+          <Experiences
+            companyName={<AwesomeLink text="Real-Time Face Tracking & Expression Mapping Software" link="https://github.com/RyanHernandezz/Vtuber/" />}
+            startDate="9/2025"
+            endDate="12/2025"
+            details={
+              <>
+              Built a real-time pipeline mapping webcam input to avatar expressions using face tracking and emotion recognition models. 
+              Optimized model serving and streaming inference through data reduction, multithreading, and latency-oriented performance tuning, staying under 5 ms end-to-end.
+              Structured the system as parallel stages (capture, inference, smoothing) to avoid blocking and maintain consistent responsiveness.
+              Integrated a WebSocket-based real-time data API for external clients, enabling continuous low-latency synchronization.
+              </>
+            }
+          />
           <Experiences
             companyName={<AwesomeLink text="Scribble" link="https://scribble-ivory.vercel.app/" />}
             startDate="10/2025"
