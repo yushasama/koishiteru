@@ -42,9 +42,10 @@ export default function About() {
     { icon: saikouIcon, text: 'C++'},
     { icon: studyIcon, text: 'Machine Learning' },
     { icon: studyIcon, text: 'Real Time Control Systems' },
-    { icon: studyIcon, text: 'Cooking' },
+    { icon: foodIcon, text: 'Cooking' },
     { icon: studyIcon, text: 'Judo' },
     { icon: saikouIcon, text: 'Curry Udon' },
+    { icon: musicIcon, text: 'Hyperpop' }
   ]
 
   const sortedInterests = interestsData.sort((a, b) => {
