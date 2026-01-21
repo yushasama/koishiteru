@@ -38,18 +38,13 @@ export default function About() {
 
   const interestsData = [
     { icon: saikouIcon, text: 'Korean BBQ' },
-    { icon: saikouIcon, text: 'Quantitative Finance' },
-    { icon: studyIcon, text: 'Competitive Programming' },
-    { icon: studyIcon, text: 'C++, Python, Typescript, Golang, Rust' },
+    { icon: saikouIcon, text: 'Competitive Programming' },
+    { icon: saikouIcon, text: 'C++'},
     { icon: studyIcon, text: 'Machine Learning' },
-    { icon: saikouIcon, text: 'Judo' },
-    { icon: saikouIcon, text: 'Release Hallucination' },
-    { icon: saikouIcon, text: 'Elfensjon' },
-    { icon: foodIcon, text: 'Takoyaki, Sushi, Katsu' },
+    { icon: studyIcon, text: 'Real Time Control Systems' },
+    { icon: studyIcon, text: 'Cooking' },
+    { icon: studyIcon, text: 'Judo' },
     { icon: saikouIcon, text: 'Curry Udon' },
-    { icon: musicIcon, text: 'JRock, JMetal, JPop' },
-    { icon: foodIcon, text: 'BBQing' },
-    { icon: musicIcon, text: 'Hardcore, Hardstyle, Frenchcore' },
   ]
 
   const sortedInterests = interestsData.sort((a, b) => {
@@ -143,10 +138,11 @@ export default function About() {
           endDate="PRESENT"
           details={
             <>
-            Built and designed distributed backend systems supporting real-time trading operations on prediction markets. 
-            Designed a decimal-safe math library to eliminate floating-point drift and ensure consistent results for high-frequency workloads. 
-            Built a high-throughput backend to update quotes and track inventory, reducing end-to-end response latency under continuous trading load.
-            Built a concurrent routing layer to manage multiple real-time market feeds asynchronously, scaling with increased data volume without blocking.
+            Built distributed backend systems for real-time prediction market trading under strict latency and correctness constraints.
+            Designed a decimal-safe math library to prevent rounding bugs in trade execution and inventory updates.
+            Architected a low-latency event stream pipeline for market and inventory updates with deterministic behavior under burst traffic.
+            Implemented non-blocking concurrent ingestion for multiple market feeds with fault isolation.
+            Added pre-trade validation checks to prevent invalid orders under stale data and position limits.
             </>
           }
           />
@@ -157,12 +153,9 @@ export default function About() {
             endDate="5/2025"
             details={
               <>
-                Built modular factor modeling framework using Python and CUDA acceleration, enabling extensible integration of matrix profile
-                algorithms and neural network models for price prediction workflows. Accelerated computation by 60% through GPU-based processing with
-                NVIDIA CUDA/CuPy, reducing model training latency for large financial datasets. Optimized data processing pipelines using Polars,
-                improving end-to-end workflow efficiency of time series data analysis. Developed orthogonalization algorithms for independent factor
-                construction, removing correlation dependencies between predictive variables in multi-asset models. Applied quantitative research
-                methodologies in 2024 CFAOC RFP Competition, securing 1st place and $115K in funding for the student managed investment fund.
+              Owned end-to-end market forecasting systems, from raw data processing to model training and repeatable forecast generation.
+              Reworked slow training code by moving heavy computation to GPUs and using faster data layouts, cutting model iteration time by 60%.
+              Delivered market forecasts used in external funding proposals, directly supporting $115K in secured funding (CFAOC RFP 2024).
               </>
             }
           />
@@ -177,10 +170,10 @@ export default function About() {
             endDate="12/2025"
             details={
               <>
-              Built a real-time pipeline mapping webcam input to avatar expressions using face tracking and emotion recognition models. 
-              Optimized model serving and streaming inference through data reduction, multithreading, and latency-oriented performance tuning, staying under 5 ms end-to-end.
-              Structured the system as parallel stages (capture, inference, smoothing) to avoid blocking and maintain consistent responsiveness.
-              Integrated a WebSocket-based real-time data API for external clients, enabling continuous low-latency synchronization.
+              Built a real-time ML pipeline mapping webcam input to avatar expressions using face tracking and lightweight emotion inference.
+              Optimized streaming inference via data reduction, multithreading, and latency-first tuning, maintaining sub 5 ms end-to-end latency.
+              Structured the system as parallel stages (capture, inference, smoothing) to avoid blocking and stabilize frame-time.
+              Exposed a WebSocket-based real-time API enabling low-latency client synchronization and streaming.
               </>
             }
           />
@@ -212,16 +205,16 @@ export default function About() {
           />
 
           <Experiences
-            companyName={<AwesomeLink text="Chewse" link="https://github.com/yushasama/chewse" />}
+            companyName="Chewse"
             startDate="8/2025"
             endDate="9/2025"
             details={
               <>
-                Built and integrated a Redis-backed session system with TTL expiry, enabling ephemeral shared swipe rooms and real-time sync across
-                paired users. Reduced Google Places API calls by ~40% through caching, request coalescing, and adaptive rate-limiting, improving
-                scalability and cutting infra costs. Developed a partner-adaptive re-ranking engine that personalized results based on shared
-                preferences, boosting match conversion by ~25%. Prototyped a Go microservice adapter with goroutine pooling to improve concurrent
-                throughput and lay groundwork for modular service design.
+              Built a backend coordinating real-time shared session state between paired users using Redis.
+              Reduced match detection from O(n) to O(1) using Redis Sets, enabling fast responses as session size scaled.
+              Containerized services with Docker and deployed on AWS using Kubernetes and Terraform.
+              Implemented autoscaling, health checks, and rolling updates to support reliable production deployments.
+              Improved request throughput by optimizing concurrent request handling in Go.
               </>
             }
           />
