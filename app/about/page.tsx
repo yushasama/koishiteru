@@ -136,7 +136,7 @@ export default function About() {
           companyName="Zwei Labs"
           role="Software Engineer Intern"
           startDate="10/25"
-          endDate="PRESENT"
+          endDate="1/26"
           details={
             <>
             Built distributed backend systems for real-time prediction market trading under strict latency and correctness constraints.
