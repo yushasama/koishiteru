@@ -29,7 +29,7 @@ const ContactPage = () => {
     },
     {
       name: 'Resume',
-      url: '/resume/Leon_Do_SWE_Resume_2025.pdf',
+      url: '/resume/Leon_Do_Resume_2026.pdf',
       icon: FileText,
       description: 'Download CV',
       color: 'from-emerald-400 to-emerald-600'

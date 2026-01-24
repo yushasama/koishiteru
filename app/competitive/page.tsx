@@ -15,6 +15,12 @@ export default function CompetitivePage() {
       isMain: true,
     },
     {
+      id: 'graph_connectivity_decomp',
+      title: '# Graph Connectivity & Decomposition (CC, SCC, 2-SAT)',
+      readingTime: readingTimes.graph_connectivity_decomp,
+      backgroundImage: 'https://images.unsplash.com/photo-1542382257-80dedb725088?q=80&w=1228&auto=format&fit=crop',
+    },
+    {
       id: 'geometry_vi',
       title: 'Geometry VI - Advanced Rotations and Tricks',
       readingTime: readingTimes.geometry_vi,
