@@ -55,17 +55,6 @@ export function calculateReadingTime(fileId: string): string {
   }
 }
 
-/**
- * Get reading times for all writeups
- */
-export async function getAllReadingTimes(): Promise<Record<string, string>> {
-  const writeups = ( await readdir("../public/comp/writeups_md") ).map(writeup => writeup.replace(/\.md$/, ""))
-
-  const times: Record<string, string> = {};
-  writeups.forEach(id => {
-    times[id] = calculateReadingTime(id);
-  });
-
-  return times;
+export function getReadingTime(id: string): string {
+  return calculateReadingTime(id);
 }
-
