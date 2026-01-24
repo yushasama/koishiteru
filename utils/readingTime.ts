@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { readdir } from "fs/promises";
 import path from 'path';
 
 const WPM = 45; // Words per minute reading speed
@@ -57,33 +58,8 @@ export function calculateReadingTime(fileId: string): string {
 /**
  * Get reading times for all writeups
  */
-export function getAllReadingTimes(): Record<string, string> {
-  const writeups = [
-    'max_flow',
-    'matrix_exponentiation',
-    'fenwick_segment_trees',
-    'dynamic_programming_subset_sums',
-    'prefix_sums',
-    'interval_math',
-    'constraints',
-    'binary_search',
-    'square_root_decomposition',
-    'bitmasks',
-    'segment_trees_ii',
-    'greedy_i',
-    'greedy_ii',
-    'greedy_iii',
-    'greedy_iv',
-    'greedy_v',
-    'greedy_vi',
-    'nim_grundy',
-    'geometry_i',
-    'geometry_ii',
-    'geometry_iii',
-    'geometry_iv',
-    'geometry_v',
-    'geometry_vi'
-  ];
+export async function getAllReadingTimes(): Promise<Record<string, string>> {
+  const writeups = ( await readdir("../public/comp/writeups_md") ).map(writeup => writeup.replace(/\.md$/, ""))
 
   const times: Record<string, string> = {};
   writeups.forEach(id => {
