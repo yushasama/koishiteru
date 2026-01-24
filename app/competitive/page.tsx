@@ -14,7 +14,7 @@ export default function CompetitivePage() {
     },
     {
       id: 'graph_connectivity_decomp',
-      title: '# Graph Connectivity & Decomposition (CC, SCC, 2-SAT)',
+      title: 'Graph Connectivity & Decomposition (CC, SCC, 2-SAT)',
       readingTime: getReadingTime('graph_connectivity_decomp'),
       backgroundImage: 'https://images.unsplash.com/photo-1542382257-80dedb725088?q=80&w=1228&auto=format&fit=crop',
     },
