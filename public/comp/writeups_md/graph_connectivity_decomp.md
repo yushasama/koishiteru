@@ -179,7 +179,7 @@ Use `set` to avoid duplicate edges. For DP, you can convert to `vector<vector<in
 1. Map each literal `(var, val)` to index `id`.
 2. Clause `(a ∨ b)` → implications `¬a → b` and `¬b → a`.
 3. Run SCC on implication graph.
-4. If `comp[x] == comp[ $ \neg x $ ]` for some variable → unsat.
+4. If `comp[x] == comp[¬x]` for some variable → unsat.
 5. Else, assign by SCC order (later component index = stronger implication).
 
 ---
