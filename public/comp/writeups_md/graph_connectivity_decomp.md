@@ -596,30 +596,43 @@ int main() {
 
 ### Two SAT – AtCoder practice2 H
 
-**Problem:** $n$ boolean variables, $m$ clauses of form $(x_i = a) \text{ OR } (x_j = b)$. Check satisfiability + output assignment.
+**Problem:** $n$ boolean variables (either place on $ X_i \vee Y_i $). For every pair ($ i, j$) and choices $ a, b \in \{ 0, 1\}$, if placing $ x_i = a $ and $ y_i = b $ violates the distance constraint, add the clause:
+
+$$
+(x_i \neq a) \vee (x_j \neq b)
+$$
 
 **Why 2-SAT:** Literal 2-SAT problem.
 
-**Complexity:** $O(n + m)$.
+**Complexity:** $O(n^2)$.
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
+
+using ll = long long;
 
 struct TwoSAT {
     int n;
     vector<vector<int>> g;
     vector<int> comp, assignment;
 
-    TwoSAT(int n = 0) { init(n); }
+    TwoSAT(int n = 0) {
+        init(n);
+    }
 
     void init(int n_) {
         n = n_;
         g.assign(2 * n, {});
     }
 
-    int id(int var, int val) { return var * 2 + val; }
-    int neg(int x) { return x ^ 1; }
+    int id(int var, int val) {
+        return var * 2 + val;
+    }
+
+    int neg(int x) {
+        return x ^ 1;
+    }
 
     void add_implication(int x, int y) {
         g[x].push_back(y);
@@ -635,38 +648,47 @@ struct TwoSAT {
     bool solve() {
         int N = 2 * n;
         vector<vector<int>> gr(N);
-        for (int v = 0; v < N; v++)
-            for (int to : g[v]) gr[to].push_back(v);
+        for (int u = 0; u < N; ++u) {
+            for (int v : g[u]) {
+                gr[v].push_back(u);
+            }
+        }
 
-        vector<int> used(N, 0);
-        vector<int> order;
+        vector<int> used(N, 0), order;
         order.reserve(N);
-
-        function<void(int)> dfs1 = [&](int v) {
-            used[v] = 1;
-            for (int to : g[v]) if (!used[to]) dfs1(to);
-            order.push_back(v);
-        };
-
-        for (int i = 0; i < N; i++) if (!used[i]) dfs1(i);
-
         comp.assign(N, -1);
-        int j = 0;
 
-        function<void(int, int)> dfs2 = [&](int v, int c) {
-            comp[v] = c;
-            for (int to : gr[v]) if (comp[to] == -1) dfs2(to, c);
+        function<void(int)> dfs1 = [&](int u) {
+            used[u] = 1;
+            for (int v : g[u]) {
+                if (!used[v]) dfs1(v);
+            }
+            order.push_back(u);
         };
 
-        for (int i = N - 1; i >= 0; i--) {
-            int v = order[i];
-            if (comp[v] == -1) dfs2(v, j++);
+        function<void(int,int)> dfs2 = [&](int u, int c) {
+            comp[u] = c;
+            for (int v : gr[u]) {
+                if (comp[v] == -1) dfs2(v, c);
+            }
+        };
+
+        for (int i = 0; i < N; ++i) {
+            if (!used[i]) dfs1(i);
+        }
+
+        int comp_cnt = 0;
+        for (int i = N - 1; i >= 0; --i) {
+            int u = order[i];
+            if (comp[u] == -1) {
+                dfs2(u, comp_cnt++);
+            }
         }
 
         assignment.assign(n, 0);
-        for (int v = 0; v < n; v++) {
-            if (comp[2 * v] == comp[2 * v + 1]) return false;
-            assignment[v] = comp[2 * v] < comp[2 * v + 1] ? 1 : 0;
+        for (int i = 0; i < n; ++i) {
+            if (comp[2*i] == comp[2*i + 1]) return false;
+            assignment[i] = (comp[2*i] < comp[2*i + 1]);
         }
         return true;
     }
@@ -676,26 +698,40 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m; cin >> n >> m;
+    int n;
+    ll d;
+    cin >> n >> d;
+
+    vector<ll> X(n), Y(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> X[i] >> Y[i];
+    }
+
     TwoSAT ts(n);
 
-    for (int k = 0; k < m; k++) {
-        int i, a, j, b;
-        cin >> i >> a >> j >> b;
-        ts.add_or(i, a, j, b);
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            for (int pi = 0; pi < 2; ++pi) {
+                for (int pj = 0; pj < 2; ++pj) {
+                    ll xi = (pi == 0 ? X[i] : Y[i]);
+                    ll xj = (pj == 0 ? X[j] : Y[j]);
+                    if (llabs(xi - xj) < d) {
+                        ts.add_or(i, pi ^ 1, j, pj ^ 1);
+                    }
+                }
+            }
+        }
     }
 
-    if (!ts.solve()) {
-        cout << "s UNSATISFIABLE\n";
-        return 0;
+    bool res = ts.solve();
+    cout << (res ? "Yes\n" : "No\n");
+
+    if (res) {
+        for (int i = 0; i < n; ++i) {
+            cout << (ts.assignment[i] ? Y[i] : X[i]) << "\n";
+        }
     }
 
-    cout << "s SATISFIABLE\n";
-    cout << "v ";
-    for (int i = 0; i < n; i++) {
-        cout << (ts.assignment[i] ? i + 1 : -(i + 1)) << " ";
-    }
-    cout << "0\n";
     return 0;
 }
 ```
