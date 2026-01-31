@@ -718,122 +718,172 @@ Use `add_equal` / `add_neq` helpers.
 #include <bits/stdc++.h>
 using namespace std;
 
+#define rep(i,n) for (int i=0; i < (n); ++i)
+#define rrep(i,n) for (int i=1; i <= (n); ++i)
+#define drep(i,n) for (int i=(n)-1; i >= 0; --i)
+#define drrep(i,n) for (int i = (n); i >= 0; --i)
+#define all(a) (a).begin(), (a).end()
+
+#define ll long long
+#define db double
+#define pii pair<int, int>
+#define pll pair<ll, ll>
+#define pdb pair<db, db>
+#define vi vector<int>
+#define vl vector<ll>
+#define vc vector<char>
+#define vdb vector<db>
+#define vb vector<bool>
+
+#define pb push_back
+#define sz(x) (int)(x).size()
+#define maxs(x,y) (x = max(x,y))
+#define mins(x,y) (x = min(x,y))
+#define popcnt(x) (__builtin_popcount(x))
+
+#define yn(a) ((a) ? "Yes" : "No")
+#define fs(a) ((a) ? "First" : "Second")
+
+const int MOD = 1000000007;
+const int INF = 1000000000;
+const ll LINF = 1000000000000000000LL;
+const double EPS = 1e-10;
+
 struct TwoSAT {
-    int n;
-    vector<vector<int>> g;
-    vector<int> comp, assignment;
+  int n;
+  vector<vi> g;
+  vi comp, used, assignment;
 
-    TwoSAT(int n = 0) { init(n); }
+  TwoSAT(int n = 0) {
+    init(n);
+  }
 
-    void init(int n_) {
-        n = n_;
-        g.assign(2 * n, {});
+  void init(int n_) {
+    n = n_;
+    g.assign(2 * n, {});
+  }
+
+  int id(int var, int val) {
+    return 2 * var + val;
+  }
+
+  int neg(int x) {
+    return x ^ 1;
+  }
+
+  void add_implication(int x, int y) {
+    g[x].pb(y);
+  }
+
+  void add_or(int x_var, int x_val, int y_var, int y_val) {
+    int a = id(x_var, x_val);
+    int b = id(y_var, y_val);
+
+    add_implication(neg(a), b);
+    add_implication(neg(b), a);
+  }
+
+  void add_equal(int x_var, int y_var) {
+    add_or(x_var, 0, y_var, 1);
+    add_or(x_var, 1, y_var, 0);
+  }
+
+  void add_neq(int x_var, int y_var) {
+    add_or(x_var, 1, y_var, 1);
+    add_or(x_var, 0, y_var, 0);
+  }
+
+  bool solve() {
+    int N = 2 * n;
+    vector<vi> gr(N);
+
+    rep(u, N) {
+      for (auto& v : g[u]) gr[v].pb(u);
     }
 
-    int id(int var, int val) { return var * 2 + val; }
-    int neg(int x) { return x ^ 1; }
+    vi used(N, 0);
+    vi order;
+    order.reserve(N);
 
-    void add_implication(int x, int y) {
-        g[x].push_back(y);
+    auto dfs1 = [&](auto&& self, int u) -> void {
+      used[u] = 1;
+
+      for (auto& v : g[u]) if (!used[v]) self(self, v);
+      order.pb(u);
+    };
+
+    auto dfs2 = [&](auto&& self, int u, int c) -> void {
+      comp[u] = c;
+
+      for (auto& v : gr[u]) if (comp[v] == -1) self(self, v, c);
+    };
+
+    rep(u, N) if (!used[u]) dfs1(dfs1, u);
+    comp.assign(N, -1);
+
+    int comp_cnt = 0;
+
+    drep(i, N) {
+      int u = order[i];
+
+      if (comp[u] == -1) dfs2(dfs2, u, comp_cnt++);
     }
 
-    void add_or(int x_var, int x_val, int y_var, int y_val) {
-        int a = id(x_var, x_val);
-        int b = id(y_var, y_val);
-        add_implication(neg(a), b);
-        add_implication(neg(b), a);
+    assignment.assign(n, 0);
+
+    rep(v, n) {
+      if (comp[2 * v] == comp[2 * v + 1]) return false;
+
+      assignment[v] = comp[2 * v] < comp[2 * v + 1] ? 1 : 0;
     }
 
-    void add_equal(int x_var, int y_var) {
-        add_or(x_var, 0, y_var, 1);
-        add_or(x_var, 1, y_var, 0);
-    }
-
-    void add_neq(int x_var, int y_var) {
-        add_or(x_var, 1, y_var, 1);
-        add_or(x_var, 0, y_var, 0);
-    }
-
-    bool solve() {
-        int N = 2 * n;
-        vector<vector<int>> gr(N);
-        for (int v = 0; v < N; v++)
-            for (int to : g[v]) gr[to].push_back(v);
-
-        vector<int> used(N, 0);
-        vector<int> order;
-        order.reserve(N);
-
-        function<void(int)> dfs1 = [&](int v) {
-            used[v] = 1;
-            for (int to : g[v]) if (!used[to]) dfs1(to);
-            order.push_back(v);
-        };
-
-        for (int i = 0; i < N; i++) if (!used[i]) dfs1(i);
-
-        comp.assign(N, -1);
-        int j = 0;
-
-        function<void(int, int)> dfs2 = [&](int v, int c) {
-            comp[v] = c;
-            for (int to : gr[v]) if (comp[to] == -1) dfs2(to, c);
-        };
-
-        for (int i = N - 1; i >= 0; i--) {
-            int v = order[i];
-            if (comp[v] == -1) dfs2(v, j++);
-        }
-
-        assignment.assign(n, 0);
-        for (int v = 0; v < n; v++) {
-            if (comp[2 * v] == comp[2 * v + 1]) return false;
-            assignment[v] = comp[2 * v] < comp[2 * v + 1] ? 1 : 0;
-        }
-        return true;
-    }
+    return true;
+  }
 };
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+  cin.tie(0);
+  ios_base::sync_with_stdio(0);
 
-    int n, m; cin >> n >> m;
-    vector<int> target(n);
-    for (int i = 0; i < n; i++) cin >> target[i];
+  int n, m;
+  cin >> n >> m;
 
-    vector<pair<int, int>> door_sw(n, {-1, -1});
+  vi rooms(n);
+  vector<vi> g;
+  rep(i, n) cin >> rooms[i];
 
-    for (int sw = 0; sw < m; sw++) {
-        int k; cin >> k;
-        while (k--) {
-            int d; cin >> d; --d;
-            if (door_sw[d].first == -1) door_sw[d].first = sw;
-            else door_sw[d].second = sw;
-        }
+  vector<pii> switches(n, {-1, -1});
+
+  TwoSAT ts(m);
+
+  rep(i, m) {
+    int x;
+    cin >> x;
+
+    rep(j, x) {
+      int xi;
+      cin >> xi;
+
+      --xi;
+
+      if (switches[xi].first == -1) switches[xi].first = i;
+      else switches[xi].second = i;
     }
+  }
 
-    TwoSAT ts(m);
+  rep(i, n) {
+    int a = switches[i].first;
+    int b = switches[i].second;
 
-    for (int i = 0; i < n; i++) {
-        int p = door_sw[i].first;
-        int q = door_sw[i].second;
-        int t = target[i];
+    int room_status = rooms[i];
 
-        if (t == 0) {
-            ts.add_equal(p, q);
-        } else {
-            ts.add_neq(p, q);
-        }
-    }
+    if (room_status) ts.add_equal(a, b);
+    else ts.add_neq(a, b);
+  }
 
-    if (!ts.solve()) {
-        cout << "NO\n";
-    } else {
-        cout << "YES\n";
-    }
+  cout << (ts.solve() ? "YES" : "NO") << "\n";
 
-    return 0;
+  return 0;
 }
 ```
 
