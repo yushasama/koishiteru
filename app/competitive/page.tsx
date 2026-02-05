@@ -13,6 +13,12 @@ export default function CompetitivePage() {
       isMain: true,
     },
     {
+      id: 'reducibility',
+      title: 'Reduction Theory Framework',
+      readingTime: getReadingTime('reducibility'),
+      backgroundImage: 'https://images.unsplash.com/photo-1534312527009-56c7016453e6?q=80&w=1228&auto=format&fit=crop',
+    },
+    {
       id: 'graph_connectivity_decomp',
       title: 'Graph Connectivity & Decomposition (CC, SCC, 2-SAT)',
       readingTime: getReadingTime('graph_connectivity_decomp'),
