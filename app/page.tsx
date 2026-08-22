@@ -20,7 +20,7 @@ const panels = [
     title: "Blog",
     subtitle: "Infrastructure, Systems, Optimization & More",
     image: "home/panels/blog.jpg",
-    link: "http://cache-me-if-you-can.up.railway.app/",
+    link: "/blog",
   },
   {
     title: "Personal Research",

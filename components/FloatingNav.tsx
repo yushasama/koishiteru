@@ -58,7 +58,7 @@ import { useNavHighlight } from '../contexts/NavHighlightContext'
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/competitive', label: 'Competitive' },
-    { href: 'https://cache-me-if-you-can.up.railway.app/', label: 'Blog' },
+    { href: '/blog', label: 'Blog' },
     { href: '/research', label: 'Research' },
     { href: '/life', label: 'Life' },
     { href: '/contact', label: 'Contact' },
@@ -79,7 +79,7 @@ import { useNavHighlight } from '../contexts/NavHighlightContext'
 
       {/* Navigation Links */}
       {navItems.map((item) => {
-        const isActive = pathname === item.href
+        const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`))
         const isHighlighted = highlightedNav === item.label.toLowerCase()
         return (
           <Link 

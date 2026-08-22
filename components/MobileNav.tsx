@@ -40,6 +40,17 @@ const MobileNav = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY, pathname])
 
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false)
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isMenuOpen])
+
   // Don't show navigation on home page
   if (pathname === '/') {
     return null
@@ -49,7 +60,7 @@ const MobileNav = () => {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/competitive', label: 'Competitive' },
-    { href: 'https://cache-me-if-you-can.up.railway.app/', label: 'Blog' },
+    { href: '/blog', label: 'Blog' },
     { href: '/research', label: 'Research' },
     { href: '/life', label: 'Life' },
     { href: '/contact', label: 'Contact' },
@@ -78,6 +89,8 @@ const MobileNav = () => {
             onClick={toggleMenu}
             className="p-2 text-neutral-500 hover:text-neutral-300 transition-colors"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation-menu"
           >
             <svg 
               className={`w-5 h-5 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
@@ -95,12 +108,12 @@ const MobileNav = () => {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`overflow-hidden transition-all duration-300 ${
+        <div id="mobile-navigation-menu" className={`overflow-hidden transition-all duration-300 ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="mt-2 pt-2 border-t border-neutral-700">
             {navItems.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`))
               const isHighlighted = highlightedNav === item.label.toLowerCase()
               return (
                 <Link 

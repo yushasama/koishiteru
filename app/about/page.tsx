@@ -104,7 +104,7 @@ export default function About() {
               <p>
                 These days, I spend my time building & optimizing systems / infrastructure software, along with solving algorithmic challenges. Do please
                  check out my{' '}
-                 <Link className="text-blue-400" link="http://cache-me-if-you-can.ghost.io/" text="blog" highlightNav="blog"></Link> where I write about my projects, thoughts,
+                 <Link className="text-blue-400" link="/blog" text="blog" highlightNav="blog"></Link> where I write about my projects, thoughts,
                  & random blurbs about things I find interesting. For my algorithmically hungry friends, I write detailed{' '}
                  <Link className="text-blue-400" text="breakdowns" link="/competitive" highlightNav="competitive"></Link> on various competitive programming
                 topics.
@@ -115,7 +115,7 @@ export default function About() {
 						<Socials icon={gitHubIcon} link='https://github.com/yushasama' text='yushasama' color='fuschia'/>
 						<Socials icon={linkedinIcon} link='https://www.linkedin.com/in/leon-do-682003156/' text='Leon Do' color='blue'/>
 						<Socials icon={emailIcon} link='/' text='leontdo2004@gmail.com' color='teal'/>
-						<Socials icon={ghostIcon} link='https://cache-me-if-you-can.up.railway.app/' text='Blog' color='hot_pink'/>
+						<Socials icon={ghostIcon} link='/blog' text='Blog' color='hot_pink'/>
 					</div>
         </section>
 
