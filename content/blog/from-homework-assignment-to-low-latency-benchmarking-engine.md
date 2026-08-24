@@ -28,27 +28,53 @@ Note: CPU cycle counts are based on my AMD Zen 4 micro-architecture, so rough es
 
 ## Pre-allocating Memory & Bump Allocator
 
-Originally and as aforementioned, my professor had the class optimize the sequential via multi threading on dynamic memory, which we will call heap-allocated memory from now on. My first approach of optimizing was a bump allocator memory pool, avoiding costs of repeated malloc / free operations by pre-allocating a large buffer and using pointer arithmetic to walk the memory pools' addresses. Beyond faster allocation, I also aimed to enforce strong cache locality, alignment for SIMD-safe alignment, and $O(1)$ bulk deallocation via simple resets, instead of relying on the GC (garbage collector).
+Originally and as aforementioned, my professor had the class optimize the sequential version through multithreading on dynamic memory, which we will call heap-allocated memory from now on. My first approach was a bump-allocator memory pool: pre-allocate a large buffer, return addresses from it with pointer arithmetic, then reclaim everything with a single reset. The goals were predictable allocation, less heap traffic, and $O(1)$ bulk reuse.
 
 I got the idea of using pre-allocation from [LMAX Group's Disruptor](https://lmax-exchange.github.io/disruptor/disruptor.html#_memory_allocation), an inter-thread messaging library. They employed a "pre-allocated data structure in the form of a ring buffer." Meaning that all memory for the ring buffer is "pre-allocated on start up." [Hudson River Trading](https://www.hudsonrivertrading.com/hrtbeat/low-latency-optimization-part-2/#:~:text=The%20minimum%20size%20of%20the%20pool%20is%20pre-allocated) also had a similar approach, using a pre-allocated pool to allow effective usage of huge pages. Another inspiration came from Meta's open sourced C++ library, [folly::arena](https://github.com/facebook/folly/blob/main/folly/memory/Arena.h), a bump allocator for high-performance, short-lived memory allocation.
 
-I quickly learned from benchmarking, that this was not the case. I suspected it was because I'm working with primitive types, but upon seeing that I had worse cache miss rates with my bump allocator than compared to dynamic memory, I must have had implemented something wrong. Which I will fix in the upcoming days, but it's most likely due to a byte alignment or pointer math issue. This was part of the goal of benchmarking various approaches to estimating $\pi$, not just each method's effectiveness but also finding anomalies in my code. I knew something was wrong if I was getting $28%$ cache miss rates using a bump allocator. However, as I dived deeper, I noticed that despite the higher cache miss rates, my L1 cache & TLB miss rates were lower compared to the heap allocated memory approach:
+<!-- visual:arena-allocator -->
+
+The first dashboard made the Pool method look suspicious: its generic cache-miss percentage was high while its L1D miss percentage was tiny. My original explanation blamed alignment and pointer math inside the allocator. That explanation was wrong, and revisiting the source made the mistake obvious.
 
 ![Cache Miss Profile](/blog/from-homework-assignment/cache-miss-profile.png)
 
-*Cache Miss Profile*
+*Historical cache-miss profile. L2 and L3 events were not collected in this benchmark.*
 
 ![TLB Miss Profile](/blog/from-homework-assignment/tlb-miss-profile.png)
 
-*TLB Miss Profile*
+*Historical TLB-miss profile from the same run.*
 
-This led to my hypothesis that my bump allocator's cache misses were mostly coming from downstream. Then, I concluded that over-aligning 8-byte doubles to 64-byte boundaries wastes cache lines. Although L1 cache hit rates improved, it came at the cost of significantly higher pressure on L2, L3, and RAM, suggesting that my allocations were overwhelming L1 and spilling inefficiently down the cache hierarchy.
+#### What “One Allocation per Worker” Actually Means
 
-Since each allocated `double` costed an entire cache line rather than sharing one, L1 ends up getting filled fast with bloat. Thus values are evicted and waterfalled down the cache pipeline: L1 ➤ L2 ➤ L3 ➤ Ram, thus increasing the higher amount of cache misses past L1. So it seems that L1 became so overwhelmed, it started dumping its work onto the lower cache levels. It seems that each cache line is never re-used since it's packed with 1 value, thus L1 cache misses are lower but the cache lines end up waterfalling down the cache. Which is where most of the cache misses seem to be happening. I will have to incorporate deeper cache profiling, which I skipped out on implementing as I saw that perf stat event names are different for certain CPU microarchitectures, eg: AMD Zen.
+A worker is one of the four `std::thread`s launched by `main.cpp`. Each worker receives one quarter of the trials and executes the complete Monte Carlo loop independently. In the Pool and SIMD paths, every worker does the following:
 
-I now learn that I should have been doing alignment that matches the register width instead of blindly 64B. Which shortly came to the realization that I would have to account for AVX2s' 256 bit registers and NEON's 128 bit registers and handle value packing accordingly. Thus contributing to my understanding of why deterministic environments are so important... you do not have to stretch efforts thin trying to account for everything.
+1. Construct a `thread_local PoolAllocator` with a 64 KiB backing buffer.
+2. Reset its offset to zero.
+3. Call `allocate<int>()` once, carving out 4 bytes for that worker's `hits` counter.
+4. Increment that counter throughout its share of the simulation.
+5. Return the `int*` to the main thread.
 
-The goal here was that I wanted to eliminate memory fragmentation and minimize allocation overhead.
+Across four workers, the program reserves four 64 KiB backing buffers, or 256 KiB total, while carving out only four 4-byte counters, or 16 bytes total. The pool does **not** own the random `double` values. Scalar coordinates are local variables; the SIMD `randX` and `randY` arrays are aligned on the worker's stack; and the random-number generator also lives outside the pool. A 64-byte-aligned backing buffer is not the same thing as forcing every object onto its own 64-byte cache line.
+
+#### The Real Allocator Failure: A Pointer Escapes Its Thread
+
+The worker returning `int*` is the actual correctness bug. A `thread_local` object exists only for the lifetime of its thread and is destroyed when that thread exits. `PoolAllocator::~PoolAllocator()` frees the 64 KiB backing buffer at that point.
+
+The main thread first calls `join()` on every worker, which waits until those threads have completed. It then evaluates `totalHits += *ptr`. By the time that dereference happens, each worker's thread-local pool has been destroyed and `ptr` points into freed memory. That is a use-after-free and therefore undefined behavior. The memory may appear readable in one run, produce a wrong hit total in another, or fail under a different allocator or machine.
+
+The clean fix for this workload is not to return a pointer at all. Each worker should return or write an `int` value into caller-owned result storage. The main thread can safely sum those values after joining.
+
+There is also a separate latent bug in the reusable allocator: `allocate<T>()` advances `offset` by `sizeof(T)` before accounting for alignment padding, and its capacity check uses the unaligned position. The current one-`int` path does not trigger that overlap, but mixed or stricter-aligned allocations can. A correct bump allocator must align the current address first, check the aligned end against capacity, and then advance `offset` to that aligned end.
+
+#### The Benchmarking Error Was a Different Bug
+
+The runner collected `cache-references`, `cache-misses`, `L1-dcache-loads`, and `L1-dcache-load-misses`, but its L2 and L3 fields were explicitly recorded as `NA`. The generic cache-miss ratio and the L1D miss ratio come from different events and denominators; they cannot be read as consecutive stages of one L1 → L2 → L3 → RAM waterfall. I had inferred activity in cache levels I never measured.
+
+<!-- visual:cache-lines -->
+
+Even after fixing the dangling result pointer, this benchmark would not isolate allocator locality. One pooled result allocation per worker is too small and too far outside the hot loop. Most of the run measures random-number generation, threading, the Monte Carlo loop, and, for the SIMD method, vectorized computation. Calling the row “Pool” made it tempting to attribute every difference to the pool even though allocation behavior barely contributed to the workload.
+
+To test the allocator honestly, I would keep the RNG, thread count, computation, and input identical; run enough allocations for allocator behavior to matter; repeat on pinned cores; and collect the microarchitecture-specific L2/LLC events that `perf list` confirms are supported. Until then, the defensible conclusion is narrower: the dashboard exposed an anomaly, but it did not prove cache-line waste or downstream spill caused by the bump allocator.
 
 Next, we will go into how we can leverage our CPUs efficiently when processing data.
 
@@ -137,6 +163,8 @@ For the uninitiated, each bit in a number represents some variation of "true or 
 
 Instead of having to check whether each dart is a hit individually, you've guessed it, we can batch compute this using SIMD.
 
+<!-- visual:simd-mask -->
+
 ```cpp
 #include <immintrin.h>
 
@@ -219,17 +247,13 @@ Asking these questions allowed me to understand what kind of results do I want, 
 
 ![Average Wall Time, Cache Miss Rates Profile, TLB Miss Rates, CPU Compute Latency & Throughput](/blog/from-homework-assignment/benchmark-profile.png)
 
-*Average Wall Time, Cache Miss Rates Profile, TLB Miss Rates, CPU Compute Latency & Throughput*
+*Historical benchmark dashboard. The L2 and L3 cache fields in this pipeline were uncollected (`NA`).*
 
-As previously mentioned, I saw that the bump allocator had the highest cache miss rates despite reporting very low L1 cache miss rates. This led me to the conclusion that there was there was something deeper going on down the cache hierarchy.
+The apparent contradiction between generic cache misses and L1D misses became a useful lesson for a different reason than I first thought. I had treated two hardware-counter ratios as directly comparable, then filled the missing L2 and L3 data with a plausible story. The dashboard visualized measurements, but my explanation went beyond them.
 
-I started asking myself: "Is L1 cache being used effectively here... or is the cache miss rate masking a massive problem downstream?"
+Checking the implementation against the telemetry corrected two separate problems. First, the pool stores one 4-byte `hits` counter in each worker thread, then returns a pointer that becomes invalid when that thread exits. Second, the benchmark records no L2 or L3 counters, so it cannot prove the downstream cache story I originally told. The code had a lifetime bug, while the write-up had an inference bug.
 
-Turns out, the L1 cache was being overloaded with individually aligned allocations. Each 8-byte `double` was burning an entire 64-byte cache line, causing rapid evictions. So while L1 looked clean, the spillover into L2, L3, & Ram was brutal.
-
-What appeared to be tight caching behavior was actually just **wasting cache lines**, inflating downstream pressure, and degrading overall performance.
-
-From there, I figured out the bottle neck for such a high cache miss rate was simply due to the bump allocator wasting entire cache lines, inflating downstream pressure, and degrading overall performance.
+That changed how I approach performance work. A row named after an optimization is not an isolation test for that optimization, and a surprising metric is the beginning of an investigation rather than its conclusion. The next experiment needs a controlled allocator workload and supported cache-level counters before I make a causal claim.
 
 #### My Motherboard Fried and I Got Sidetracked Ricing Linux
 
@@ -269,8 +293,10 @@ I'm immensely glad that I started and finished this project front to back. But e
 
 I'll see you next time, cache you later!
 
-MCBE Project Repo:
+## Relevant Links
 
-[GitHub - yushasama/montecarlo-benchmarking-engine: High-performance C++17 Monte Carlo simulator using AVX2, memory pools, and bitmasking to estimate π. Built with an inhouse benchmarking suite.](https://github.com/yushasama/montecarlo-benchmarking-engine)
+[MCBE Project Repo](https://github.com/yushasama/montecarlo-benchmarking-engine)
 
-High-performance C++17 Monte Carlo simulator using AVX2, memory pools, and bitmasking to estimate π. Built with an inhouse benchmarking suite. - yushasama/montecarlo-benchmarking-engine
+[C++ Thread Storage Duration](https://eel.is/c++draft/basic.stc#basic.stc.thread)
+
+[C++ `std::thread::join()`](https://eel.is/c++draft/thread.thread.member#lib:thread,join)

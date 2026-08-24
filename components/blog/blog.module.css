@@ -7,6 +7,8 @@
 }
 
 .routeTransition {
+  --route-transition-frame-width: min(460px, calc(100vw - 32px));
+
   position: fixed;
   z-index: 80;
   inset: 0;
@@ -35,8 +37,8 @@
 .routeTransitionMedia {
   position: absolute;
   z-index: 1;
-  width: min(460px, 72vw);
-  aspect-ratio: 16 / 9;
+  width: var(--route-transition-frame-width);
+  height: clamp(210px, 56vw, 259px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   opacity: 0.3;
@@ -72,8 +74,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: min(620px, calc(100% - 40px));
+  width: var(--route-transition-frame-width);
+  padding: 22px clamp(18px, 5vw, 36px);
   transform: translate3d(0, 0, 0);
   transition: transform 700ms cubic-bezier(0.19, 1, 0.22, 1), opacity 560ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: transform, opacity;
@@ -89,16 +91,21 @@
 }
 
 .routeTransitionMark {
+  max-width: 100%;
+  margin-bottom: clamp(14px, 3vw, 20px);
   color: #8c8c8c;
   font-size: 0.68rem;
   font-weight: 650;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .routeTransitionCounter {
   min-width: 4ch;
+  margin: 0;
   font-size: clamp(3.2rem, 8vw, 5.6rem);
   font-variant-numeric: tabular-nums;
   font-weight: 780;
@@ -108,15 +115,15 @@
 }
 
 .routeTransitionTitle {
-  max-width: 520px;
-  overflow: hidden;
+  max-width: 36ch;
+  margin-top: clamp(14px, 3vw, 20px);
   color: #b8b8b8;
   font-size: clamp(0.72rem, 1.5vw, 0.9rem);
   letter-spacing: 0.04em;
   line-height: 1.4;
+  overflow-wrap: anywhere;
   text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-wrap: balance;
 }
 
 .routeTransitionTrack {
@@ -343,6 +350,11 @@
   transition: filter 280ms ease-out, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.thumbnail [data-systems-thumbnail] {
+  filter: grayscale(1) brightness(0.7);
+  transition: filter 280ms ease-out;
+}
+
 .postMain {
   min-width: 0;
   padding: 28px 28px 26px;
@@ -411,12 +423,38 @@
 }
 
 .articleHero {
+  position: relative;
+  overflow: hidden;
   border-bottom: 1px solid #363636;
   background: radial-gradient(circle at 76% 24%, rgba(251, 78, 124, 0.09), transparent 28%), #070707;
 }
 
+.articleHeroAsic::before {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, #070707 0%, rgba(7, 7, 7, 0.96) 34%, rgba(7, 7, 7, 0.28) 100%), url('/blog/asic-reverse-engineering/layout.png');
+  background-position: center, right center;
+  background-repeat: no-repeat;
+  background-size: cover, min(58vw, 760px) auto;
+  content: '';
+  filter: grayscale(1) contrast(1.16);
+  opacity: 0.44;
+  pointer-events: none;
+}
+
+.articleHeroSystems::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #070707 0%, rgba(7, 7, 7, 0.97) 39%, rgba(7, 7, 7, 0.5) 72%, rgba(7, 7, 7, 0.2) 100%);
+  content: '';
+  pointer-events: none;
+}
+
 .articleHeroInner {
-  width: min(1120px, calc(100% - 40px));
+  position: relative;
+  z-index: 1;
+  width: min(1320px, calc(100% - 32px));
   margin: 0 auto;
   padding: 148px 0 58px;
 }
@@ -452,16 +490,48 @@
 }
 
 .articleGrid {
+  --article-body-width: 720px;
+  --article-column-gap: 64px;
+  --article-rail-width: 196px;
+
   display: grid;
-  width: min(1120px, calc(100% - 40px));
-  grid-template-columns: 170px minmax(0, 720px);
-  gap: 52px;
+  width: min(1248px, calc(100% - 32px));
+  grid-template-columns: minmax(0, var(--article-rail-width)) minmax(0, var(--article-body-width)) minmax(0, var(--article-rail-width));
+  column-gap: var(--article-column-gap);
   margin: 0 auto;
   padding: 70px 0 110px;
 }
 
+.articleGridVisual {
+  --article-body-width: 1180px;
+
+  position: relative;
+  width: min(1440px, calc(100% - 32px));
+  grid-template-columns: minmax(0, var(--article-body-width));
+  justify-content: end;
+  padding-left: 210px;
+}
+
+.articleGridVisual .articleRail {
+  position: absolute;
+  z-index: 30;
+  top: 70px;
+  bottom: 110px;
+  left: 0;
+  width: 170px;
+}
+
+.articleGridVisual .articleProse {
+  grid-column: 1;
+}
+
+.articleRail {
+  min-width: 0;
+}
+
 .toc {
   position: sticky;
+  z-index: 31;
   top: 108px;
   align-self: start;
   max-height: calc(100vh - 132px);
@@ -473,13 +543,44 @@
   display: none;
 }
 
-.toc strong {
-  display: block;
-  margin-bottom: 12px;
+.tocHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.tocHeader strong {
   color: #d4d4d4;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.tocHeader span {
+  flex: none;
+  color: #666;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tocProgressTrack {
+  height: 1px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #242424;
+}
+
+.tocProgressTrack span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fb4e7c;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .toc nav {
@@ -504,11 +605,16 @@
 }
 
 .articleProse {
+  grid-column: 2;
   min-width: 0;
   color: #d4d4d4;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.075rem;
   line-height: 1.86;
+}
+
+.articleProseVisual {
+  width: 100%;
 }
 
 .articleLoading {
@@ -656,27 +762,6 @@
   background: #555;
 }
 
-.readingProgress {
-  position: fixed;
-  z-index: 52;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.05);
-  pointer-events: none;
-}
-
-.readingProgress span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: #fb4e7c;
-  transform: scaleX(0);
-  transform-origin: left center;
-  will-change: transform;
-}
-
 .articleBackControl {
   position: fixed;
   z-index: 48;
@@ -739,12 +824,28 @@
 
 .articleProgressRingValue {
   position: absolute;
-  inset: 3px;
-  border: 1.5px solid transparent;
-  border-top-color: #fb4e7c;
+  inset: 0;
   border-radius: 50%;
-  transform: rotate(0deg);
-  will-change: transform;
+  background: conic-gradient(#fb4e7c var(--reading-progress), #303030 0);
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+}
+
+.articleProgressRingLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d8d8d8;
+  font-size: 0.58rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.articleProgressRingLabel small {
+  margin-left: 1px;
+  color: #737373;
+  font-size: 0.45rem;
 }
 
 .articleProse :global(img) {
@@ -808,6 +909,10 @@
     transform: scale(1.075);
   }
 
+  .postRow:hover .thumbnail [data-systems-thumbnail] {
+    filter: grayscale(0) brightness(1);
+  }
+
   .postRow:hover .postMain h2 {
     color: #fff;
     transform: translateY(-3px);
@@ -823,18 +928,44 @@
   }
 }
 
-@media (max-width: 1040px) {
+@media (max-width: 1160px) {
   .articleGrid {
     grid-template-columns: minmax(0, 720px);
+    column-gap: 0;
     justify-content: center;
+  }
+
+  .articleRail {
+    display: contents;
   }
 
   .toc {
     display: none;
   }
+
+  .articleProse {
+    grid-column: auto;
+  }
+
+  .articleGridVisual {
+    width: min(100% - 32px, 1180px);
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 0;
+  }
 }
 
 @media (max-width: 800px) {
+  .articleHeroAsic::before {
+    background-image: linear-gradient(0deg, #070707 0%, rgba(7, 7, 7, 0.86) 58%, rgba(7, 7, 7, 0.46) 100%), url('/blog/asic-reverse-engineering/layout.png');
+    background-position: center, 58% 24%;
+    background-size: cover, auto 62%;
+    opacity: 0.3;
+  }
+
+  .articleHeroSystems::before {
+    background: linear-gradient(0deg, #070707 0%, rgba(7, 7, 7, 0.82) 56%, rgba(7, 7, 7, 0.25) 100%);
+  }
+
   .hero {
     min-height: 660px;
   }
@@ -918,11 +1049,18 @@
   }
 
   .articleBackControl {
-    right: 14px;
-    bottom: 14px;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: 54px;
     min-width: 54px;
-    grid-template-columns: auto auto;
-    padding-left: 12px;
+    min-height: 54px;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 7px;
+  }
+
+  .articleBackArrow {
+    display: none;
   }
 
   .articleBackCopy {
@@ -932,6 +1070,18 @@
     overflow: hidden;
     clip: rect(0 0 0 0);
     white-space: nowrap;
+  }
+
+  .articleProgressRing {
+    width: 40px;
+    height: 40px;
+  }
+
+  .articleProgressRingLabel::before {
+    margin-right: 2px;
+    color: #fb4e7c;
+    content: '←';
+    font-size: 0.62rem;
   }
 }
 
@@ -980,6 +1130,7 @@
   .postRow::after,
   .thumbnail,
   .thumbnail img,
+  .thumbnail [data-systems-thumbnail],
   .postMain h2,
   .postArrow,
   .articleBackControl,

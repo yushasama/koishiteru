@@ -26,5 +26,5 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps):
   if (!post) notFound();
 
   const markdown = await readFile(path.join(process.cwd(), post.contentPath), 'utf8');
-  return <ArticleShell post={post}><ArticleBody markdown={markdown} sections={post.sections} /></ArticleShell>;
+  return <ArticleShell post={post}><ArticleBody markdown={markdown} sections={post.sections} visualStory={post.visualStory} /></ArticleShell>;
 }

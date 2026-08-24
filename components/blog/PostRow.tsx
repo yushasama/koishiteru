@@ -7,6 +7,7 @@ import React, { type KeyboardEvent, type MouseEvent } from 'react';
 import type { BlogPost } from '../../lib/blog/posts';
 import { requestBlogArticleNavigation } from './blogNavigation';
 import styles from './blog.module.css';
+import SystemsThumbnail from './systems/SystemsThumbnail';
 
 interface PostRowProps {
   post: BlogPost;
@@ -39,7 +40,9 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
     <motion.div animate={{ opacity: receded ? 0.58 : 1 }} transition={{ duration: reduceMotion ? 0 : 0.28 }} className={styles.postRowWrap}>
       <Link href={href} className={styles.postRow} onClick={handleClick} onKeyDown={handleKeyDown} onFocus={onFocus} onMouseEnter={onHover}>
         <div className={styles.thumbnail}>
-          <Image src={post.thumbnail} alt="Abstract white particle flow" fill sizes="(max-width: 767px) calc(100vw - 40px), 160px" />
+          {post.visualStory === 'systems-optimization'
+            ? <SystemsThumbnail />
+            : <Image src={post.thumbnail} alt={post.thumbnailAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), 160px" />}
         </div>
         <div className={styles.postMain}>
           <span className={styles.postCategory}>{post.category}</span>

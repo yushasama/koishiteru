@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-labelledby="title description">
+  <title id="title">MCBE cache observation map</title>
+  <desc id="description">Four L1 cache sets with a highlighted hits counter and uncollected L2 and L3 levels.</desc>
+  <defs>
+    <radialGradient id="pink-field" cx="78%" cy="14%" r="76%">
+      <stop offset="0" stop-color="#fb4e7c" stop-opacity=".18"/>
+      <stop offset=".58" stop-color="#fb4e7c" stop-opacity=".025"/>
+      <stop offset="1" stop-color="#08090b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hits-fill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fb4e7c" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#fb4e7c" stop-opacity=".13"/>
+    </linearGradient>
+    <linearGradient id="data-fill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#76d7ff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#76d7ff" stop-opacity=".04"/>
+    </linearGradient>
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <path d="M0 3.5H4" stroke="#fff" stroke-opacity=".018"/>
+    </pattern>
+  </defs>
+
+  <rect width="720" height="480" fill="#08090b"/>
+  <rect width="720" height="480" fill="url(#pink-field)"/>
+  <path d="M42 58H678V352H42Z" fill="#090a0c" fill-opacity=".68" stroke="#fff" stroke-opacity=".12"/>
+  <path d="M42 96H678" stroke="#fff" stroke-opacity=".09"/>
+  <text x="64" y="81" fill="#d5d7db" fill-opacity=".72" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="12" font-weight="600" letter-spacing="2">CACHE OBSERVATION MAP</text>
+  <text x="656" y="81" fill="#76d7ff" fill-opacity=".58" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="10" text-anchor="end">64 B LINES</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="9">
+    <g transform="translate(0 0)">
+      <text x="65" y="135" fill="#fff" fill-opacity=".46">SET 00</text>
+      <text x="125" y="135" fill="#fff" fill-opacity=".24">L1D</text>
+      <g transform="translate(160 113)">
+        <rect width="56" height="34" fill="url(#hits-fill)" stroke="#fb4e7c" stroke-opacity=".62"/>
+        <text x="28" y="21" fill="#fff" fill-opacity=".82" text-anchor="middle">hits</text>
+        <path d="M56 0H448V34H56Z" fill="#fff" fill-opacity=".012" stroke="#fff" stroke-opacity=".09"/>
+        <path d="M112 0V34M168 0V34M224 0V34M280 0V34M336 0V34M392 0V34" stroke="#fff" stroke-opacity=".065"/>
+      </g>
+      <text x="654" y="135" fill="#fff" fill-opacity=".28" text-anchor="end">4 B</text>
+    </g>
+
+    <g transform="translate(0 54)">
+      <text x="65" y="135" fill="#fff" fill-opacity=".42">SET 01</text>
+      <text x="125" y="135" fill="#fff" fill-opacity=".22">L1D</text>
+      <g transform="translate(160 113)">
+        <path d="M0 0H168V34H0Z" fill="url(#data-fill)"/>
+        <path d="M0 0H448V34H0Z" fill="none" stroke="#fff" stroke-opacity=".09"/>
+        <path d="M56 0V34M112 0V34M168 0V34M224 0V34M280 0V34M336 0V34M392 0V34" stroke="#fff" stroke-opacity=".065"/>
+      </g>
+      <text x="654" y="135" fill="#fff" fill-opacity=".28" text-anchor="end">64 B</text>
+    </g>
+
+    <g transform="translate(0 108)">
+      <text x="65" y="135" fill="#fff" fill-opacity=".38">SET 02</text>
+      <text x="125" y="135" fill="#fff" fill-opacity=".2">L1D</text>
+      <g transform="translate(160 113)">
+        <rect width="112" height="34" fill="url(#data-fill)"/>
+        <rect x="224" width="112" height="34" fill="url(#data-fill)" opacity=".72"/>
+        <path d="M0 0H448V34H0Z" fill="none" stroke="#fff" stroke-opacity=".09"/>
+        <path d="M56 0V34M112 0V34M168 0V34M224 0V34M280 0V34M336 0V34M392 0V34" stroke="#fff" stroke-opacity=".065"/>
+      </g>
+      <text x="654" y="135" fill="#fff" fill-opacity=".28" text-anchor="end">64 B</text>
+    </g>
+
+    <g transform="translate(0 162)">
+      <text x="65" y="135" fill="#fff" fill-opacity=".34">SET 03</text>
+      <text x="125" y="135" fill="#fff" fill-opacity=".18">L1D</text>
+      <g transform="translate(160 113)">
+        <rect x="56" width="224" height="34" fill="url(#data-fill)" opacity=".5"/>
+        <path d="M0 0H448V34H0Z" fill="none" stroke="#fff" stroke-opacity=".09"/>
+        <path d="M56 0V34M112 0V34M168 0V34M224 0V34M280 0V34M336 0V34M392 0V34" stroke="#fff" stroke-opacity=".065"/>
+      </g>
+      <text x="654" y="135" fill="#fff" fill-opacity=".28" text-anchor="end">64 B</text>
+    </g>
+  </g>
+
+  <path d="M42 352H678" stroke="#fff" stroke-opacity=".09"/>
+  <g transform="translate(64 380)" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="10">
+    <text y="13" fill="#fff" fill-opacity=".32">POOL FOOTPRINT</text>
+    <text y="34" fill="#fff" fill-opacity=".58">4 workers · 16 B used</text>
+    <g transform="translate(332 4)">
+      <text y="18" fill="#76d7ff" fill-opacity=".72">L1D</text>
+      <path d="M34 14H92" stroke="#76d7ff" stroke-opacity=".46"/>
+      <text x="106" y="18" fill="#fff" fill-opacity=".34">L2 · N/A</text>
+      <path d="M162 14H220" stroke="#fff" stroke-opacity=".18" stroke-dasharray="5 5"/>
+      <text x="234" y="18" fill="#fff" fill-opacity=".34">L3 · N/A</text>
+    </g>
+  </g>
+  <path d="M0 0H720V480H0Z" fill="url(#scanlines)"/>
+</svg>
