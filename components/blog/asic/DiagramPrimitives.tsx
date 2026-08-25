@@ -94,7 +94,7 @@ export function DiagramFrame({ label, status, children }: DiagramFrameProps): JS
   return <figure className={styles.diagramFrame} aria-label={`${label}: ${status}`}><figcaption><span>{label}</span><strong>{status}</strong></figcaption>{children}<div className={styles.diagramCorner} aria-hidden="true">JSC / ASIC</div></figure>;
 }
 
-export function DiagramSvg({ width, height, ariaLabel, children, className, contentScale = 0.94, inset = 18 }: DiagramSvgProps): JSX.Element {
+export function DiagramSvg({ width, height, ariaLabel, children, className, contentScale = 0.94, inset = 26 }: DiagramSvgProps): JSX.Element {
   const offsetX = width * (1 - contentScale) / 2;
   const offsetY = height * (1 - contentScale) / 2;
   const svgClassName = className ? `${styles.diagramSvg} ${className}` : styles.diagramSvg;

@@ -113,8 +113,8 @@
 .diagramCorner {
   position: absolute;
   z-index: 3;
-  right: 15px;
-  bottom: 13px;
+  right: 36px;
+  bottom: 36px;
   color: #3f3f3f;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.56rem;

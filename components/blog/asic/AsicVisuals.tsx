@@ -44,11 +44,11 @@ function ChallengePipelineDiagram(): JSX.Element {
     <DiagramFrame label="The challenge" status="Recover circuit → make success go high → recover output">
       <div className={styles.pipelineMobile} aria-hidden="true">{stages.map(({ number, lines, color }, index) => <React.Fragment key={number}><div style={{ borderColor: color }}><small style={{ color }}>{number}</small><strong>{lines.join(' ')}</strong></div>{index < stages.length - 1 && <i>↓</i>}</React.Fragment>)}</div>
       <DiagramSvg width={900} height={250} ariaLabel="Recover the circuit, find an input that makes success go high, then recover the final output" className={styles.pipelineDesktop}>
-        <defs><marker id="pipeline-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L9 4L0 8z" fill="#8b8b8b" /></marker></defs>
-        <path d="M288 125H320" fill="none" stroke="#8b8b8b" strokeWidth="2" markerEnd="url(#pipeline-arrow)" /><path d="M580 125H612" fill="none" stroke="#8b8b8b" strokeWidth="2" markerEnd="url(#pipeline-arrow)" />
+        <defs><marker id="pipeline-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.45" /></marker></defs>
+        <path d="M288 125H322" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeWidth="1.45" markerEnd="url(#pipeline-arrow)" /><path d="M580 125H614" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeWidth="1.45" markerEnd="url(#pipeline-arrow)" />
         {stages.map(({ number, lines, color }, index) => {
           const x = 44 + index * 292;
-          return <g key={number} transform={`translate(${x} 54)`}><rect width="236" height="142" rx="12" fill="#101010" stroke={color} strokeOpacity="0.46" strokeWidth="1.5" /><rect x="8" y="8" width="220" height="126" rx="8" fill="none" stroke="#fff" strokeOpacity="0.045" /><circle cx="28" cy="28" r="14" fill={color} fillOpacity="0.1" stroke={color} strokeOpacity="0.72" /><text x="28" y="32" textAnchor="middle" fill={color} fontFamily="monospace" fontSize="10">{number}</text><text x="118" y={lines.length === 1 ? 78 : 70} textAnchor="middle" fill="#f5f5f5" fontFamily="monospace" fontSize="13" letterSpacing="0.5">{lines.map((line, lineIndex) => <tspan key={line} x="118" dy={lineIndex === 0 ? 0 : 22}>{line}</tspan>)}</text></g>;
+          return <g key={number} transform={`translate(${x} 54)`}><rect width="236" height="142" rx="12" fill="#101010" fillOpacity="0.68" stroke={color} strokeOpacity="0.52" strokeWidth="1.35" /><circle cx="28" cy="28" r="14" fill={color} fillOpacity="0.1" stroke={color} strokeOpacity="0.72" /><text x="28" y="32" textAnchor="middle" fill={color} fontFamily="monospace" fontSize="10">{number}</text><text x="118" y={lines.length === 1 ? 78 : 70} textAnchor="middle" fill="#f5f5f5" fontFamily="monospace" fontSize="13" letterSpacing="0.5">{lines.map((line, lineIndex) => <tspan key={line} x="118" dy={lineIndex === 0 ? 0 : 22}>{line}</tspan>)}</text></g>;
         })}
       </DiagramSvg>
     </DiagramFrame>
@@ -114,15 +114,15 @@ function LayerStackDiagram({ progress }: ScrollDiagramProps): JSX.Element {
 function AndGateDiagram(): JSX.Element {
   return (
     <DiagramFrame label="Combinational logic" status="Both inputs must be high">
-      <DiagramSvg width={760} height={310} ariaLabel="Inputs A and B enter a hardware AND gate and produce output Y only when both are one">
-        <text x="90" y="84" fill="#777" fontFamily="monospace" fontSize="10">INPUT PINS</text>
-        <circle cx="112" cy="126" r="18" fill="#111" stroke="#63d6ff" /><text x="112" y="131" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="13">A</text>
-        <circle cx="112" cy="202" r="18" fill="#111" stroke="#f0c557" /><text x="112" y="207" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="13">B</text>
+      <DiagramSvg width={760} height={350} ariaLabel="Inputs A and B enter a hardware AND gate and produce output Y only when both are one">
+        <text x="72" y="80" fill="#fff" fontFamily="monospace" fontSize="15" fontWeight="700">INPUT PINS</text>
+        <circle cx="112" cy="126" r="18" fill="#111" stroke="#63d6ff" /><text x="112" y="132" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="16" fontWeight="700">A</text>
+        <circle cx="112" cy="202" r="18" fill="#111" stroke="#f0c557" /><text x="112" y="208" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="16" fontWeight="700">B</text>
         <path d="M130 126H280M130 202H280" fill="none" stroke="#676767" strokeWidth="3" />
         <g transform="translate(280 92)"><path d="M0 0h76c58 0 96 32 96 72s-38 72-96 72H0z" fill="#101010" stroke="#e8e8e8" strokeWidth="2" /><text x="76" y="79" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="18">AND</text></g>
         <path d="M452 164H590" fill="none" stroke="#e8e8e8" strokeWidth="3" />
         <circle cx="610" cy="164" r="20" fill="#111" stroke="#7ce5a8" strokeWidth="2" /><text x="610" y="169" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="13">Y</text>
-        <text x="380" y="250" textAnchor="middle" fill="#777" fontFamily="monospace" fontSize="12">Y = A ∧ B</text>
+        <text x="380" y="292" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="22" fontWeight="700">Y = A ∧ B</text>
       </DiagramSvg>
     </DiagramFrame>
   );
@@ -199,39 +199,126 @@ function CircuitMorphDiagram({ progress }: ScrollDiagramProps): JSX.Element {
   );
 }
 
+interface SccRawNode {
+  label: string;
+  x: number;
+  y: number;
+  component: 'R0' | 'R1';
+}
+
+interface SccComponentNode {
+  id: 'R0' | 'R1' | 'R2';
+  members: string;
+  x: number;
+  y: number;
+  r: number;
+  color: string;
+}
+
+type SccPoint = readonly [number, number];
+
+const sccRawNodes: readonly SccRawNode[] = [
+  { label: 'A', x: 112, y: 250, component: 'R0' },
+  { label: 'B', x: 176, y: 158, component: 'R0' },
+  { label: 'C', x: 286, y: 194, component: 'R0' },
+  { label: 'D', x: 282, y: 316, component: 'R0' },
+  { label: 'F', x: 410, y: 158, component: 'R1' },
+  { label: 'G', x: 500, y: 246, component: 'R1' },
+  { label: 'H', x: 424, y: 354, component: 'R1' },
+];
+
+const sccComponents: readonly SccComponentNode[] = [
+  { id: 'R0', members: 'A · B · C · D', x: 130, y: 278, r: 46, color: '#63d6ff' },
+  { id: 'R1', members: 'F · G · H', x: 310, y: 278, r: 46, color: '#f0c557' },
+  { id: 'R2', members: 'relay', x: 470, y: 278, r: 46, color: '#7ce5a8' },
+];
+
+const sccSuccessNode = { x: 606, y: 278, r: 24, color: '#7ce5a8' } as const;
+
+function easeInOutCubic(k: number): number {
+  return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+}
+
+function getSccComponent(id: SccComponentNode['id']): SccComponentNode {
+  const component = sccComponents.find((candidate) => candidate.id === id);
+  if (!component) throw new Error(`Unknown SCC component: ${id}`);
+  return component;
+}
+
+function getSccRawNodePosition(node: SccRawNode, t: number): SccPoint {
+  const target = getSccComponent(node.component);
+  return [mix(node.x, target.x, t), mix(node.y, target.y, t)];
+}
+
+function getCircleEdgePoint(center: SccPoint, target: SccPoint, radius: number, pad: number): SccPoint {
+  const dx = target[0] - center[0];
+  const dy = target[1] - center[1];
+  const len = Math.hypot(dx, dy) || 1;
+  return [center[0] + (dx / len) * (radius + pad), center[1] + (dy / len) * (radius + pad)];
+}
+
+function SccMovingRawNode({ node, t }: { node: SccRawNode; t: number }): JSX.Element {
+  const [x, y] = getSccRawNodePosition(node, t);
+  return <g transform={`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${mix(1, 0.62, t).toFixed(3)})`} opacity={Math.max(0, 1 - t * 1.55)}><circle r="18" fill="#101010" stroke="#d7d7d7" /><text y="4" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="10">{node.label}</text></g>;
+}
+
+function SccComponentCircle({ node, t }: { node: SccComponentNode; t: number }): JSX.Element {
+  const opacity = node.id === 'R2' ? clamp((t - 0.5) / 0.32) : clamp((t - 0.22) / 0.46);
+  const scale = node.id === 'R2' ? mix(0.82, 1, opacity) : mix(0.58, 1, opacity);
+  return <g transform={`translate(${node.x} ${node.y}) scale(${scale})`} opacity={opacity}><circle r={node.r} fill={node.color} fillOpacity="0.055" stroke={node.color} strokeWidth="2" /><text y="-2" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="13">{node.id}</text><text y="17" textAnchor="middle" fill={node.color} fontFamily="monospace" fontSize="9">{node.members}</text></g>;
+}
+
+function SccDirectedEdge({ from, to, fromRadius, toRadius, label, index, t }: { from: SccPoint; to: SccPoint; fromRadius: number; toRadius: number; label: string; index: number; t: number }): JSX.Element {
+  const start = getCircleEdgePoint(from, to, fromRadius, 9);
+  const end = getCircleEdgePoint(to, from, toRadius, 15);
+  const path = `M${start[0].toFixed(1)} ${start[1].toFixed(1)}H${end[0].toFixed(1)}`;
+  const edgeProgress = clamp((t - 0.52 - index * 0.08) / 0.24);
+  const labelOpacity = clamp((edgeProgress - 0.18) / 0.32);
+  const pulseX = mix(start[0], end[0], edgeProgress);
+  const midX = (start[0] + end[0]) / 2;
+
+  return (
+    <g opacity={clamp((t - 0.46) / 0.2)}>
+      <path d={path} fill="none" stroke="#35101b" strokeWidth="5" strokeLinecap="round" />
+      <path d={path} fill="none" stroke="#fb4e7c" strokeWidth="2" strokeLinecap="round" markerEnd="url(#state-arrow-pink)" />
+      <circle cx={start[0]} cy={start[1]} r="2.3" fill="#fb4e7c" opacity="0.7" />
+      <circle cx={pulseX} cy={start[1]} r="3.1" fill="#fb4e7c" opacity={edgeProgress > 0 && edgeProgress < 1 ? 0.9 : 0} />
+      <text x={midX} y={start[1] - 24} textAnchor="middle" fill="#fb4e7c" opacity={labelOpacity} fontFamily="monospace" fontSize="10" fontWeight="700">{label}</text>
+    </g>
+  );
+}
+
 function SccDagDiagram({ progress }: ScrollDiagramProps): JSX.Element {
-  const clear = clamp((progress - 0.34) / 0.2);
-  const dag = clamp((progress - 0.56) / 0.28);
-  const rawOpacity = 1 - clear;
-  const status = dag > 0.6 ? 'Cycles condensed into a directed acyclic graph' : clear > 0.35 ? 'Collapse each feedback region into one node' : 'The raw register graph contains cycles';
-  const rawNodes = [['A', 112, 250], ['B', 176, 158], ['C', 286, 194], ['D', 282, 316], ['F', 410, 158], ['G', 500, 246], ['H', 424, 354]];
+  const t = easeInOutCubic(clamp((progress - 0.18) / 0.7));
+  const rawOpacity = 1 - clamp((t - 0.5) / 0.18);
+  const dagOpacity = clamp((t - 0.48) / 0.3);
+  const r0 = getSccComponent('R0');
+  const r1 = getSccComponent('R1');
+  const r2 = getSccComponent('R2');
+  const status = t > 0.68 ? 'Cycles condensed into a directed acyclic graph' : t > 0.28 ? 'Compressing feedback regions into SCC nodes' : 'The raw register graph contains cycles';
+
   return (
     <DiagramFrame label="State dependency" status={status}>
-      <DiagramSvg width={760} height={520} ariaLabel="A dense cyclic register dependency graph clears away and is replaced by its much simpler strongly connected component condensation graph, a directed acyclic graph leading to success" contentScale={1}>
-        <defs>
-          <marker id="state-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L8 3L0 6z" fill="#777" /></marker>
-          <marker id="state-arrow-pink" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L8 3L0 6z" fill="#fb4e7c" /></marker>
-        </defs>
+      <DiagramSvg width={760} height={520} ariaLabel="A cyclic register dependency graph compresses the original A through H nodes into SCC components R0 and R1, then reveals the same R0 to R2 to success condensation DAG" contentScale={1}>
+        <defs><marker id="state-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L8 3L0 6z" fill="#777" /></marker><marker id="state-arrow-pink" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M2.5 2.5L14 8L2.5 13.5" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></marker></defs>
         <g transform="translate(35 -30) scale(1.12)">
-        <g opacity={rawOpacity} transform={`translate(0 ${mix(0, -10, clear)}) scale(${mix(1, 0.96, clear)})`}>
-          <text x="60" y="88" fill="#aaa" fontFamily="monospace" fontSize="12">RAW REGISTER DEPENDENCY GRAPH</text>
-          <path d="M127 236C134 194 151 169 164 162M193 162C236 164 267 177 278 188M290 212C304 250 300 287 288 304M268 318C215 356 135 331 117 267" fill="none" stroke="#63d6ff" strokeWidth="2" markerEnd="url(#state-arrow)" />
-          <path d="M302 194C340 170 376 160 397 159M426 166C466 182 490 213 496 231M495 263C485 308 454 340 438 348M410 347C361 332 321 316 299 314" fill="none" stroke="#f0c557" strokeWidth="2" markerEnd="url(#state-arrow)" />
-          <path d="M188 169C254 112 355 106 401 151M286 210C332 245 393 260 483 248M278 322C324 392 380 391 415 360M118 252C175 285 221 298 268 311" fill="none" stroke="#555" strokeWidth="1.5" markerEnd="url(#state-arrow)" />
-          <path d="M114 219C74 214 70 276 99 281M504 222C548 198 568 235 528 259" fill="none" stroke="#4b4b4b" strokeWidth="1.5" markerEnd="url(#state-arrow)" />
-          <path d="M74 120C185 82 302 96 333 136C366 105 471 110 536 176" fill="none" stroke="#63d6ff" strokeOpacity="0.55" strokeDasharray="7 7" /><text x="204" y="119" fill="#63d6ff" fontFamily="monospace" fontSize="10">FEEDBACK REGION R0</text><path d="M328 137C376 102 489 114 540 184V364C498 406 391 415 330 382" fill="none" stroke="#f0c557" strokeOpacity="0.55" strokeDasharray="7 7" /><text x="435" y="397" textAnchor="middle" fill="#f0c557" fontFamily="monospace" fontSize="10">FEEDBACK REGION R1</text>
-          {rawNodes.map(([label, x, y]) => <g key={String(label)} transform={`translate(${Number(x)} ${Number(y)})`}><circle r="18" fill="#101010" stroke="#d7d7d7" /><text y="4" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="10">{label}</text></g>)}
-        </g>
-
-        <g opacity={clamp((clear - 0.2) / 0.55) * (1 - dag)} transform={`translate(310 278) scale(${mix(0.94, 1, clear)})`}><circle r="56" fill="#0c0c0c" stroke="#fb4e7c" strokeDasharray="6 6" /><text y="-4" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="12">COLLAPSE</text><text y="15" textAnchor="middle" fill="#fb4e7c" fontFamily="monospace" fontSize="8">cycles → SCCs</text></g>
-
-        <g opacity={dag} transform={`translate(0 ${mix(16, 0, dag)})`}>
-          <text x="60" y="88" fill="#aaa" fontFamily="monospace" fontSize="12">CONDENSATION GRAPH · NOW A DAG</text>
-          <path d="M176 278H264" fill="none" stroke="#888" strokeWidth="2" markerEnd="url(#state-arrow-pink)" /><path d="M356 278H430" fill="none" stroke="#888" strokeWidth="2" markerEnd="url(#state-arrow-pink)" /><path d="M516 278H535" fill="none" stroke="#888" strokeWidth="2" markerEnd="url(#state-arrow-pink)" />
-          {[['R0', 'A · B · C · D', 130, '#63d6ff'], ['R1', 'F · G · H', 310, '#f0c557'], ['R2', 'relay', 470, '#7ce5a8']].map(([label, members, x, color]) => <g key={String(label)} transform={`translate(${Number(x)} 278)`}><circle r="46" fill={String(color)} fillOpacity="0.055" stroke={String(color)} strokeWidth="2" /><text y="-2" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="13">{label}</text><text y="17" textAnchor="middle" fill={String(color)} fontFamily="monospace" fontSize="9">{members}</text></g>)}
-          <g transform="translate(562 278)"><circle r="24" fill="#7ce5a8" fillOpacity="0.14" stroke="#7ce5a8" /><text y="4" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="10">OK</text><text y="43" textAnchor="middle" fill="#7ce5a8" fontFamily="monospace" fontSize="10">SUCCESS</text></g>
-          <text x="310" y="408" textAnchor="middle" fill="#aaa" fontFamily="monospace" fontSize="11">INTERNAL LOOPS HIDDEN · REGION DEPENDENCIES REMAIN</text>
-        </g>
+          <g opacity={rawOpacity}>
+            <text x="60" y="88" fill="#aaa" fontFamily="monospace" fontSize="12">RAW REGISTER DEPENDENCY GRAPH</text>
+            <path d="M127 236C134 194 151 169 164 162M193 162C236 164 267 177 278 188M290 212C304 250 300 287 288 304M268 318C215 356 135 331 117 267" fill="none" stroke="#63d6ff" strokeWidth="2" strokeOpacity={rawOpacity} markerEnd="url(#state-arrow)" />
+            <path d="M302 194C340 170 376 160 397 159M426 166C466 182 490 213 496 231M495 263C485 308 454 340 438 348M410 347C361 332 321 316 299 314" fill="none" stroke="#f0c557" strokeWidth="2" strokeOpacity={rawOpacity} markerEnd="url(#state-arrow)" />
+            <path d="M188 169C254 112 355 106 401 151M286 210C332 245 393 260 483 248M278 322C324 392 380 391 415 360M118 252C175 285 221 298 268 311" fill="none" stroke="#555" strokeWidth="1.5" strokeOpacity={rawOpacity} markerEnd="url(#state-arrow)" />
+            <path d="M114 219C74 214 70 276 99 281M504 222C548 198 568 235 528 259" fill="none" stroke="#4b4b4b" strokeWidth="1.5" strokeOpacity={rawOpacity} markerEnd="url(#state-arrow)" />
+          </g>
+          <g>{sccRawNodes.map((node) => <SccMovingRawNode key={node.label} node={node} t={t} />)}</g>
+          <g>{sccComponents.map((node) => <SccComponentCircle key={node.id} node={node} t={t} />)}</g>
+          <g opacity={dagOpacity} transform={`translate(0 ${mix(16, 0, dagOpacity)})`}>
+            <text x="60" y="88" fill="#aaa" fontFamily="monospace" fontSize="12">CONDENSATION GRAPH · NOW A DAG</text>
+            <SccDirectedEdge from={[r0.x, r0.y]} to={[r1.x, r1.y]} fromRadius={r0.r} toRadius={r1.r} label="R0 → R1" index={0} t={t} />
+            <SccDirectedEdge from={[r1.x, r1.y]} to={[r2.x, r2.y]} fromRadius={r1.r} toRadius={r2.r} label="R1 → R2" index={1} t={t} />
+            <SccDirectedEdge from={[r2.x, r2.y]} to={[sccSuccessNode.x, sccSuccessNode.y]} fromRadius={r2.r} toRadius={sccSuccessNode.r} label="R2 → OK" index={2} t={t} />
+            <g transform={`translate(${sccSuccessNode.x} ${sccSuccessNode.y})`}><circle r={sccSuccessNode.r} fill={sccSuccessNode.color} fillOpacity="0.14" stroke={sccSuccessNode.color} /><text y="4" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="10">OK</text><text y="43" textAnchor="middle" fill={sccSuccessNode.color} fontFamily="monospace" fontSize="10">SUCCESS</text></g>
+            <text x="310" y="408" textAnchor="middle" fill="#aaa" fontFamily="monospace" fontSize="11">INTERNAL LOOPS HIDDEN · REGION DEPENDENCIES REMAIN</text>
+          </g>
         </g>
       </DiagramSvg>
     </DiagramFrame>
@@ -297,27 +384,29 @@ function CacheDiagram(): JSX.Element {
 
 function IoStreamDiagram(): JSX.Element {
   const sampleBits = [ASIC_WITNESS_BITS[0], ASIC_WITNESS_BITS[1], ASIC_WITNESS_BITS[2], '···', ASIC_WITNESS_BITS.at(-1) ?? '0'];
+  const signalArrowProps = { fill: 'none', stroke: '#fb4e7c', strokeWidth: 1.35, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, markerEnd: 'url(#io-arrow-clean)' };
+
   return (
     <DiagramFrame label="Recovered circuit I/O" status="Input + current state → logic → outputs + next state">
       <div className={styles.ioMobile} aria-hidden="true"><div className={styles.ioSequence}><small>CANDIDATE TRACE</small><strong>I₀ I₁ I₂ ··· I₁₂₀</strong><span>{sampleBits.join(' ')} · one bit each clock</span></div><span className={styles.mobileReplayStep}>↓ CLOCKED REPLAY</span><div className={styles.mobileHardware}><small>RECOVERED CIRCUIT</small><strong>SKY130 logic</strong><span>read qₜ now · save qₜ₊₁ for the next clock</span></div><span className={styles.mobileReplayStep}>↓ OBSERVE HARDWARE</span><div className={styles.mobileOutputs}><span><i />success</span><span><i />O[7:0]</span></div></div>
       <DiagramSvg width={820} height={330} ariaLabel="Each clock supplies one input bit while the circuit reads its current state, computes outputs, and stores the next state" className={styles.ioDesktop}>
-        <defs><marker id="io-arrow-clean" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L9 4L0 8z" fill="#fb4e7c" /></marker></defs>
+        <defs><marker id="io-arrow-clean" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1.5 1.5L8 5L1.5 8.5" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.35" /></marker></defs>
         <text x="58" y="61" fill="#777" fontFamily="monospace" fontSize="9">CANDIDATE TRACE · ONE BIT PER CLOCK</text>
         <rect x="58" y="82" width="176" height="166" fill="#101010" stroke="#63d6ff" />
         <text x="146" y="112" textAnchor="middle" fill="#777" fontFamily="monospace" fontSize="9">TIME →</text>
         {['I₀', 'I₁', 'I₂', '···', 'I₁₂₀'].map((cycle, index) => <g key={cycle} transform={`translate(${76 + index * 33} 132)`}><text x="13" y="0" textAnchor="middle" fill="#777" fontFamily="monospace" fontSize="7">{cycle}</text><rect x="0" y="10" width="26" height="32" fill={cycle === '···' ? '#0c0c0c' : '#111'} stroke={cycle === '···' ? '#343434' : '#63d6ff'} strokeOpacity="0.75" /><text x="13" y="31" textAnchor="middle" fill={cycle === '···' ? '#666' : '#fff'} fontFamily="monospace" fontSize="10">{sampleBits[index]}</text></g>)}
         <path d="M78 211H214" stroke="#3b3b3b" /><path d="M84 205V217M116 205V217M148 205V217M180 205V217M212 205V217" stroke="#777" />
         <text x="146" y="234" textAnchor="middle" fill="#63d6ff" fontFamily="monospace" fontSize="8">clk  clk  clk  ···  clk</text>
-        <path d="M234 140H318" stroke="#fb4e7c" strokeWidth="2.5" markerEnd="url(#io-arrow-clean)" />
+        <path d="M234 140H318" {...signalArrowProps} />
 
         <rect x="288" y="64" width="260" height="202" fill="#0d0d0d" stroke="#454545" />
         <text x="418" y="91" textAnchor="middle" fill="#777" fontFamily="monospace" fontSize="9">RECOVERED SEQUENTIAL CIRCUIT</text>
         <rect x="325" y="112" width="186" height="56" fill="#15110f" stroke="#e9b94f" /><text x="418" y="136" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="11">SKY130 LOGIC</text><text x="418" y="153" textAnchor="middle" fill="#b29a6d" fontFamily="monospace" fontSize="8">compute this clock</text>
         <rect x="356" y="197" width="124" height="42" fill="#0e1513" stroke="#7ce5a8" /><text x="418" y="215" textAnchor="middle" fill="#fff" fontFamily="monospace" fontSize="10">STATE qₜ</text><text x="418" y="229" textAnchor="middle" fill="#6f9e8a" fontFamily="monospace" fontSize="7">register values</text>
-        <path d="M390 168V197" fill="none" stroke="#fb4e7c" strokeWidth="2" markerEnd="url(#io-arrow-clean)" /><path d="M446 197V168" fill="none" stroke="#fb4e7c" strokeWidth="2" markerEnd="url(#io-arrow-clean)" />
+        <path d="M390 168V197" {...signalArrowProps} /><path d="M446 197V168" {...signalArrowProps} />
         <text x="382" y="186" textAnchor="end" fill="#fb4e7c" fontFamily="monospace" fontSize="7">WRITE NEXT</text><text x="454" y="186" fill="#fb4e7c" fontFamily="monospace" fontSize="7">READ NOW</text>
 
-        <path d="M511 130H570V116H608" fill="none" stroke="#fb4e7c" strokeWidth="2.5" markerEnd="url(#io-arrow-clean)" /><path d="M511 150H570V218H608" fill="none" stroke="#fb4e7c" strokeWidth="2.5" markerEnd="url(#io-arrow-clean)" />
+        <path d="M511 130H570V116H608" {...signalArrowProps} /><path d="M511 150H570V218H608" {...signalArrowProps} />
         <rect x="610" y="82" width="154" height="68" fill="#101010" stroke="#7ce5a8" /><circle cx="634" cy="116" r="8" fill="#7ce5a8" /><text x="656" y="113" fill="#777" fontFamily="monospace" fontSize="9">1-BIT DECISION</text><text x="656" y="131" fill="#fff" fontFamily="monospace" fontSize="12">success</text>
         <rect x="610" y="184" width="154" height="68" fill="#101010" stroke="#bd75ff" /><path d="M626 218H644" stroke="#bd75ff" strokeWidth="7" /><text x="656" y="215" fill="#777" fontFamily="monospace" fontSize="9">8-BIT OUTPUT BUS</text><text x="656" y="233" fill="#fff" fontFamily="monospace" fontSize="12">O[7:0]</text>
       </DiagramSvg>

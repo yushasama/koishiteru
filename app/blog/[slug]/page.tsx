@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import React from 'react';
 import ArticleBody from '../../../components/blog/ArticleBody';
 import ArticleShell from '../../../components/blog/ArticleShell';
-import { blogPosts, getBlogPost } from '../../../lib/blog/posts';
+import { blogPosts, getBlogPost, getBlogPostContentPath } from '../../../lib/blog/posts';
 
 interface BlogArticlePageProps {
   params: { slug: string };
@@ -25,6 +25,6 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps):
   const post = getBlogPost(params.slug);
   if (!post) notFound();
 
-  const markdown = await readFile(path.join(process.cwd(), post.contentPath), 'utf8');
+  const markdown = await readFile(path.join(process.cwd(), getBlogPostContentPath(post)), 'utf8');
   return <ArticleShell post={post}><ArticleBody markdown={markdown} sections={post.sections} visualStory={post.visualStory} /></ArticleShell>;
 }

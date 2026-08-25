@@ -13,7 +13,6 @@ export interface BlogPost {
   readingMinutes: number;
   thumbnail: string;
   thumbnailAlt: string;
-  contentPath: string;
   visualStory?: 'asic-reverse-engineering' | 'systems-optimization';
   sections: readonly BlogSection[];
 }
@@ -21,7 +20,7 @@ export interface BlogPost {
 export const blogPosts: readonly BlogPost[] = [
   {
     slug: 'reverse-engineering-an-asic-with-geometry-graph-theory-and-cigarette-breaks',
-    title: 'That Time I Was Reincarnated as an Unemployed CS Student and Jane Street Gave Me Funny Legos',
+    title: 'That Time I Was Reincarnated as an Unemployed CS Student and Jane Street Gave Me An ASIC To Reverse Engineer',
     excerpt: 'Reverse engineering an ASIC with geometry, graph theory, and cigarette breaks.',
     category: 'Reverse Engineering',
     publishedAt: '2026-08-23T12:00:00.000Z',
@@ -29,7 +28,6 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 19,
     thumbnail: '/blog/asic-reverse-engineering/layout.png',
     thumbnailAlt: 'Recovered ASIC layout rendered as dense routing geometry',
-    contentPath: 'content/blog/reverse-engineering-an-asic-with-geometry-graph-theory-and-cigarette-breaks.md',
     visualStory: 'asic-reverse-engineering',
     sections: [
       { id: 'le-challenge', title: 'Le Challenge' },
@@ -56,7 +54,6 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 18,
     thumbnail: '/blog/from-homework-assignment/cache-observation-thumbnail.svg',
     thumbnailAlt: 'Cache observation map showing L1 cache sets, the pooled hits counter, and uncollected L2 and L3 levels',
-    contentPath: 'content/blog/from-homework-assignment-to-low-latency-benchmarking-engine.md',
     visualStory: 'systems-optimization',
     sections: [
       { id: 'debriefing-intro-optimization', title: 'Debriefing + Intro Optimization' },
@@ -71,4 +68,8 @@ export const blogPosts: readonly BlogPost[] = [
 
 export function getBlogPost(slug: string): BlogPost | undefined {
   return blogPosts.find((post) => post.slug === slug);
+}
+
+export function getBlogPostContentPath(post: Pick<BlogPost, 'slug'>): string {
+  return `content/blog/${post.slug}/article.md`;
 }
