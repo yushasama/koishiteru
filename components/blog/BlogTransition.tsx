@@ -129,7 +129,7 @@ export default function BlogTransition({ children }: BlogTransitionProps): JSX.E
       <div className={articleEntering ? styles.articleContentEntering : undefined}>{children}</div>
       {transition && (
         <div className={`${styles.routeTransition} ${phaseClass}`} aria-hidden="true">
-          <div className={styles.routeTransitionMedia}>{transition.detail.requiresAccess ? <div className={styles.lockedTransition} aria-hidden="true"><span>JSC / ASIC</span><strong>PRIVATE BUILD</strong></div> : <Image src={transition.detail.thumbnail} alt="" fill sizes="min(460px, calc(100vw - 32px))" priority />}</div>
+          <div className={styles.routeTransitionMedia}><Image src={transition.detail.thumbnail} alt="" fill sizes="min(460px, calc(100vw - 32px))" priority /></div>
           <div className={styles.routeTransitionCenter}>
             <span className={styles.routeTransitionMark}>{`${transition.detail.category} / loading article`}</span>
             <strong className={styles.routeTransitionCounter}>{String(transition.progress).padStart(2, '0')}%</strong>
