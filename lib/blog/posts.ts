@@ -18,6 +18,11 @@ export interface BlogPost {
   sections: readonly BlogSection[];
 }
 
+const BLOG_READING_MINUTES = {
+  asicReverseEngineering: 19,
+  systemsOptimization: 18,
+} as const;
+
 export const blogPosts: readonly BlogPost[] = [
   {
     slug: 'reverse-engineering-an-asic-with-geometry-graph-theory-and-cigarette-breaks',
@@ -26,7 +31,7 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Reverse Engineering',
     publishedAt: '2026-08-23T12:00:00.000Z',
     displayDate: 'Aug 23, 2026',
-    readingMinutes: 19,
+    readingMinutes: BLOG_READING_MINUTES.asicReverseEngineering,
     thumbnail: '/blog/asic-reverse-engineering/layout.png',
     thumbnailAlt: 'Recovered ASIC layout rendered as dense routing geometry',
     visualStory: 'asic-reverse-engineering',
@@ -53,7 +58,7 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Systems',
     publishedAt: '2025-06-20T04:49:21.000Z',
     displayDate: 'Jun 20, 2025',
-    readingMinutes: 18,
+    readingMinutes: BLOG_READING_MINUTES.systemsOptimization,
     thumbnail: '/blog/from-homework-assignment/cache-observation-thumbnail.svg',
     thumbnailAlt: 'Cache observation map showing L1 cache sets, the pooled hits counter, and uncollected L2 and L3 levels',
     visualStory: 'systems-optimization',
