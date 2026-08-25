@@ -50,7 +50,7 @@ import { useNavHighlight } from '../contexts/NavHighlightContext'
   }, [highlightedNav])
 
   // Don't show navigation on home page
-  if (pathname === '/') {
+  if (pathname === '/' || pathname === '/asic-access') {
     return null
   }
 

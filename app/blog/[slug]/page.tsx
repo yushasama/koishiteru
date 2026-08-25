@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import React from 'react';
 import ArticleBody from '../../../components/blog/ArticleBody';
 import ArticleShell from '../../../components/blog/ArticleShell';
+import { ASIC_ARTICLE_SLUG } from '../../../lib/asic-access/config';
 import { blogPosts, getBlogPost, getBlogPostContentPath } from '../../../lib/blog/posts';
 
 interface BlogArticlePageProps {
@@ -12,7 +13,7 @@ interface BlogArticlePageProps {
 }
 
 export function generateStaticParams(): Array<{ slug: string }> {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return blogPosts.filter((post) => post.slug !== ASIC_ARTICLE_SLUG).map((post) => ({ slug: post.slug }));
 }
 
 export function generateMetadata({ params }: BlogArticlePageProps): Metadata {

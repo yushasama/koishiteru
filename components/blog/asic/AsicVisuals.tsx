@@ -36,14 +36,14 @@ function useVisibleActivation<T extends HTMLElement>(): { ref: React.RefObject<T
 
 function ChallengePipelineDiagram(): JSX.Element {
   const stages = [
-    { number: '01', lines: ['RECOVER CIRCUIT'], color: '#63d6ff' },
-    { number: '02', lines: ['FIND AN INPUT', 'THAT MAKES SUCCESS GO HIGH'], color: '#f0c557' },
-    { number: '03', lines: ['RECOVER THE FINAL OUTPUT'], color: '#7ce5a8' }
+    { number: '01', lines: ['RECOVER CIRCUIT', 'FROM GDS'], color: '#63d6ff' },
+    { number: '02', lines: ['SOMEHOW FIND', 'THE RIGHT INPUT'], color: '#f0c557' },
+    { number: '03', lines: ['EXTRACT THE', 'FINAL OUTPUT'], color: '#7ce5a8' }
   ];
   return (
-    <DiagramFrame label="The challenge" status="Recover circuit → make success go high → recover output">
+    <DiagramFrame label="The challenge" status="Recover circuit from GDS → somehow find the right input → extract the final output">
       <div className={styles.pipelineMobile} aria-hidden="true">{stages.map(({ number, lines, color }, index) => <React.Fragment key={number}><div style={{ borderColor: color }}><small style={{ color }}>{number}</small><strong>{lines.join(' ')}</strong></div>{index < stages.length - 1 && <i>↓</i>}</React.Fragment>)}</div>
-      <DiagramSvg width={900} height={250} ariaLabel="Recover the circuit, find an input that makes success go high, then recover the final output" className={styles.pipelineDesktop}>
+      <DiagramSvg width={900} height={250} ariaLabel="Recover the circuit from GDS, somehow find the right input, then extract the final output" className={styles.pipelineDesktop}>
         <defs><marker id="pipeline-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.45" /></marker></defs>
         <path d="M288 125H322" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeWidth="1.45" markerEnd="url(#pipeline-arrow)" /><path d="M580 125H614" fill="none" stroke="#fb4e7c" strokeLinecap="round" strokeWidth="1.45" markerEnd="url(#pipeline-arrow)" />
         {stages.map(({ number, lines, color }, index) => {
@@ -57,54 +57,91 @@ function ChallengePipelineDiagram(): JSX.Element {
 
 function LayerStackDiagram({ progress }: ScrollDiagramProps): JSX.Element {
   const explode = clamp((progress - 0.14) / 0.68);
-  const reveal = clamp((explode - 0.08) / 0.34);
-  const labels = clamp((explode - 0.58) / 0.32);
-  const status = explode > 0.82 ? 'Cover, wiring, connections, logic, and base separated' : explode > 0.16 ? 'Opening the chip' : 'A sealed chip';
+  const reveal = clamp((explode - 0.08) / 0.22);
+  const labels = clamp((explode - 0.36) / 0.22);
+  const io = clamp((explode - 0.56) / 0.2);
+  const facePath = 'M160 300L360 246L520 326L320 380Z';
+  const leftSidePath = 'M160 300L320 380V406L160 326Z';
+  const rightSidePath = 'M320 380L520 326V352L320 406Z';
+  const layerOffset = (distance: number): number => mix(0, distance, explode);
+  type Point = readonly [number, number];
+  const polygonPath = (points: readonly Point[]): string => `${points.map(([x, y], index) => `${index === 0 ? 'M' : 'L'}${x} ${y}`).join('')}Z`;
+  const closedCover: readonly Point[] = [[160, 300], [360, 246], [520, 326], [320, 380]];
+  const openCover: readonly Point[] = [[160, 300], [360, 246], [424, 150], [224, 204]];
+  const coverPoints = closedCover.map(([x, y], index): Point => [mix(x, openCover[index][0], explode), mix(y, openCover[index][1], explode)]);
+  const coverLowerPoints = coverPoints.map(([x, y]): Point => [x, y + 16]);
+  const coverShiftX = mix(0, -70, explode);
+  const coverShiftY = mix(0, -150, explode);
+  const coverSpin = mix(0, -5, explode);
+  const gdsPlanes = [
+    { id: 'LI1', distance: 92, color: '#ff9f43', fill: '#1e1108' },
+    { id: 'MET1', distance: 52, color: '#f0c557', fill: '#1a1507' },
+    { id: 'MET2', distance: 12, color: '#7ce5a8', fill: '#07170e' },
+    { id: 'MET3', distance: -28, color: '#63d6ff', fill: '#06151b' },
+    { id: 'MET4', distance: -68, color: '#a87cda', fill: '#130b1c' },
+    { id: 'MET5', distance: -108, color: '#fb4e7c', fill: '#1c0810' },
+  ] as const;
+  const viaBridges = [
+    { x: 236, y: 318, lower: 92, upper: 52 },
+    { x: 292, y: 288, lower: 52, upper: 12 },
+    { x: 356, y: 314, lower: 12, upper: -28 },
+    { x: 412, y: 286, lower: -28, upper: -68 },
+    { x: 466, y: 316, lower: -68, upper: -108 },
+  ] as const;
+  const status = explode > 0.82 ? 'GDS evidence · LI1, five metal layers, vias, cells, and ports' : explode > 0.16 ? 'The package lid rotates open · GDS starts at the die' : 'The packaged chip hides the layout';
 
   return (
     <DiagramFrame label="ASIC anatomy" status={status}>
-      <DiagramSvg width={760} height={560} ariaLabel="A compact chip opens into a simple anatomical view of its cover, signal paths, connections, logic, and supporting base" contentScale={0.92}>
+      <DiagramSvg width={760} height={560} ariaLabel="An illustrative package lid tilts open and lifts away from a die, revealing the actual puzzle evidence stack: local interconnect, metal one through metal five, short vias between adjacent layers, placed SKY130 cells, and external ports" contentScale={1}>
         <defs>
           <linearGradient id="package-top" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#272727" /><stop offset="0.52" stopColor="#111" /><stop offset="1" stopColor="#080808" /></linearGradient>
-          <linearGradient id="logic-top" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#3c2a50" /><stop offset="0.52" stopColor="#181420" /><stop offset="1" stopColor="#0b0910" /></linearGradient>
           <filter id="chip-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="10" /></filter>
+          <marker id="anatomy-input-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#63d6ff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" /></marker>
+          <marker id="anatomy-output-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#7ce5a8" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" /></marker>
         </defs>
-        <ellipse cx="340" cy="487" rx="176" ry="24" fill="#000" opacity="0.7" filter="url(#chip-shadow)" />
+        <ellipse cx="338" cy="504" rx="180" ry="22" fill="#000" opacity="0.72" filter="url(#chip-shadow)" />
 
-        <g transform={`translate(0 ${mix(0, 124, explode)})`}>
-          <path d="M146 264L348 210L510 290L306 348Z" fill="#151515" stroke="#565656" strokeWidth="2" />
-          <path d="M146 264L306 348V386L146 302Z" fill="#090909" stroke="#353535" />
-          <path d="M306 348L510 290V328L306 386Z" fill="#060606" stroke="#303030" />
-          <path d="M168 273L346 226L486 295L306 346Z" fill="#1a1a1a" stroke="#343434" />
+        <g transform={`translate(0 ${layerOffset(132)})`}>
+          <path d={facePath} fill="#151419" stroke="#70647f" strokeWidth="1.6" />
+          <path d={leftSidePath} fill="#09080b" stroke="#39323f" /><path d={rightSidePath} fill="#060607" stroke="#332d38" />
+          <g fill="#17131c" stroke="#d5b2ff" strokeWidth="1.1" opacity={0.25 + labels * 0.75}>
+            <path d="M194 310L250 295L286 313L230 328Z" /><path d="M274 288L330 273L366 291L310 306Z" /><path d="M354 314L410 299L446 317L390 332Z" /><path d="M248 342L304 327L340 345L284 360Z" />
+          </g>
+          <g fill="#f5f5f5" opacity={labels}>{[[219, 313], [299, 291], [379, 317], [273, 345]].map(([x, y]) => <rect key={`${x}-${y}`} x={x} y={y} width="4" height="4" transform={`rotate(-15 ${x} ${y})`} />)}</g>
+          <text x="354" y="371" transform="rotate(-15 354 371)" textAnchor="middle" fill="#f0e4fc" fontFamily="monospace" fontSize="14" fontWeight="700" opacity={labels}>SKY130 CELLS + PINS</text>
         </g>
 
-        <g opacity={reveal} transform={`translate(0 ${mix(0, 58, explode)})`}>
-          <path d="M174 272L348 225L480 292L304 342Z" fill="url(#logic-top)" stroke="#a87cda" strokeWidth="2" />
-          <path d="M174 272L304 342V360L174 290Z" fill="#100d17" stroke="#4c3b62" /><path d="M304 342L480 292V310L304 360Z" fill="#0c0911" stroke="#4c3b62" />
-          <g fill="#bd8bf2" fillOpacity="0.12" stroke="#bd8bf2" strokeOpacity="0.72"><path d="M216 281L264 268L289 281L241 294Z" /><path d="M302 258L348 246L374 259L328 272Z" /><path d="M290 313L340 300L366 313L315 327Z" /><path d="M382 282L426 270L450 282L406 294Z" /></g>
+        {gdsPlanes.map((plane, index) => (
+          <g key={plane.id} opacity={reveal} transform={`translate(0 ${layerOffset(plane.distance)})`}>
+            <path d={facePath} fill={plane.fill} fillOpacity="0.82" stroke={plane.color} strokeOpacity="0.78" strokeWidth="1.25" />
+            <g fill="none" stroke="#030303" strokeLinecap="square" strokeLinejoin="miter" strokeWidth="10">
+              <path d={index % 2 === 0 ? 'M190 314L268 293L316 317L401 294L478 332M233 344L321 320L371 345L457 322' : 'M196 337L270 317L270 288L351 266M348 345L406 330L406 297L475 278'} />
+            </g>
+            <g fill="none" stroke={plane.color} strokeLinecap="square" strokeLinejoin="miter" strokeWidth="5">
+              <path d={index % 2 === 0 ? 'M190 314L268 293L316 317L401 294L478 332M233 344L321 320L371 345L457 322' : 'M196 337L270 317L270 288L351 266M348 345L406 330L406 297L475 278'} />
+            </g>
+            <path d="M505 330L552 317" fill="none" stroke={plane.color} strokeWidth="1.5" opacity={labels} />
+            <text x="558" y="316" transform="rotate(-15 558 316)" fill={plane.color} fontFamily="monospace" fontSize="14" fontWeight="800" opacity={labels}>{plane.id}</text>
+          </g>
+        ))}
+
+        <g opacity={reveal} stroke="#ffe08a" strokeWidth="2">
+          {viaBridges.map(({ x, y, lower, upper }) => <g key={`${lower}-${upper}`}><path d={`M${x} ${y + layerOffset(lower)}V${y + layerOffset(upper)}`} /><rect x={x - 3.5} y={y + layerOffset(lower) - 3.5} width="7" height="7" fill="#f0c557" stroke="none" /><rect x={x - 3.5} y={y + layerOffset(upper) - 3.5} width="7" height="7" fill="#f0c557" stroke="none" /></g>)}
+        </g>
+        <text x="478" y={300 + layerOffset(-48)} transform={`rotate(-15 478 ${300 + layerOffset(-48)})`} fill="#ffe08a" fontFamily="monospace" fontSize="13" fontWeight="800" opacity={labels}>VIA</text>
+
+        <g opacity={io} transform={`translate(0 ${layerOffset(92)})`} fontFamily="monospace" fontSize="13" fontWeight="800">
+          <path d="M70 326L150 305" fill="none" stroke="#63d6ff" strokeWidth="2.5" markerEnd="url(#anatomy-input-arrow)" /><text x="76" y="311" transform="rotate(-15 76 311)" fill="#9ce8ff">INPUT + CONTROL</text>
+          <path d="M526 330L640 300" fill="none" stroke="#7ce5a8" strokeWidth="2.5" markerEnd="url(#anatomy-output-arrow)" /><text x="540" y="322" transform="rotate(-15 540 322)" fill="#9ff0bd">OUTPUT PORTS</text>
+          <g fill="#63d6ff">{[[158, 308], [168, 313], [178, 318]].map(([x, y]) => <rect key={`${x}-${y}`} x={x} y={y} width="5" height="5" transform={`rotate(-15 ${x} ${y})`} />)}</g>
+          <g fill="#7ce5a8">{[[500, 318], [510, 323], [520, 328]].map(([x, y]) => <rect key={`${x}-${y}`} x={x} y={y} width="5" height="5" transform={`rotate(-15 ${x} ${y})`} />)}</g>
         </g>
 
-        <g opacity={reveal} transform={`translate(0 ${mix(0, 2, explode)})`} stroke="#f0c557" strokeWidth="3">
-          {[[238, 281], [300, 264], [360, 281], [420, 266]].map(([x, y]) => <g key={`${x}-${y}`}><path d={`M${x} ${y - 12}V${y + 12}`} /><circle cx={x} cy={y - 13} r="4" fill="#f0c557" /></g>)}
-        </g>
-
-        <g opacity={reveal} transform={`translate(0 ${mix(0, -64, explode)})`}>
-          <path d="M174 272L348 225L480 292L304 342Z" fill="#0b0d0d" fillOpacity="0.78" stroke="#4e6860" />
-          <g fill="none" stroke="#020303" strokeLinecap="butt" strokeLinejoin="miter" strokeWidth="13"><path d="M194 292L276 270L318 291L400 269" /><path d="M242 321L326 298L370 320L444 300" /><path d="M276 256L348 237L402 264L458 249" /></g>
-          <g fill="none" strokeLinecap="butt" strokeLinejoin="miter" strokeWidth="7"><path d="M194 292L276 270L318 291L400 269" stroke="#63d6ff" /><path d="M242 321L326 298L370 320L444 300" stroke="#fb4e7c" /><path d="M276 256L348 237L402 264L458 249" stroke="#7ce5a8" /></g>
-        </g>
-
-        <g opacity={mix(1, 0.94, explode)} transform={`translate(${mix(0, 6, explode)} ${mix(0, -154, explode)})`}>
-          <path d="M146 264L348 210L510 290L306 348Z" fill="url(#package-top)" stroke="#737373" strokeWidth="2" />
-          <path d="M146 264L306 348V376L146 292Z" fill="#0a0a0a" stroke="#424242" /><path d="M306 348L510 290V318L306 376Z" fill="#050505" stroke="#383838" />
-        </g>
-
-        <g opacity={labels} fontFamily="monospace" fontSize="12">
-          <circle cx="500" cy="145" r="3" fill="#d6d6d6" /><path d="M500 145L532 132H564" fill="none" stroke="#d6d6d6" strokeOpacity="0.68" /><text x="576" y="137" fill="#f2f2f2">COVER</text>
-          <circle cx="468" cy="210" r="3" fill="#63d6ff" /><path d="M468 210L522 196H564" fill="none" stroke="#63d6ff" strokeOpacity="0.68" /><text x="576" y="201" fill="#f2f2f2">SIGNAL PATHS</text>
-          <circle cx="430" cy="272" r="3" fill="#f0c557" /><path d="M430 272L512 252H564" fill="none" stroke="#f0c557" strokeOpacity="0.68" /><text x="576" y="257" fill="#f2f2f2">CONNECTIONS</text>
-          <circle cx="470" cy="346" r="3" fill="#bd8bf2" /><path d="M470 346L530 330H564" fill="none" stroke="#bd8bf2" strokeOpacity="0.68" /><text x="576" y="335" fill="#f2f2f2">LOGIC</text>
-          <circle cx="500" cy="456" r="3" fill="#8f8f8f" /><path d="M500 456H564" fill="none" stroke="#8f8f8f" strokeOpacity="0.68" /><text x="576" y="461" fill="#f2f2f2">BASE</text>
+        <g transform={`translate(${coverShiftX} ${coverShiftY}) rotate(${coverSpin} 340 270)`}>
+          <path d={polygonPath(coverLowerPoints)} fill="#050505" stroke="#363636" strokeWidth="1.2" />
+          <path d={polygonPath(coverPoints)} fill="url(#package-top)" stroke="#808080" strokeWidth="1.8" />
+          <path d={polygonPath(coverPoints.map(([x, y]): Point => [mix(x, 340, 0.18), mix(y, 268, 0.18)]))} fill="none" stroke="#343434" strokeWidth="1" />
+          <text x="340" y={mix(318, 229, explode)} transform={`rotate(-15 340 ${mix(318, 229, explode)})`} textAnchor="middle" fill="#d5d5d5" fontFamily="monospace" fontSize="13" fontWeight="800">PACKAGE LID · OUTSIDE GDS</text>
         </g>
       </DiagramSvg>
     </DiagramFrame>

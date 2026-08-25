@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import type { BlogPost, BlogSection } from '../../lib/blog/posts';
-import AsicArticleBody from './asic/AsicArticleBody';
 import ScribbleMarkdown from './ScribbleMarkdown';
 import SystemsArticleBody from './systems/SystemsArticleBody';
 import styles from './blog.module.css';
@@ -35,9 +34,8 @@ export default function ArticleBody({ markdown, sections, visualStory }: Article
 
   return (
     <div ref={contentRef} className={`${styles.articleProse} ${visualStory ? styles.articleProseVisual : ''}`} data-article-content>
-      {visualStory === 'asic-reverse-engineering' && <AsicArticleBody markdown={markdown} />}
       {visualStory === 'systems-optimization' && <SystemsArticleBody markdown={markdown} />}
-      {!visualStory && <ScribbleMarkdown markdown={markdown} />}
+      {visualStory !== 'systems-optimization' && <ScribbleMarkdown markdown={markdown} />}
     </div>
   );
 }

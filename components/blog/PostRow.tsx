@@ -21,7 +21,7 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
   const href = `/blog/${post.slug}`;
 
   const navigateToArticle = (): void => {
-    requestBlogArticleNavigation({ href, title: post.title, category: post.category, thumbnail: post.thumbnail });
+    requestBlogArticleNavigation({ href, title: post.title, category: post.category, thumbnail: post.thumbnail, requiresAccess: post.requiresAccess });
   };
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>): void => {
@@ -38,9 +38,11 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
 
   return (
     <motion.div animate={{ opacity: receded ? 0.58 : 1 }} transition={{ duration: reduceMotion ? 0 : 0.28 }} className={styles.postRowWrap}>
-      <Link href={href} className={styles.postRow} onClick={handleClick} onKeyDown={handleKeyDown} onFocus={onFocus} onMouseEnter={onHover}>
+      <Link href={href} prefetch={!post.requiresAccess} className={styles.postRow} onClick={handleClick} onKeyDown={handleKeyDown} onFocus={onFocus} onMouseEnter={onHover}>
         <div className={styles.thumbnail}>
-          {post.visualStory === 'systems-optimization'
+          {post.requiresAccess
+            ? <div className={styles.lockedThumbnail} aria-label="Password required"><span>PRIVATE</span><i>ASIC</i></div>
+            : post.visualStory === 'systems-optimization'
             ? <SystemsThumbnail />
             : <Image src={post.thumbnail} alt={post.thumbnailAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), 160px" />}
         </div>

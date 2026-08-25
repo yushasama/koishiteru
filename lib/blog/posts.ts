@@ -14,6 +14,7 @@ export interface BlogPost {
   thumbnail: string;
   thumbnailAlt: string;
   visualStory?: 'asic-reverse-engineering' | 'systems-optimization';
+  requiresAccess?: boolean;
   sections: readonly BlogSection[];
 }
 
@@ -29,6 +30,7 @@ export const blogPosts: readonly BlogPost[] = [
     thumbnail: '/blog/asic-reverse-engineering/layout.png',
     thumbnailAlt: 'Recovered ASIC layout rendered as dense routing geometry',
     visualStory: 'asic-reverse-engineering',
+    requiresAccess: true,
     sections: [
       { id: 'le-challenge', title: 'Le Challenge' },
       { id: 'what-is-an-asic', title: 'What is an ASIC and Can I Eat It?' },
