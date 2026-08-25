@@ -13,7 +13,11 @@ function requestIsSameOrigin(request: NextRequest): boolean {
   const fetchSite = request.headers.get('sec-fetch-site');
   if (fetchSite === 'cross-site') return false;
   const origin = request.headers.get('origin');
-  return !origin || origin === request.nextUrl.origin;
+  if (!origin) return true;
+
+  const host = request.headers.get('host');
+  const protocol = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() || request.nextUrl.protocol.replace(':', '');
+  return Boolean(host && origin === `${protocol}://${host}`);
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
