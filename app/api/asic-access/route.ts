@@ -9,6 +9,10 @@ function redirectToAccess(request: NextRequest, error: string): NextResponse {
   return NextResponse.redirect(destination, 303);
 }
 
+function canonicalHostname(hostname: string): string {
+  return hostname.toLowerCase().replace(/^www\./, '');
+}
+
 function requestIsSameOrigin(request: NextRequest): boolean {
   const fetchSite = request.headers.get('sec-fetch-site');
   if (fetchSite === 'cross-site') return false;
@@ -16,12 +20,21 @@ function requestIsSameOrigin(request: NextRequest): boolean {
   if (!origin) return true;
 
   const host = request.headers.get('host');
-  const protocol = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() || request.nextUrl.protocol.replace(':', '');
-  return Boolean(host && origin === `${protocol}://${host}`);
+  if (!host) return false;
+
+  try {
+    const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim();
+    const protocol = forwardedProtocol === 'http' || forwardedProtocol === 'https' ? `${forwardedProtocol}:` : request.nextUrl.protocol;
+    const originUrl = new URL(origin);
+    const requestUrl = new URL(`${protocol}//${host}`);
+    return originUrl.protocol === requestUrl.protocol && originUrl.port === requestUrl.port && canonicalHostname(originUrl.hostname) === canonicalHostname(requestUrl.hostname);
+  } catch {
+    return false;
+  }
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  if (!requestIsSameOrigin(request)) return new NextResponse(null, { status: 403 });
+  if (!requestIsSameOrigin(request)) return redirectToAccess(request, 'blocked');
 
   let form: FormData;
   try {

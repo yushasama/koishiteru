@@ -25,10 +25,15 @@
 .form label { display: block; margin-bottom: 0.65rem; color: #aaa; font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: 0.1em; text-transform: uppercase; }
 .inputRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; border: 1px solid #343434; background: #0a0a0a; transition: border-color 160ms ease, box-shadow 160ms ease; }
 .inputRow:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(251, 78, 124, 0.12); }
-.inputRow input { min-width: 0; height: 3.5rem; padding: 0 1rem; border: 0; outline: 0; color: #f5f5f5; background: transparent; font: 500 1rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: 0.08em; }
-.inputRow button { min-width: 7.5rem; border: 0; border-left: 1px solid #343434; color: #080808; background: var(--accent); font: 750 0.72rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background 160ms ease; }
-.inputRow button:hover { background: #ff7198; }
-.inputRow button:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
+.passwordField { position: relative; min-width: 0; }
+.passwordField input { width: 100%; min-width: 0; height: 3.5rem; padding: 0 3.5rem 0 1rem; border: 0; outline: 0; color: #f5f5f5; background: transparent; font: 500 1rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: 0.08em; }
+.revealButton { position: absolute; top: 50%; right: 0.4rem; display: grid; width: 2.75rem; height: 2.75rem; padding: 0; border: 0; place-items: center; color: #999; background: transparent; cursor: pointer; transform: translateY(-50%); transition: color 160ms ease; }
+.revealButton:hover { color: #fff; }
+.revealButton svg { width: 1.15rem; height: 1.15rem; stroke-width: 1.7; }
+.revealButton:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.submitButton { min-width: 7.5rem; border: 0; border-left: 1px solid #343434; color: #080808; background: var(--accent); font: 750 0.72rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background 160ms ease; }
+.submitButton:hover { background: #ff7198; }
+.submitButton:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
 .status { min-height: 1.25rem; margin-top: 0.75rem; color: #ff8cab; font-size: 0.82rem; line-height: 1.4; }
 
 @media (max-width: 560px) {
@@ -36,9 +41,9 @@
   .copy h1 { font-size: clamp(2.5rem, 13vw, 3.5rem); white-space: normal; }
   .form { margin-top: 2.25rem; }
   .inputRow { grid-template-columns: 1fr; }
-  .inputRow button { min-height: 3.25rem; border-top: 1px solid #343434; border-left: 0; }
+  .submitButton { min-height: 3.25rem; border-top: 1px solid #343434; border-left: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .inputRow, .inputRow button { transition: none; }
+  .inputRow, .revealButton, .submitButton { transition: none; }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 import { ASIC_ACCESS_ENDPOINT } from '../../lib/asic-access/config';
 import styles from './access.module.css';
+import PasswordInput from './PasswordInput';
 
 export const metadata: Metadata = {
   title: 'Password protected blog | 恋してる',
@@ -14,6 +15,7 @@ interface AsicAccessPageProps {
 }
 
 const ERROR_MESSAGES: Readonly<Record<string, string>> = {
+  blocked: 'Please refresh the page and try again.',
   invalid: 'Incorrect password.',
   unavailable: 'Password access is temporarily unavailable.',
 };
@@ -31,8 +33,8 @@ export default function AsicAccessPage({ searchParams }: AsicAccessPageProps): J
         <form className={styles.form} action={ASIC_ACCESS_ENDPOINT} method="post">
           <label htmlFor="asic-password">Password</label>
           <div className={styles.inputRow}>
-            <input id="asic-password" name="password" type="password" autoComplete="current-password" minLength={1} maxLength={1024} required aria-describedby="access-status" />
-            <button type="submit">Continue</button>
+            <PasswordInput />
+            <button className={styles.submitButton} type="submit">Continue</button>
           </div>
           <div className={styles.status} id="access-status" aria-live="polite">{errorMessage}</div>
         </form>
