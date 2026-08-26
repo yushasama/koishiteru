@@ -3,7 +3,7 @@ export const ASIC_ARTICLE_PATH = `/blog/${ASIC_ARTICLE_SLUG}`;
 export const ASIC_ACCESS_PATH = '/asic-access';
 export const ASIC_ACCESS_ENDPOINT = '/api/asic-access';
 export const ASIC_ACCESS_COOKIE = 'asic_access';
-export const ASIC_ACCESS_SESSION_SECONDS = 8 * 60 * 60;
+export const ASIC_ACCESS_SESSION_SECONDS = 7 * 24 * 60 * 60;
 
 export interface PasswordRecord {
   iterations: number;

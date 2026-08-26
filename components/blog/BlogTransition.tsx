@@ -37,29 +37,36 @@ export default function BlogTransition({ children }: BlogTransitionProps): JSX.E
     return detail ? { detail, phase: 'waiting', progress: 0, direct: true } : null;
   });
   const transitionRef = useRef(transition);
-  transitionRef.current = transition;
   const transitionActive = transition !== null;
   const transitionPhase = transition?.phase ?? null;
   const transitionHref = transition?.detail.href ?? null;
 
   useEffect(() => {
+    transitionRef.current = transition;
+  }, [transition]);
+
+  useEffect(() => {
     const handleNavigation = (event: Event): void => {
       const detail = event instanceof CustomEvent ? event.detail : null;
       if (!isBlogArticleNavigationDetail(detail) || detail.href === pathname || transitionActive) return;
+      if (detail.requiresAccess) {
+        router.push(detail.href);
+        return;
+      }
       setTransition({ detail, phase: 'covering', progress: 0, direct: false });
     };
 
     window.addEventListener(BLOG_ARTICLE_NAVIGATION_EVENT, handleNavigation);
     return () => window.removeEventListener(BLOG_ARTICLE_NAVIGATION_EVENT, handleNavigation);
-  }, [pathname, transitionActive]);
+  }, [pathname, router, transitionActive]);
 
   useEffect(() => {
     if (transitionPhase !== 'covering' || !transitionHref) return;
 
     if (reduceMotion) {
-      setTransition((current) => current ? { ...current, phase: 'waiting', progress: 100 } : null);
+      const reducedTimer = window.setTimeout(() => setTransition((current) => current ? { ...current, phase: 'waiting', progress: 100 } : null), 0);
       router.push(transitionHref);
-      return;
+      return () => window.clearTimeout(reducedTimer);
     }
 
     let frame = 0;

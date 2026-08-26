@@ -20,6 +20,9 @@ interface DiagramFrameProps {
   label: string;
   status: string;
   children: ReactNode;
+  corner?: string;
+  headingLayout?: 'split' | 'stacked';
+  progress?: number;
 }
 
 interface DiagramSvgProps {
@@ -33,6 +36,8 @@ interface DiagramSvgProps {
 }
 
 const clamp = (value: number): number => Math.min(1, Math.max(0, value));
+const SCROLL_WINDOW_PADDING = 0.075;
+const scrollWindowProgress = (progress: number): number => clamp((progress - SCROLL_WINDOW_PADDING) / (1 - SCROLL_WINDOW_PADDING * 2));
 
 export function useScrollDiagramState(): { ref: React.RefObject<HTMLDivElement>; scrollState: ScrollDiagramState } {
   const ref = useRef<HTMLDivElement>(null);
@@ -63,7 +68,7 @@ export function useScrollDiagramState(): { ref: React.RefObject<HTMLDivElement>;
       const sectionPaddingTop = Number.parseFloat(window.getComputedStyle(element).paddingTop) || 0;
       const start = (window.innerHeight - visualHeight) / 2 - sectionPaddingTop;
       const travel = Math.max(1, rect.height - visualHeight);
-      const next = clamp((start - rect.top) / travel);
+      const next = scrollWindowProgress(clamp((start - rect.top) / travel));
       setProgress((current) => Math.abs(current - next) < 0.002 ? current : next);
       frame = 0;
     };
@@ -90,8 +95,8 @@ export function scrollRevealStyle(progress: number, start: number, duration = 0.
   return { opacity: 0.12 + amount * 0.88, transform: `translate3d(0, ${(1 - amount) * travel}px, 0)` };
 }
 
-export function DiagramFrame({ label, status, children }: DiagramFrameProps): JSX.Element {
-  return <figure className={styles.diagramFrame} aria-label={`${label}: ${status}`}><figcaption><span>{label}</span><strong>{status}</strong></figcaption>{children}<div className={styles.diagramCorner} aria-hidden="true">JSC / ASIC</div></figure>;
+export function DiagramFrame({ label, status, children, corner, headingLayout = 'split', progress }: DiagramFrameProps): JSX.Element {
+  return <figure className={styles.diagramFrame} aria-label={status ? `${label}: ${status}` : label}><figcaption data-heading-layout={headingLayout}><span>{label}</span>{status && <strong>{status}</strong>}</figcaption>{children}{corner && <div className={styles.diagramCorner} aria-hidden="true">{corner}</div>}{progress !== undefined && <div className={styles.diagramProgress} aria-hidden="true"><i style={{ transform: `scaleX(${clamp(progress)})` }} /></div>}</figure>;
 }
 
 export function DiagramSvg({ width, height, ariaLabel, children, className, contentScale = 0.94, inset = 26 }: DiagramSvgProps): JSX.Element {

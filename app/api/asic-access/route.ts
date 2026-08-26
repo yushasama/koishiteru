@@ -6,36 +6,12 @@ import { createSessionToken, verifyPassword } from '../../../lib/asic-access/cry
 function redirectToAccess(request: NextRequest, error: string): NextResponse {
   const destination = new URL(ASIC_ACCESS_PATH, request.url);
   destination.searchParams.set('error', error);
-  return NextResponse.redirect(destination, 303);
-}
-
-function canonicalHostname(hostname: string): string {
-  return hostname.toLowerCase().replace(/^www\./, '');
-}
-
-function requestIsSameOrigin(request: NextRequest): boolean {
-  const fetchSite = request.headers.get('sec-fetch-site');
-  if (fetchSite === 'cross-site') return false;
-  const origin = request.headers.get('origin');
-  if (!origin) return true;
-
-  const host = request.headers.get('host');
-  if (!host) return false;
-
-  try {
-    const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim();
-    const protocol = forwardedProtocol === 'http' || forwardedProtocol === 'https' ? `${forwardedProtocol}:` : request.nextUrl.protocol;
-    const originUrl = new URL(origin);
-    const requestUrl = new URL(`${protocol}//${host}`);
-    return originUrl.protocol === requestUrl.protocol && originUrl.port === requestUrl.port && canonicalHostname(originUrl.hostname) === canonicalHostname(requestUrl.hostname);
-  } catch {
-    return false;
-  }
+  const response = NextResponse.redirect(destination, 303);
+  response.headers.set('Cache-Control', 'private, no-store, max-age=0');
+  return response;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  if (!requestIsSameOrigin(request)) return redirectToAccess(request, 'blocked');
-
   let form: FormData;
   try {
     form = await request.formData();
@@ -51,7 +27,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     if (!await verifyPassword(submittedPassword, config)) return redirectToAccess(request, 'invalid');
 
     const response = NextResponse.redirect(new URL(ASIC_ARTICLE_PATH, request.url), 303);
-    response.cookies.set(ASIC_ACCESS_COOKIE, await createSessionToken(config), { httpOnly: true, maxAge: ASIC_ACCESS_SESSION_SECONDS, path: '/', sameSite: 'strict', secure: config.secureCookies });
+    response.cookies.set(ASIC_ACCESS_COOKIE, await createSessionToken(config), { httpOnly: true, maxAge: ASIC_ACCESS_SESSION_SECONDS, path: '/', sameSite: 'lax', secure: config.secureCookies });
     response.headers.set('Cache-Control', 'private, no-store, max-age=0');
     return response;
   } catch (error: unknown) {

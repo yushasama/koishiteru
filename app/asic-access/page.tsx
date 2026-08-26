@@ -11,17 +11,17 @@ export const metadata: Metadata = {
 };
 
 interface AsicAccessPageProps {
-  searchParams?: { error?: string };
+  searchParams?: Promise<{ error?: string }>;
 }
 
 const ERROR_MESSAGES: Readonly<Record<string, string>> = {
-  blocked: 'Please refresh the page and try again.',
   invalid: 'Incorrect password.',
   unavailable: 'Password access is temporarily unavailable.',
 };
 
-export default function AsicAccessPage({ searchParams }: AsicAccessPageProps): JSX.Element {
-  const errorMessage = searchParams?.error ? ERROR_MESSAGES[searchParams.error] : undefined;
+export default async function AsicAccessPage({ searchParams }: AsicAccessPageProps): Promise<JSX.Element> {
+  const { error } = searchParams ? await searchParams : {};
+  const errorMessage = error ? ERROR_MESSAGES[error] : undefined;
 
   return (
     <main className={styles.page} data-asic-access-page>

@@ -29,6 +29,8 @@ Before getting into my approach though, let's first discuss what an ASIC even is
 
 ## 2. What is an ASIC and Can I Eat It?
 
+<!-- sticky:layer-stack -->
+
 After several experiments conducted using the scientific process known as **mandibular processing**, I can confirm that no, an ASIC is not edible. The only positive result from this experiment would probably be for my dentist.
 
 Onto the less interesting question: what actually is an ASIC?
@@ -38,6 +40,8 @@ An ASIC, or **Application-Specific Integrated Circuit**, is a chip designed arou
 You lose flexibility, but in return insane performance & power efficiency is gained for whatever job the chip was designed for.
 
 They show up everywhere from AI accelerators to crypto-mining hardware, among many other things.
+
+<!-- /sticky -->
 
 ---
 
@@ -78,8 +82,6 @@ Lots and lots of shapes actually.
 
 Those shapes can represent a wide variety of things including metal layers, vias, labels, cells. The logical connections aren't handed to us directly, but the physical evidence for those connections is there... after deriving it ourselves from the geometry of course.
 
-<!-- sticky:layer-stack -->
-
 My original thought was fairly simple.
 
 If two pieces of conductive geometry on the same layer touch or overlap, then they are physically continuous.
@@ -95,8 +97,6 @@ A connected component is a group of nodes where every node can reach every other
 For example, one chain containing A, B, and C and another containing D and E form two separate connected components: `{A, B, C}` and `{D, E}`.
 
 If those nodes represent conductive pieces, then each connected component can represent one electrical net. Great! We have figured out what the problem reduces to. But how do we do it efficiently?
-
-<!-- /sticky -->
 
 ---
 
@@ -126,7 +126,7 @@ There was a problem though.
 
 Our polygons weren't always rectangles.
 
-Imagine the I-shaped conductor shown in the diagram to the right.
+Imagine an I-shaped conductor in the GDS.
 
 Throwing one giant rectangular bounding box around the whole shape means the box contains a bunch of empty space.
 
@@ -137,6 +137,8 @@ Thankfully, the geometry we dealt with was Manhattan geometry, meaning its edges
 That meant I could decompose those weird polygons into a bunch of smaller rectangles and insert each rectangle into the R-tree separately.
 
 I also built a separate R-tree for each conductor layer, since ordinary conductor overlap only matters within the same layer. Cross-layer connections are handled through vias.
+
+The animation uses seven actual MET2 rectangles from the sample ASIC to show one complete insertion: scan the next rectangle, measure how much each leaf bounding box would grow, choose the minimum enlargement, and insert it.
 
 Once the polygons were decomposed into rectangles, something convenient happened:
 
@@ -252,9 +254,9 @@ Some groups of stored state could eventually feed back into each other.
 
 Those groups are called **strongly connected components**, or SCCs.
 
-The first stage of the diagram shows the idea directly: A affects B, B affects C, C affects D, and D eventually feeds back into A. Everything in that loop can reach everything else.
+The first stage uses a real four-register cluster from the recovered circuit: `q34`, `q35`, `q36`, and `q37` each influence the others. Everything in that feedback loop can reach everything else.
 
-Instead of staring at all four registers separately, the next stage collapses A, B, C, and D into one state region.
+Instead of staring at those four registers separately, the next stage collapses them into state region `S3`.
 
 Once every feedback region gets collapsed like that, the graph between those regions becomes a **DAG**, or directed acyclic graph.
 

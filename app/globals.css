@@ -1,9 +1,9 @@
+/* Import Navigation Animations */
+@import '../styles/nav-animations.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import Navigation Animations */
-@import '../styles/nav-animations.css';
 
 /* ========== GLOBAL ========== */
 :root {

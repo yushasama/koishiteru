@@ -21,16 +21,18 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
   const href = `/blog/${post.slug}`;
 
   const navigateToArticle = (): void => {
-    requestBlogArticleNavigation({ href, title: post.title, category: post.category, thumbnail: post.thumbnail, requiresAccess: post.requiresAccess });
+    requestBlogArticleNavigation({ href, title: post.title, category: post.category, thumbnail: post.thumbnail });
   };
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>): void => {
+    if (post.requiresAccess) return;
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     navigateToArticle();
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLAnchorElement>): void => {
+    if (post.requiresAccess) return;
     if (event.key !== 'Enter') return;
     event.preventDefault();
     navigateToArticle();

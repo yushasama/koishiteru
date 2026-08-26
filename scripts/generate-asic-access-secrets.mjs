@@ -2,7 +2,7 @@ import { pbkdf2Sync, randomBytes } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
-const ITERATIONS = 210_000;
+const ITERATIONS = 600_000;
 const LOCAL_ENV_PATH = fileURLToPath(new URL('../.env.local', import.meta.url));
 const WRITE_LOCAL = process.argv.includes('--write-local');
 
@@ -78,7 +78,7 @@ async function writeLocalEnvironment(passwordRecord, sessionSecret) {
 }
 
 const [password, confirmation] = await readPasswords();
-if (password.length < 16) throw new Error('Use a password with at least 16 characters');
+if (password.length < 20) throw new Error('Use a password with at least 20 characters');
 if (password !== confirmation) throw new Error('The password confirmation did not match');
 
 const salt = randomBytes(16);
@@ -91,7 +91,7 @@ if (WRITE_LOCAL) {
   await writeLocalEnvironment(passwordRecord, encodedSessionSecret);
   console.log('\nUpdated .env.local with the ASIC article access settings.');
 } else {
-  console.log('\nAdd these encrypted values to your local .env.local and Vercel environment:');
+  console.log('\nAdd these access values to your local .env.local and Vercel environment:');
   console.log(`ASIC_ACCESS_PASSWORD_RECORD=${passwordRecord}`);
   console.log(`ASIC_ACCESS_SESSION_SECRET=${encodedSessionSecret}`);
 }

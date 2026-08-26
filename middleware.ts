@@ -6,7 +6,11 @@ import { protectedRequestKind } from './lib/asic-access/routes';
 
 const PRIVATE_HEADERS = {
   'Cache-Control': 'private, no-store, max-age=0',
+  'Content-Security-Policy': "frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'",
+  'Permissions-Policy': 'camera=(), geolocation=(), microphone=()',
   'Referrer-Policy': 'no-referrer',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
   'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet, noimageindex',
 };
 

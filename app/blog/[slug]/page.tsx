@@ -9,21 +9,23 @@ import { ASIC_ARTICLE_SLUG } from '../../../lib/asic-access/config';
 import { blogPosts, getBlogPost, getBlogPostContentPath } from '../../../lib/blog/posts';
 
 interface BlogArticlePageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams(): Array<{ slug: string }> {
   return blogPosts.filter((post) => post.slug !== ASIC_ARTICLE_SLUG).map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
-  const post = getBlogPost(params.slug);
+export async function generateMetadata({ params }: BlogArticlePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
   if (!post) return {};
   return { title: `${post.title} | 恋してる`, description: post.excerpt };
 }
 
 export default async function BlogArticlePage({ params }: BlogArticlePageProps): Promise<JSX.Element> {
-  const post = getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = getBlogPost(slug);
   if (!post) notFound();
 
   const markdown = await readFile(path.join(process.cwd(), getBlogPostContentPath(post)), 'utf8');

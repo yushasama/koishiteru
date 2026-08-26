@@ -1,0 +1,12 @@
+.stage {
+  height: 100%;
+  min-height: 0;
+}
+
+.desktop { display: block; }
+.mobile { display: none; }
+
+@media (max-width: 620px) {
+  .desktop { display: none; }
+  .mobile { display: block; }
+}
