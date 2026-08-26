@@ -32,8 +32,8 @@ export const blogPosts: readonly BlogPost[] = [
     publishedAt: '2026-08-23T12:00:00.000Z',
     displayDate: 'Aug 23, 2026',
     readingMinutes: BLOG_READING_MINUTES.asicReverseEngineering,
-    thumbnail: '/blog/asic-reverse-engineering/layout.png',
-    thumbnailAlt: 'Recovered ASIC layout rendered as dense routing geometry',
+    thumbnail: '/blog/asic-reverse-engineering/thumbnail.webp',
+    thumbnailAlt: 'Recovered ASIC viewed under a wafer-inspection microscope with labeled inputs and outputs',
     visualStory: 'asic-reverse-engineering',
     requiresAccess: true,
     sections: [
