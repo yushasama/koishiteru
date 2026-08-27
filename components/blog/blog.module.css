@@ -206,8 +206,8 @@
 
 .heroImage {
   object-fit: cover;
-  object-position: center 44%;
-  filter: grayscale(1) brightness(0.72);
+  object-position: center;
+  filter: brightness(0.72) saturate(0.9);
 }
 
 .heroShade {
@@ -351,9 +351,7 @@
 }
 
 .thumbnail img.asicThumbnailImage {
-  background: #02070c;
-  object-fit: contain;
-  transform: none;
+  object-fit: cover;
 }
 
 .thumbnail [data-systems-thumbnail] {
@@ -916,7 +914,7 @@
   }
 
   .postRow:hover .thumbnail img.asicThumbnailImage {
-    transform: none;
+    transform: scale(1.075);
   }
 
   .postRow:hover .thumbnail [data-systems-thumbnail] {
@@ -981,7 +979,7 @@
   }
 
   .heroImage {
-    object-position: 62% center;
+    object-position: center;
   }
 
   .heroShade {
