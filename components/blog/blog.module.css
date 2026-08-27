@@ -351,7 +351,9 @@
 }
 
 .thumbnail img.asicThumbnailImage {
+  background: #02070c;
   object-fit: contain;
+  transform: none;
 }
 
 .thumbnail [data-systems-thumbnail] {
@@ -911,6 +913,10 @@
   .postRow:hover .thumbnail img {
     filter: grayscale(0) brightness(0.92);
     transform: scale(1.075);
+  }
+
+  .postRow:hover .thumbnail img.asicThumbnailImage {
+    transform: none;
   }
 
   .postRow:hover .thumbnail [data-systems-thumbnail] {

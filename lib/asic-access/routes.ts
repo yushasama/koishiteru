@@ -3,7 +3,7 @@ import { ASIC_ARTICLE_PATH } from './config';
 export type ProtectedRequestKind = 'asset' | 'document';
 
 export const ASIC_PUBLIC_ASSET_PREFIX = '/blog/asic-reverse-engineering';
-export const ASIC_PUBLIC_THUMBNAIL_PATH = `${ASIC_PUBLIC_ASSET_PREFIX}/thumbnail.webp`;
+export const ASIC_PUBLIC_THUMBNAIL_PATH = `${ASIC_PUBLIC_ASSET_PREFIX}/thumbnail-microscope.webp`;
 export const ASIC_VIDEO_PATH = '/media/jsc-asic-showcase.mp4';
 export const ASIC_ROUTE_CHUNK_PREFIX = `/_next/static/chunks/app/blog/${ASIC_ARTICLE_PATH.slice('/blog/'.length)}`;
 
