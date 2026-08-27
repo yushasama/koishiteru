@@ -5,7 +5,7 @@ import React, { type ReactNode, useEffect, useRef, useState } from 'react';
 import { AsicAnatomyDiagram } from './AsicAnatomyDiagram';
 import { DiagramFrame, DiagramSvg, type ScrollDiagramProps, scrollRevealStyle, useScrollDiagramState } from './DiagramPrimitives';
 import { LayoutToNetsDiagram } from './LayoutToNetsDiagram';
-import { RTreeInsertionDiagram } from './RTreeInsertionDiagram';
+import { RTreeInsertionSequenceDiagram } from './RTreeInsertionSequenceDiagram';
 import styles from './asic.module.css';
 import surfaceStyles from '../styles/diagramSurfaces.module.css';
 
@@ -370,7 +370,7 @@ function VisualForKey({ visualKey, progress }: { visualKey: AsicVisualKey; progr
   if (visualKey === 'challenge-pipeline') return <ChallengePipelineDiagram />;
   if (visualKey === 'and-gate') return <AndGateDiagram />;
   if (visualKey === 'layer-stack') return <AsicAnatomyDiagram progress={progress} />;
-  if (visualKey === 'rtree') return <RTreeInsertionDiagram progress={progress} />;
+  if (visualKey === 'rtree') return <RTreeInsertionSequenceDiagram progress={progress} />;
   if (visualKey === 'circuit-morph') return <LayoutToNetsDiagram progress={progress} />;
   if (visualKey === 'scc-dag') return <SccDagDiagram progress={progress} />;
   if (visualKey === 'sat-basics') return <SatBasicsDiagram progress={progress} />;
@@ -388,7 +388,7 @@ export function AsicStickyStory({ visualKey, children }: AsicStickyStoryProps): 
 }
 
 export function AsicInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
-  if (visualKey === 'result-decode') return <AsicAnimatedInlineVisual visualKey={visualKey} />;
+  if (visualKey === 'rtree' || visualKey === 'result-decode') return <AsicAnimatedInlineVisual visualKey={visualKey} />;
   return <div className={styles.inlineVisual} data-visual={visualKey}><VisualForKey visualKey={visualKey} progress={1} /></div>;
 }
 

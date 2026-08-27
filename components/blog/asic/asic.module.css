@@ -148,16 +148,49 @@
   pointer-events: none;
 }
 
+.diagramFrame:has(.diagramProgress) .diagramCorner {
+  bottom: 44px;
+}
+
 .diagramProgress {
   position: absolute;
   z-index: 4;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.075);
+  right: clamp(18px, 3.5vw, 38px);
+  bottom: 16px;
+  left: clamp(18px, 3.5vw, 38px);
+  display: grid;
+  gap: 7px;
   pointer-events: none;
+}
+
+.diagramProgress::before {
+  position: absolute;
+  z-index: -1;
+  right: -9px;
+  bottom: -9px;
+  left: -9px;
+  height: 54px;
+  background: linear-gradient(180deg, transparent, rgba(5, 5, 5, 0.92) 58%);
+  content: '';
+}
+
+.diagramProgress strong {
+  overflow: hidden;
+  color: #d7d7d7;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.58rem;
+  font-weight: 750;
+  letter-spacing: 0.075em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.diagramProgress > span {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .diagramProgress i {
@@ -873,6 +906,7 @@
   }
 
   .inlineVisual[data-visual='and-gate'] .diagramFrame { min-height: 400px; }
+  .inlineVisual[data-visual='rtree'] .diagramFrame { min-height: 700px; }
   .andGateDesktop { display: none; }
   .andGateMobile { display: block; }
   .layoutNetsDesktop { display: none; }

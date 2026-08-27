@@ -23,6 +23,8 @@ interface DiagramFrameProps {
   corner?: string;
   headingLayout?: 'split' | 'stacked';
   progress?: number;
+  progressLabel?: string;
+  showProgress?: boolean;
 }
 
 interface DiagramSvgProps {
@@ -95,8 +97,8 @@ export function scrollRevealStyle(progress: number, start: number, duration = 0.
   return { opacity: 0.12 + amount * 0.88, transform: `translate3d(0, ${(1 - amount) * travel}px, 0)` };
 }
 
-export function DiagramFrame({ label, status, children, corner, headingLayout = 'split', progress }: DiagramFrameProps): JSX.Element {
-  return <figure className={styles.diagramFrame} aria-label={status ? `${label}: ${status}` : label}><figcaption data-heading-layout={headingLayout}><span>{label}</span>{status && <strong>{status}</strong>}</figcaption><div className={styles.diagramViewport}>{children}{corner && <div className={styles.diagramCorner} aria-hidden="true">{corner}</div>}{progress !== undefined && <div className={styles.diagramProgress} aria-hidden="true"><i style={{ transform: `scaleX(${clamp(progress)})` }} /></div>}</div></figure>;
+export function DiagramFrame({ label, status, children, corner, headingLayout = 'split', progress, progressLabel, showProgress = true }: DiagramFrameProps): JSX.Element {
+  return <figure className={styles.diagramFrame} aria-label={status ? `${label}: ${status}` : label}><figcaption data-heading-layout={headingLayout}><span>{label}</span>{status && <strong>{status}</strong>}</figcaption><div className={styles.diagramViewport}>{children}{corner && <div className={styles.diagramCorner} aria-hidden="true">{corner}</div>}{progress !== undefined && showProgress && <div className={styles.diagramProgress} aria-hidden="true">{progressLabel && <strong>{progressLabel}</strong>}<span><i style={{ transform: `scaleX(${clamp(progress)})` }} /></span></div>}</div></figure>;
 }
 
 export function DiagramSvg({ width, height, ariaLabel, children, className, contentScale = 0.94, inset = 26 }: DiagramSvgProps): JSX.Element {
