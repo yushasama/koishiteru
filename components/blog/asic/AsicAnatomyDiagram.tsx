@@ -47,6 +47,7 @@ const LAYERS: Readonly<Record<ConductorLayerId, LayerStyle>> = {
 };
 const CONTACT_REVEAL = { mcon: 0.24, via: 0.32, via2: 0.42, via3: 0.52, via4: 0.62 } as const;
 const CONTACT_COLORS = { body: '#c77b16', edge: '#ff9c24' } as const;
+const LABEL_REVEAL = { start: 0.74, duration: 0.14 } as const;
 const LAYER_LABELS: readonly { id: ConductorLayerId; title: string; y: number }[] = [
   { id: 'met5', title: 'MET5', y: 159 },
   { id: 'met4', title: 'MET4', y: 204 },
@@ -281,7 +282,7 @@ export function AsicAnatomyDiagram({ progress }: ScrollDiagramProps): JSX.Elemen
   const [selectedObjectKey, setSelectedObjectKey] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const cellsReveal = phase(progress, 0.1, 0.16);
-  const labels = phase(progress, 0.74, 0.14);
+  const labels = phase(progress, LABEL_REVEAL.start, LABEL_REVEAL.duration);
   const progressLabel = progress < 0.24 ? 'Reveal standard-cell placements' : progress < 0.68 ? 'Lift conductors and adjacent-layer via cuts' : 'Separate LI1 through MET5';
   const selectedObject = sceneObjectsAtProgress(progress).find((object) => object.key === selectedObjectKey) ?? null;
   const sceneCenterX = (DEMO_ASIC_SCENE.bounds.xMin + DEMO_ASIC_SCENE.bounds.xMax) / 2;
@@ -305,7 +306,7 @@ export function AsicAnatomyDiagram({ progress }: ScrollDiagramProps): JSX.Elemen
     <DiagramFrame label="ASIC anatomy" status="" corner="SCHEMATIC · NOT TO SCALE" headingLayout="stacked">
       <div ref={stageRef} className={`${styles.anatomyStage} ${selectedObject ? styles.anatomyStageSelected : ''} ${swapPanels ? styles.anatomyStageSwapPanels : ''}`}>
         <div className={styles.anatomyCanvas}>
-          <DiagramSvg width={760} height={620} ariaLabel="A thin ASIC die separates into eight selected SKY130 standard-cell masters, LI1, MET1 through MET5, and local cuts between adjacent routing layers. Each visible object can be inspected directly." className={styles.anatomyDiagram} contentScale={1} progress={progress} progressLabel={progressLabel} showBoard={false}>
+          <DiagramSvg width={760} height={620} ariaLabel="A thin ASIC die separates into eight selected SKY130 standard-cell masters, LI1, MET1 through MET5, and local cuts between adjacent routing layers. Each visible object can be inspected directly." className={styles.anatomyDiagram} contentScale={1} progress={progress} progressEnd={LABEL_REVEAL.start + LABEL_REVEAL.duration} progressLabel={progressLabel} showBoard={false}>
             <defs>
               <linearGradient id="silicon-sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#70808a" stopOpacity="0.2" /><stop offset="0.42" stopColor="#17242c" stopOpacity="0.08" /><stop offset="1" stopColor="#83949d" stopOpacity="0.16" /></linearGradient>
               <linearGradient id="anatomy-selection-tint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ff9fbe" stopOpacity="0.15" /><stop offset="0.48" stopColor="#fb4e7c" stopOpacity="0.08" /><stop offset="1" stopColor="#7d2948" stopOpacity="0.025" /></linearGradient>
@@ -323,7 +324,7 @@ export function AsicAnatomyDiagram({ progress }: ScrollDiagramProps): JSX.Elemen
         </div>
         {selectedObject && cellsReveal > 0.5 && <SceneObjectInspector object={selectedObject} onClose={() => setSelectedObjectKey(null)} />}
         <MobileLegend />
-        <div className={styles.anatomyMobileProgress}><DiagramProgress progress={progress} label={progressLabel} /></div>
+        <div className={styles.anatomyMobileProgress}><DiagramProgress progress={progress} progressEnd={LABEL_REVEAL.start + LABEL_REVEAL.duration} label={progressLabel} /></div>
       </div>
     </DiagramFrame>
   );

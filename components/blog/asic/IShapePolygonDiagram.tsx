@@ -8,6 +8,7 @@ import styles from './asic.module.css';
 const clamp = (value: number): number => Math.min(1, Math.max(0, value));
 const mix = (start: number, end: number, amount: number): number => start + (end - start) * amount;
 const RECTANGLE_COLORS = ['#79ddff', '#f6cf68', '#87eab2'] as const;
+const TREE_REVEAL = { start: 0.66, duration: 0.24 } as const;
 const RECTANGLE_TINTS = [{ start: '#8be2ff', middle: '#3a9dca', end: '#163e50' }, { start: '#ffe5a6', middle: '#c58e24', end: '#4d3910' }, { start: '#adf7cb', middle: '#359f68', end: '#153f2a' }] as const;
 
 function outlinePath(centerX: number, centerY: number, scale: number): string {
@@ -49,14 +50,14 @@ export function IShapePolygonDiagram({ progress }: ScrollDiagramProps): JSX.Elem
   const cut = clamp((progress - 0.1) / 0.18);
   const color = clamp((progress - 0.28) / 0.18);
   const clear = clamp((progress - 0.52) / 0.16);
-  const tree = clamp((progress - 0.66) / 0.24);
+  const tree = clamp((progress - TREE_REVEAL.start) / TREE_REVEAL.duration);
   const geometryOpacity = 1 - clear;
   const status = tree > 0.6 ? 'R0 · R1 · R2 indexed' : clear > 0.3 ? 'Insert R0 · R1 · R2' : color > 0.25 ? 'R0 + R1 + R2 exactly cover the polygon' : cut > 0.1 ? 'Draw two clean section lines' : 'Trace the I-shaped outline';
   return <DiagramFrame label="Decomping A Weird Manhattan Polygon" status={status}>
-    <DiagramSvg className={styles.polygonDesktop} width={760} height={570} ariaLabel="An I-shaped Manhattan polygon is divided into the exact rectangles R0, R1, and R2, then those same three rectangles are inserted into one R-tree root leaf." contentScale={0.92} progress={progress} progressLabel={status} showBoard={false}>
+    <DiagramSvg className={styles.polygonDesktop} width={760} height={570} ariaLabel="An I-shaped Manhattan polygon is divided into the exact rectangles R0, R1, and R2, then those same three rectangles are inserted into one R-tree root leaf." contentScale={0.92} progress={progress} progressEnd={TREE_REVEAL.start + TREE_REVEAL.duration} progressLabel={status} showBoard={false}>
       <text x="44" y="54" fill="#aaa" fontFamily="monospace" fontSize="13" opacity={geometryOpacity}>I-SHAPED POLYGON</text><IShapeGeometry centerX={380} centerY={258} scale={100} cut={cut} color={color} opacity={geometryOpacity} gradientIdPrefix="decomp-desktop" /><FinalTree opacity={tree} />
     </DiagramSvg>
-    <DiagramSvg className={styles.polygonMobile} width={360} height={480} ariaLabel="On mobile, scrolling traces the I-shaped polygon, divides it into R0, R1, and R2, and inserts those same rectangles into one R-tree root leaf." contentScale={1} progress={progress} progressLabel={status} showBoard={false}>
+    <DiagramSvg className={styles.polygonMobile} width={360} height={480} ariaLabel="On mobile, scrolling traces the I-shaped polygon, divides it into R0, R1, and R2, and inserts those same rectangles into one R-tree root leaf." contentScale={1} progress={progress} progressEnd={TREE_REVEAL.start + TREE_REVEAL.duration} progressLabel={status} showBoard={false}>
       <text x="18" y="30" fill="#bbb" fontFamily="monospace" fontSize="12.5" fontWeight="800" opacity={geometryOpacity}>I-SHAPED POLYGON</text><IShapeGeometry centerX={180} centerY={164} scale={55} cut={cut} color={color} opacity={geometryOpacity} gradientIdPrefix="decomp-mobile" /><FinalTree opacity={tree} mobile />
     </DiagramSvg>
   </DiagramFrame>;

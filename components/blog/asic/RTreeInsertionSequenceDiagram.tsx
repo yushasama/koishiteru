@@ -15,6 +15,10 @@ const MOBILE_CHIP: PlotFrame = { x: 20, y: 52, width: 320, height: 136 };
 const LEAF_COLORS = ['#5ed8ff', '#b879ff', '#68e09c', '#ff8e62', '#ff6fb5'] as const;
 const ACTIVE_COLOR = '#f0c557';
 const ENTRY_COUNT = RTREE_CONSTRUCTION.entries.length;
+const INSERT_COMMIT_AT = 0.42;
+const SPLIT_FADE_END = 0.74;
+const FINAL_STEP = RTREE_CONSTRUCTION.steps[RTREE_CONSTRUCTION.steps.length - 1];
+const CONSTRUCTION_COMPLETE_AT = (RTREE_CONSTRUCTION.steps.length - 1 + (FINAL_STEP.splits.length ? SPLIT_FADE_END : INSERT_COMMIT_AT)) / RTREE_CONSTRUCTION.steps.length;
 const CANDIDATE_WIDTH = 104;
 const CANDIDATE_STRIDE = 112;
 const clamp = (value: number): number => Math.min(1, Math.max(0, value));
@@ -41,13 +45,13 @@ function visibleState(progress: number): VisibleConstructionState {
   const localProgress = progress >= 0.999 ? 1 : scaled - stepIndex;
   const step = RTREE_CONSTRUCTION.steps[stepIndex];
   const previousSnapshot = stepIndex ? RTREE_CONSTRUCTION.steps[stepIndex - 1].snapshot : RTREE_CONSTRUCTION.initial;
-  const committed = localProgress >= 0.42 || progress >= 0.999;
+  const committed = localProgress >= INSERT_COMMIT_AT || progress >= 0.999;
   return { step, stepIndex, localProgress, previousSnapshot, snapshot: committed ? step.snapshot : previousSnapshot, committed, insertedCount: stepIndex + (committed ? 1 : 0) };
 }
 
 function progressLabel(progress: number): string {
   const state = visibleState(progress);
-  if (progress >= 0.999) return `${ENTRY_COUNT} / ${ENTRY_COUNT} · complete · ${leaves(RTREE_CONSTRUCTION.steps[ENTRY_COUNT - 1].snapshot).length} leaves`;
+  if (progress >= CONSTRUCTION_COMPLETE_AT) return `${ENTRY_COUNT} / ${ENTRY_COUNT} · complete · ${leaves(FINAL_STEP.snapshot).length} leaves`;
   if (!state.committed) return `${state.insertedCount} / ${ENTRY_COUNT} indexed · next ${state.step.number}`;
   if (state.step.event === 'root-split') return `${state.step.number} / ${ENTRY_COUNT} · overflow resolved · root + 2 leaves`;
   if (state.step.event === 'leaf-split') return `${state.step.number} / ${ENTRY_COUNT} · overflow resolved · entries redistributed`;
@@ -75,7 +79,7 @@ function Chip({ frame, state, mobile = false }: { frame: PlotFrame; state: Visib
   const colors = ownerColors(state.snapshot);
   const active = state.step.entry;
   const split = state.step.splits[0];
-  const previousMbbOpacity = state.committed && split ? clamp((0.74 - state.localProgress) / 0.3) : 0;
+  const previousMbbOpacity = state.committed && split ? clamp((SPLIT_FADE_END - state.localProgress) / 0.3) : 0;
   return <g>
     <rect x={frame.x} y={frame.y} width={frame.width} height={frame.height} fill="#080808" stroke="#363636" strokeWidth="1.3" />
     {DEMO_ASIC_SCENE.cells.map((cell) => {
@@ -130,7 +134,7 @@ function DecisionLedger({ state }: { state: VisibleConstructionState }): JSX.Ele
 
 function DesktopConstruction({ progress }: ScrollDiagramProps): JSX.Element {
   const state = visibleState(progress);
-  return <DiagramSvg className={styles.desktop} width={1080} height={540} ariaLabel={`R-tree construction from 22 LI1 rectangles. Current insertion ${state.step.number}: ${state.step.entry.label}.`} boardBottomInset={26} contentScale={1} inset={2} progress={progress} progressLabel={progressLabel(progress)}>
+  return <DiagramSvg className={styles.desktop} width={1080} height={540} ariaLabel={`R-tree construction from 22 LI1 rectangles. Current insertion ${state.step.number}: ${state.step.entry.label}.`} boardBottomInset={26} contentScale={1} inset={2} progress={progress} progressEnd={CONSTRUCTION_COMPLETE_AT} progressLabel={progressLabel(progress)}>
     <g transform="translate(50 0)">
       <Chip frame={DESKTOP_CHIP} state={state} />
       <text x="38" y="48" fill="#eee" fontFamily="monospace" fontSize="15" fontWeight="800">LI1 RECTANGLES</text><text x="622" y="48" textAnchor="end" fill="#a0a0a0" fontFamily="monospace" fontSize="11.5">{state.insertedCount} / {ENTRY_COUNT} INDEXED</text>
@@ -144,7 +148,7 @@ function DesktopConstruction({ progress }: ScrollDiagramProps): JSX.Element {
 function MobileConstruction({ progress }: ScrollDiagramProps): JSX.Element {
   const state = visibleState(progress);
   const leafNodes = leaves(state.snapshot);
-  return <DiagramSvg className={styles.mobile} width={360} height={680} ariaLabel={`R-tree construction state ${state.step.number} of ${ENTRY_COUNT}. ${state.insertedCount} LI1 rectangles are indexed in ${leafNodes.length} leaf nodes.`} boardBottomInset={26} contentScale={1} inset={10} progress={progress} progressLabel={progressLabel(progress)}>
+  return <DiagramSvg className={styles.mobile} width={360} height={680} ariaLabel={`R-tree construction state ${state.step.number} of ${ENTRY_COUNT}. ${state.insertedCount} LI1 rectangles are indexed in ${leafNodes.length} leaf nodes.`} boardBottomInset={26} contentScale={1} inset={10} progress={progress} progressEnd={CONSTRUCTION_COMPLETE_AT} progressLabel={progressLabel(progress)}>
     <text x="20" y="30" fill="#ddd" fontFamily="monospace" fontSize="12" fontWeight="800">{state.insertedCount} / {ENTRY_COUNT} INDEXED</text>
     <Chip frame={MOBILE_CHIP} state={state} mobile />
     <rect x="20" y="212" width="320" height="54" rx="4" fill="#0d0d0d" stroke="#303030" /><text x="32" y="233" fill="#a0a0a0" fontFamily="monospace" fontSize="12">INSERT {state.step.number.toString().padStart(2, '0')}</text><text x="32" y="254" fill={ACTIVE_COLOR} fontFamily="monospace" fontSize="13.5" fontWeight="800">{state.step.entry.label}</text>
