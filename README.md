@@ -3,7 +3,7 @@ This is the codebase for my developer portfolio. Built with NextJS, TailwindCSS,
 
 ## Private ASIC article
 
-The ASIC article, its route bundle, image-optimized variants, and its files under `public/blog/asic-reverse-engineering` and `public/media/jsc-asic-showcase.mp4` are protected by server middleware. Generate the deployment values without storing the plaintext password:
+The ASIC article, its route bundle, image-optimized variants, and its files under `public/blog/asic-reverse-engineering` are protected by server middleware. Generate the deployment values without storing the plaintext password:
 
 ```bash
 npm run asic:secrets

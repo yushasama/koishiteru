@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactNode, useMemo } from 'react';
+import React, { type ReactNode, type Ref, useMemo } from 'react';
 import ScribbleMarkdown from './ScribbleMarkdown';
 
 type MarkerMode = 'inline' | 'paired';
@@ -27,6 +27,7 @@ interface VisualMarkdownArticleProps<VisualKey extends string> {
   visualKeys: readonly VisualKey[];
   renderVisual: (visualKey: VisualKey) => ReactNode;
   renderStickyVisual?: (visualKey: VisualKey, children: ReactNode) => ReactNode;
+  rootRef?: Ref<HTMLDivElement>;
 }
 
 const inlineVisualPattern = /<!--\s*visual:([a-z0-9-]+)\s*-->/g;
@@ -87,11 +88,12 @@ export default function VisualMarkdownArticle<VisualKey extends string>({
   visualKeys,
   renderVisual,
   renderStickyVisual,
+  rootRef,
 }: VisualMarkdownArticleProps<VisualKey>): JSX.Element {
   const parts = useMemo(() => parseArticle(markdown, markerMode, visualKeys), [markdown, markerMode, visualKeys]);
 
   return (
-    <div className={className}>
+    <div ref={rootRef} className={className}>
       {parts.map((part, index) => {
         if (part.kind === 'markdown') return <ScribbleMarkdown key={`markdown-${index}`} markdown={part.markdown} />;
         if (part.marker === 'sticky' && renderStickyVisual) {

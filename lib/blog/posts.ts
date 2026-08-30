@@ -5,6 +5,7 @@ export interface BlogSection {
 
 export interface BlogPost {
   slug: string;
+  contentFile: 'article.md' | 'content.md';
   title: string;
   excerpt: string;
   category: string;
@@ -25,14 +26,15 @@ const BLOG_READING_MINUTES = {
 
 export const blogPosts: readonly BlogPost[] = [
   {
-    slug: 'reverse-engineering-an-asic-with-geometry-graph-theory-and-cigarette-breaks',
+    slug: 'reincarnated-as-an-unemployed-cs-student-who-reversed-engineered-an-asic',
+    contentFile: 'content.md',
     title: 'That Time I Was Reincarnated as an Unemployed CS Student and Jane Street Gave Me An ASIC To Reverse Engineer',
-    excerpt: 'Reverse engineering an ASIC with geometry, graph theory, and cigarette breaks.',
+    excerpt: 'Reverse engineering an ASIC with geometry and more graph theory.',
     category: 'Reverse Engineering',
     publishedAt: '2026-08-23T12:00:00.000Z',
     displayDate: 'Aug 23, 2026',
     readingMinutes: BLOG_READING_MINUTES.asicReverseEngineering,
-    thumbnail: '/blog/asic-reverse-engineering/thumbnail-microscope-small.webp',
+    thumbnail: '/blog/asic-reverse-engineering/thumbnail-microscope.webp',
     thumbnailAlt: 'Recovered ASIC die viewed under a wafer-inspection microscope',
     visualStory: 'asic-reverse-engineering',
     requiresAccess: true,
@@ -53,6 +55,7 @@ export const blogPosts: readonly BlogPost[] = [
   },
   {
     slug: 'from-homework-assignment-to-low-latency-benchmarking-engine',
+    contentFile: 'article.md',
     title: 'From Homework Assignment to Low-Latency Benchmarking Engine',
     excerpt: 'A systems programming assignment became a deep dive into memory allocation, SIMD, bitmasking, profiling, and the hidden costs of fast code.',
     category: 'Systems',
@@ -77,6 +80,6 @@ export function getBlogPost(slug: string): BlogPost | undefined {
   return blogPosts.find((post) => post.slug === slug);
 }
 
-export function getBlogPostContentPath(post: Pick<BlogPost, 'slug'>): string {
-  return `content/blog/${post.slug}/article.md`;
+export function getBlogPostContentPath(post: Pick<BlogPost, 'contentFile' | 'slug'>): string {
+  return `content/blog/${post.slug}/${post.contentFile}`;
 }

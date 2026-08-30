@@ -19,6 +19,7 @@ interface PostRowProps {
 export default function PostRow({ post, receded, onFocus, onHover }: PostRowProps): JSX.Element {
   const reduceMotion = useReducedMotion();
   const href = `/blog/${post.slug}`;
+  const isAsic = post.visualStory === 'asic-reverse-engineering';
 
   const navigateToArticle = (): void => {
     requestBlogArticleNavigation({ href, title: post.title, category: post.category, thumbnail: post.thumbnail });
@@ -41,10 +42,10 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
   return (
     <motion.div animate={{ opacity: receded ? 0.58 : 1 }} transition={{ duration: reduceMotion ? 0 : 0.28 }} className={styles.postRowWrap}>
       <Link href={href} prefetch={!post.requiresAccess} className={styles.postRow} onClick={handleClick} onKeyDown={handleKeyDown} onFocus={onFocus} onMouseEnter={onHover}>
-        <div className={styles.thumbnail}>
+        <div className={`${styles.thumbnail} ${isAsic ? styles.asicThumbnail : ''}`}>
           {post.visualStory === 'systems-optimization'
             ? <SystemsThumbnail />
-            : <Image src={post.thumbnail} alt={post.thumbnailAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), 160px" className={post.visualStory === 'asic-reverse-engineering' ? styles.asicThumbnailImage : undefined} />}
+            : <Image src={post.thumbnail} alt={post.thumbnailAlt} fill quality={95} unoptimized={isAsic} sizes="(max-width: 767px) calc(100vw - 40px), 160px" className={isAsic ? styles.asicThumbnailImage : undefined} />}
         </div>
         <div className={styles.postMain}>
           <span className={styles.postCategory}>{post.category}</span>

@@ -83,33 +83,8 @@ interface WorkingNode {
 }
 
 const MAX_ENTRIES = 8;
-const DBU_PER_MICROMETER = 1000;
-const IMPLEMENTATION_SHA256 = '79de9da273c5715b4f1e967f53071c172c7047b88f8c76fe431fdff2cbe48311';
-const EXPECTED_SIGNATURES: readonly string[] = [
-  'L[0]',
-  'L[0,1]',
-  'L[0,1,2]',
-  'L[0,1,2,3]',
-  'L[0,1,2,3,4]',
-  'L[0,1,2,3,4,5]',
-  'L[0,1,2,3,4,5,6]',
-  'L[0,1,2,3,4,5,6,7]',
-  'N[L[0,1,2,3]|L[4,5,6,7,8]]',
-  'N[L[0,1,2,3]|L[4,5,6,7,8,9]]',
-  'N[L[0,1,2,3]|L[4,5,6,7,8,9,10]]',
-  'N[L[0,1,2,3]|L[4,5,6,7,8,9,10,11]]',
-  'N[L[0,1,2,3]|L[4,5,6,7]|L[8,9,10,11,12]]',
-  'N[L[0,1,2,3]|L[4,5,6,7]|L[8,9,10,11,12,13]]',
-  'N[L[0,1,2,3]|L[4,5,6,7]|L[8,9,10,11,12,13,14]]',
-  'N[L[0,1,2,3]|L[4,5,6,7]|L[8,9,10,11,12,13,14,15]]',
-  'N[L[0,1,2,3,16]|L[4,5,6,7]|L[8,9,10,11,12,13,14,15]]',
-  'N[L[0,1,2,3,16]|L[4,5,6,7]|L[9,11,13,15]|L[17,8,10,12,14]]',
-  'N[L[0,1,2,3,16]|L[4,5,6,7,18]|L[9,11,13,15]|L[17,8,10,12,14]]',
-  'N[L[0,1,2,3,16]|L[4,5,6,7,18]|L[9,11,13,15]|L[17,8,10,12,14,19]]',
-  'N[L[0,1,2,3,16]|L[4,5,6,7,18,20]|L[9,11,13,15]|L[17,8,10,12,14,19]]',
-  'N[L[0,1,2,3,16]|L[4,5,6,7,18,20]|L[9,11,13,15]|L[17,8,10,12,14,19,21]]',
-];
-const EXPECTED_SELECTED_CHILDREN: readonly (number | null)[] = [null, null, null, null, null, null, null, null, null, 1, 1, 1, 1, 2, 2, 2, 0, 2, 1, 3, 1, 3];
+const PYTHON_RECEIPT = DEMO_ASIC_SCENE.rTreeReceipt;
+const DBU_PER_MICROMETER = PYTHON_RECEIPT.dbuPerMicrometer;
 
 let nextNodeId = 0;
 
@@ -122,8 +97,8 @@ function toDbu(box: SceneBox): RTreeBBox {
 }
 
 function entryLabel(id: string): string {
-  const tap = /^li1-u(\d+)-(vdd|gnd)$/.exec(id);
-  if (tap) return `U${tap[1]} ${tap[2].toUpperCase()} TAP`;
+  const powerConnection = /^li1-u(\d+)-(vdd|gnd)$/.exec(id);
+  if (powerConnection) return `U${powerConnection[1]} ${powerConnection[2].toUpperCase()} CONNECTION`;
   return id.replace(/^li1-/, '').replaceAll('-', ' ').toUpperCase();
 }
 
@@ -230,7 +205,12 @@ function signature(node: RTreeSnapshotNode): string {
 
 function buildTrace(): RTreeConstructionTrace {
   nextNodeId = 0;
-  const entries = DEMO_ASIC_SCENE.shapes.filter((shape) => shape.layer === 'li1').map((shape, index): RTreeSourceEntry => ({ index, id: shape.id, label: entryLabel(shape.id), shape, bbox: toDbu(shape.box) }));
+  const li1Shapes = DEMO_ASIC_SCENE.shapes.filter((shape) => shape.layer === 'li1');
+  const entries = PYTHON_RECEIPT.insertionOrder.map((sourceIndex, index): RTreeSourceEntry => {
+    const shape = li1Shapes[sourceIndex];
+    if (!shape) throw new Error(`R-tree receipt references missing LI1 shape ${sourceIndex}`);
+    return { index, id: shape.id, label: entryLabel(shape.id), shape, bbox: toDbu(shape.box) };
+  });
   let root = createNode(true);
   const initial = snapshot(root);
   const steps = entries.map((entry, index): RTreeConstructionStep => {
@@ -242,7 +222,7 @@ function buildTrace(): RTreeConstructionTrace {
     const event = wasLeafRoot && !root.leaf ? 'root-split' : splits.length ? 'leaf-split' : 'insert';
     return { number: index + 1, entry, event, decisionPath: path, splits, snapshot: current, signature: signature(current) };
   });
-  return { implementation: 'jsc_asic.physical.spatial_index.RTree', implementationSha256: IMPLEMENTATION_SHA256, sceneSha256: DEMO_ASIC_SCENE.sourceSha256, layer: 'li1', maxEntries: MAX_ENTRIES, dbuPerMicrometer: DBU_PER_MICROMETER, entries, initial, steps };
+  return { implementation: PYTHON_RECEIPT.implementation, implementationSha256: PYTHON_RECEIPT.implementationSha256, sceneSha256: DEMO_ASIC_SCENE.sourceSha256, layer: 'li1', maxEntries: MAX_ENTRIES, dbuPerMicrometer: DBU_PER_MICROMETER, entries, initial, steps };
 }
 
 function sameBox(a: SceneBox | null, b: SceneBox): boolean {
@@ -260,11 +240,13 @@ function validateNode(node: RTreeSnapshotNode, seen: number[]): SceneBox {
 }
 
 function validateTrace(trace: RTreeConstructionTrace): void {
-  if (trace.entries.length !== 22 || trace.steps.length !== EXPECTED_SIGNATURES.length) throw new Error('R-tree construction must contain all 22 LI1 rectangles');
+  if (PYTHON_RECEIPT.maxEntries !== MAX_ENTRIES || PYTHON_RECEIPT.dbuPerMicrometer !== DBU_PER_MICROMETER) throw new Error('R-tree construction constants diverge from the Python receipt');
+  if (PYTHON_RECEIPT.insertionOrder.length !== trace.entries.length) throw new Error('R-tree insertion order must include every LI1 rectangle');
+  if (trace.entries.length !== 22 || trace.steps.length !== PYTHON_RECEIPT.signatures.length) throw new Error('R-tree construction must contain all 22 LI1 rectangles');
   trace.steps.forEach((step, index) => {
-    if (step.signature !== EXPECTED_SIGNATURES[index]) throw new Error(`R-tree step ${step.number} diverges from the Python implementation: ${step.signature}`);
+    if (step.signature !== PYTHON_RECEIPT.signatures[index]) throw new Error(`R-tree step ${step.number} diverges from the Python implementation: ${step.signature}`);
     const selected = step.decisionPath[0]?.selectedChildIndex ?? null;
-    if (selected !== EXPECTED_SELECTED_CHILDREN[index]) throw new Error(`R-tree step ${step.number} selected child ${String(selected)} instead of ${String(EXPECTED_SELECTED_CHILDREN[index])}`);
+    if (selected !== PYTHON_RECEIPT.selectedChildren[index]) throw new Error(`R-tree step ${step.number} selected child ${String(selected)} instead of ${String(PYTHON_RECEIPT.selectedChildren[index])}`);
     const seen: number[] = [];
     validateNode(step.snapshot, seen);
     const expected = Array.from({ length: step.number }, (_, entryIndex) => entryIndex);

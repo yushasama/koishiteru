@@ -1,0 +1,111 @@
+{
+  "bounds": {
+    "xMax": 2.4,
+    "xMin": -2.4,
+    "yMax": 1.4,
+    "yMin": -1.4
+  },
+  "dbuPerMicrometer": 1000,
+  "name": "i_shape_polygon_decomposition",
+  "outline": [
+    {
+      "x": -2.4,
+      "y": -1.4
+    },
+    {
+      "x": 2.4,
+      "y": -1.4
+    },
+    {
+      "x": 2.4,
+      "y": -0.6
+    },
+    {
+      "x": 0.5,
+      "y": -0.6
+    },
+    {
+      "x": 0.5,
+      "y": 0.6
+    },
+    {
+      "x": 2.4,
+      "y": 0.6
+    },
+    {
+      "x": 2.4,
+      "y": 1.4
+    },
+    {
+      "x": -2.4,
+      "y": 1.4
+    },
+    {
+      "x": -2.4,
+      "y": 0.6
+    },
+    {
+      "x": -0.5,
+      "y": 0.6
+    },
+    {
+      "x": -0.5,
+      "y": -0.6
+    },
+    {
+      "x": -2.4,
+      "y": -0.6
+    }
+  ],
+  "rTreeReceipt": {
+    "dbuPerMicrometer": 1000,
+    "implementation": "jsc_asic.physical.spatial_index.RTree",
+    "implementationSha256": "79de9da273c5715b4f1e967f53071c172c7047b88f8c76fe431fdff2cbe48311",
+    "layer": "i-shape-decomposition",
+    "maxEntries": 8,
+    "selectedChildren": [
+      null,
+      null,
+      null
+    ],
+    "signatures": [
+      "L[0]",
+      "L[0,1]",
+      "L[0,1,2]"
+    ]
+  },
+  "rectangles": [
+    {
+      "box": {
+        "xMax": 2.4,
+        "xMin": -2.4,
+        "yMax": -0.6,
+        "yMin": -1.4
+      },
+      "id": "r0",
+      "label": "R0"
+    },
+    {
+      "box": {
+        "xMax": 0.5,
+        "xMin": -0.5,
+        "yMax": 0.6,
+        "yMin": -0.6
+      },
+      "id": "r1",
+      "label": "R1"
+    },
+    {
+      "box": {
+        "xMax": 2.4,
+        "xMin": -2.4,
+        "yMax": 1.4,
+        "yMin": 0.6
+      },
+      "id": "r2",
+      "label": "R2"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceSha256": "495ca40ff0e7086f76ae4aa43b328ee326cd036a10ba77a1a184ec77f1e2602d"
+}

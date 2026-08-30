@@ -9,6 +9,15 @@
 :root {
   --foreground-rgb: 255, 255, 255;
   --background-rgb: 0, 0, 0;
+  --scrollbar-rail: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb: #9f3c5d;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+    scrollbar-width: thin;
+  }
 }
 
 body {
@@ -17,23 +26,62 @@ body {
 }
 
 /* ========== SCROLLBAR ========== */
+html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  background-color: #101015;
-  width: 8px;
+  width: 10px;
+  height: 10px;
+  background: transparent;
 }
 
+html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
-  background-color: #101015;
+  background: linear-gradient(90deg, transparent 45%, var(--scrollbar-rail) 45% 55%, transparent 55%);
 }
 
+html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-  background-color: #fb4e7c;
-  border-radius: 8px;
-  border: 2px solid #101015;
+  min-height: 64px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d64f7a 0%, #9f3c5d 100%);
+  background-clip: padding-box;
 }
 
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+  background: linear-gradient(180deg, #ff89ac 0%, #e84377 100%);
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active {
+  border-width: 1px;
+  background: #ff729d;
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-button,
 body::-webkit-scrollbar-button {
   display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+html::-webkit-scrollbar-button:vertical,
+body::-webkit-scrollbar-button:vertical {
+  height: 0;
+}
+
+html::-webkit-scrollbar-button:horizontal,
+body::-webkit-scrollbar-button:horizontal {
+  width: 0;
 }
 
 /* Completely hide scrollbars */

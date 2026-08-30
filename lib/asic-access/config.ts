@@ -1,4 +1,4 @@
-export const ASIC_ARTICLE_SLUG = 'reverse-engineering-an-asic-with-geometry-graph-theory-and-cigarette-breaks';
+export const ASIC_ARTICLE_SLUG = 'reincarnated-as-an-unemployed-cs-student-who-reversed-engineered-an-asic';
 export const ASIC_ARTICLE_PATH = `/blog/${ASIC_ARTICLE_SLUG}`;
 export const ASIC_ACCESS_PATH = '/asic-access';
 export const ASIC_ACCESS_ENDPOINT = '/api/asic-access';
