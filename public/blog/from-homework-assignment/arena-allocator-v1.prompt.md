@@ -1,0 +1,24 @@
+# Arena allocator cover artwork
+
+Generated with the built-in image generation tool. Conceptual illustration, not a measured trace of this article's workload. The original generated raster remains in the generation output; the website uses a WebP encoding.
+
+## Header prompt
+
+Create a beautiful precise editorial DIAGRAM of a software ARENA ALLOCATOR, rendered as elegant 3D vector-style technical artwork on near-black #070707. Square image, 1536x1536 if possible. This is abstract memory geometry, NOT physical computer hardware. One dominant relationship only: contiguous allocated prefix, bump pointer, remaining unused suffix.
+
+Geometry is non-negotiable: draw ONE long narrow continuous rectangular memory buffer as an isometric translucent prism, running diagonally from lower-left toward upper-right so it fills a square thumbnail nicely. It has ONLY ONE LINE of allocations along its long axis, never multiple rows, never a grid or a tray. All sections have EXACTLY the same cross-section and remain flush and connected end-to-end in one continuous outer outline. From its lower-left beginning to its upper-right end: allocation A occupies 18 percent of length, allocation B occupies 13 percent, allocation C occupies 24 percent, then the remaining 45 percent is ONE empty translucent wireframe volume. NO gaps between A B C. No allocations appear after the pointer. The boundary at exactly 55 percent of the full buffer length has one crisp hot rose-pink cross-section plane and a small thin pointer line ending at that boundary.
+
+Material: allocated sections are smoky frosted silver and muted pale-blue translucent glass with subtle luminous edges, third allocation has a soft rose accent. Free suffix is nearly black transparent glass, only outer boundary edges visible, visibly empty. Minimal shallow isometric extrusion, no pedestal, no enclosure, no metallic machinery, no circuit board, no extraneous floating blocks. Crisp lines and restrained soft light give premium editorial beauty; explanatory structure takes priority over material spectacle.
+
+Composition: the whole single buffer and annotations fit safely inside the central 80 percent of the square with ample 10 percent margins. Distinct silhouette even when reduced to 170 pixels wide. Buffer rises steeply diagonally, lower-left start at roughly 22 percent x / 78 percent y, upper-right end at 78 percent x / 22 percent y. Show top and one side face clearly. No background scenery.
+Text: exactly two concise, neatly set monospaced labels, “bump” attached by a thin rose pointer line to the allocation frontier, and “free” near the unallocated suffix. White or pale-gray lettering, large enough to remain legible in a thumbnail. No title, no caption, no block letters, no byte counts, no decorative measurement ticks.
+Conceptual allocator illustration, not a measured allocation trace. No performance claims, no benchmark numbers. Avoid segmented free area, grids, hardware slots, trays, scattered cubes, water, rainbow gradients, futuristic HUDs, excessive glow, and text clutter.
+
+## Thumbnail edit prompt
+
+Recompose this arena allocator diagram into a PORTRAIT 3:4 blog thumbnail that must remain clear at only 150 by 200 pixels. Keep the same translucent glass vector-diagram style, black background, silver/icy-blue/rose palette, and technically correct one-dimensional allocation structure. This is a layout and typography edit, not a new hardware concept.
+
+Draw exactly ONE connected contiguous buffer with exactly three abutting allocated sections at its lower end and ONE uninterrupted empty free suffix at its upper end. Keep the bump pointer exactly at the frontier after the last occupied section. No disconnected objects or multiple rows. Rotate the long axis so the buffer runs MUCH MORE VERTICALLY, from near bottom-left (22% x, 86% y) to near top-right (68% x, 12% y). The long prism should occupy about 80% of image height and 55% of image width. Give it a substantial 3D cross-section so the allocation blocks are clear, as a conceptual extruded diagram, not photorealistic glass hardware.
+
+Remove A, B and C lettering completely. Exactly TWO annotations only: “free” at the upper-right near the empty suffix, and “bump” at middle-right with a short rose line attached precisely to the used/free frontier. Make both annotation words VERY LARGE, about 9% of total image width in letter height, bold simple monospaced lettering. They must be readable when the entire image is shrunk to 150 pixels wide. Keep both words wholly within frame with safe margins. No extra labels, titles, legends, ticks or numbers.
+Background pure near-black, no floor, no borders, no outside glow haze. Crisp pale edges, restrained rose frontier highlight. Keep entire prism safely in frame. Simpler composition, larger geometry, larger type.
