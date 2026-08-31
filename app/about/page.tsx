@@ -41,7 +41,8 @@ export default function About() {
     { icon: saikouIcon, text: 'Competitive Programming' },
     { icon: saikouIcon, text: 'C++'},
     { icon: studyIcon, text: 'Machine Learning' },
-    { icon: studyIcon, text: 'Real Time Control Systems' },
+    { icon: studyIcon, text: 'Operating Systems' },
+    { icon: studyIcon, text: 'Hardware Engineering'},
     { icon: foodIcon, text: 'Cooking' },
     { icon: studyIcon, text: 'Judo' },
     { icon: saikouIcon, text: 'Curry Udon' },
@@ -132,39 +133,67 @@ export default function About() {
         {/* EXPERIENCE */}
         <section id="experiences" className="flex flex-col justify-start w-full mb-16">
           <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl pb-4 font-heebo">Experience</div>
-          <Experiences
-          companyName="Zwei Labs"
-          role="Software Engineer Intern"
-          startDate="10/25"
-          endDate="1/26"
-          details={
-            <>
-            Built distributed backend systems for real-time prediction market trading under strict latency and correctness constraints.
-            Designed a decimal-safe math library to prevent rounding bugs in trade execution and inventory updates.
-            Architected a low-latency event stream pipeline for market and inventory updates with deterministic behavior under burst traffic.
-            Implemented non-blocking concurrent ingestion for multiple market feeds with fault isolation.
-            Added pre-trade validation checks to prevent invalid orders under stale data and position limits.
-            </>
-          }
-          />
-          <Experiences
-            companyName="Beach Investment Group"
-            role="Quantitative Developer Intern"
-            startDate="6/2024"
-            endDate="5/2025"
-            details={
-              <>
-              Owned end-to-end market forecasting systems, from raw data processing to model training and repeatable forecast generation.
-              Reworked slow training code by moving heavy computation to GPUs and using faster data layouts, cutting model iteration time by 60%.
-              Delivered market forecasts used in external funding proposals, directly supporting $115K in secured funding (CFAOC RFP 2024).
-              </>
-            }
-          />
+          <Experiences companyName="Zwei Labs" role="Software Engineering Intern" startDate="10/2025" endDate="1/2026" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Developed a real-time Python trading backend for market data, live order books, strategy execution, and pre-trade risk checks.</li>
+              <li>Scaled to 40+ concurrent markets using independent async workers and WebSocket streams, isolating slow feeds from unrelated markets.</li>
+              <li>Added bounded queues, backpressure, deterministic event ordering, and exact decimal pricing to preserve correctness under load.</li>
+            </ul>
+          } />
+          <Experiences companyName="Beach Investment Group" role="Quantitative Developer Intern" startDate="6/2024" endDate="5/2025" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Created a scalable Python/Polars data pipeline used by 25+ analysts for ingestion, preprocessing, model training, and prediction delivery.</li>
+              <li>Accelerated NumPy with CuPy / CUDA, cutting experiment times from hours to minutes and increasing research throughput.</li>
+              <li>Implemented reusable factor-model and time-series tools with scikit-learn; forecasts supported funding proposals that secured $115K.</li>
+            </ul>
+          } />
         </section>
 
         {/* PROJECTS */}
         <section id="projects" className="flex flex-col justify-start w-full">
           <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl pb-4 font-heebo">Projects & Ventures</div>
+          <Experiences companyName={<AwesomeLink text="BPCure" link="https://bpcure.app" />} startDate="5/2026" endDate="Present" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Built a full-stack exam prep platform with React, TypeScript, Supabase, and Vercel that generates practice questions from user-uploaded material, used by peers to study for exams and technical interviews.</li>
+              <li>Implemented autosave so users never lose progress mid-exam, syncing drafts to the cloud in the background with conflict resolution across devices.</li>
+              <li>Built a one-click course sharing system where users generate a link and recipients instantly import the full course, ready to take exams with no setup.</li>
+            </ul>
+          } />
+          <Experiences companyName="Video Streaming Platform" startDate="5/2026" endDate="6/2026" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Assisted in stabilizing a short-form video platform after a 20,000+ user launch spike by diagnosing performance issues and infrastructure bottlenecks.</li>
+              <li>Reduced server load by 98% during a 20,000+ user launch spike by eliminating duplicate requests and preventing redundant API calls.</li>
+              <li>Improved user load time from 14s to 1.3s by lazy loading chunked data instead of blocking on full upfront fetches.</li>
+            </ul>
+          } />
+          <Experiences companyName="MaguroPlace - GPU-Accelerated Placement Optimizer" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Created a GPU-accelerated optimization engine in Python/PyTorch that produced valid layouts across all 17 benchmarks.</li>
+              <li>Improved evaluation throughput 18x, from 11 minutes to 38 seconds, by profiling bottlenecks and caching reusable benchmark data.</li>
+              <li>Reduced the mean challenge score 47% (2.09 to 1.10), beating the published 1.46 baseline.</li>
+            </ul>
+          } />
+          <Experiences companyName="ASIC Reverse Engineering" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Built Python EDA tooling that automatically recovered a gate-level netlist and signal connectivity from a final GDSII physical layout.</li>
+              <li>Generated structural Verilog and verified the recovered design through simulation against standard-cell models.</li>
+              <li>Converted the circuit into a graph, collapsed feedback loops, and used 2-SAT to avoid repeated compile-and-simulate search loops.</li>
+            </ul>
+          } />
+          <Experiences companyName="DeepMew - Resumable Cloud Jobs" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Ran distributed PyTorch workloads on Modal cloud workers with checkpointing, restart recovery, and cost controls for fault tolerance.</li>
+              <li>Improved reliability by fixing a checkpoint bug that erased progress after worker restarts; verified the fix across more than 400K games.</li>
+              <li>Scaled a rate-limited data pipeline from 1,543 replays to 180K training rows while staying within API limits.</li>
+            </ul>
+          } />
+          <Experiences companyName="Blotto - Strategy Optimization & Opponent Modeling" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Built a Python research engine for Colonel Blotto, modeling opponent allocation patterns with strategy clustering and population forecasts.</li>
+              <li>Implemented Numba-accelerated simulated annealing with parallel restarts to search allocations under scenario-specific payoff rules.</li>
+              <li>Built walk-forward backtests and model ablations to compare predicted strategies against future opponent fields, keeping post-hoc analysis separate from forecasts.</li>
+            </ul>
+          } />
           <Experiences
             companyName={<AwesomeLink text="Real-Time Face Tracking & Expression Mapping Software" link="https://github.com/RyanHernandezz/Vtuber/" />}
             startDate="9/2025"
@@ -220,31 +249,21 @@ export default function About() {
             }
           />
 
-          <Experiences
-            companyName={<AwesomeLink text="Tori" link="https://github.com/yushasama/tori" />}
-            startDate="7/2025"
-            endDate="7/2025"
-            details={
-              <>
-                Designed a burst-tolerant event dispatcher with sliding-window rate limiting and timestamp pruning for high-throughput workloads.
-                Implemented lock-free ring buffers using bitmask indexing to cut CPU overhead and reduce branching in critical paths. Minimized GC
-                impact with preallocated structs and slice reuse, maintaining consistent latency under load.
-              </>
-            }
-          />
+          <Experiences companyName={<AwesomeLink text="Tori - Concurrent Monitor" link="https://github.com/yushasama/tori" />} startDate="7/2025" endDate="7/2025" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Designed a concurrent Go service with isolated workers, retry/backoff, and clean context cancellation.</li>
+              <li>Kept memory usage predictable under load with backpressure, bounded queues, and rate limiting.</li>
+              <li>Added observability with Go pprof and runtime metrics for CPU, memory, contention, garbage collection, and worker health.</li>
+            </ul>
+          } />
 
-          <Experiences
-            companyName={<AwesomeLink text="High Performance Monte Carlo Benchmark Engine" link="https://github.com/yushasama/montecarlo-benchmarking-engine" />}
-            startDate="5/2025"
-            endDate="5/2025"
-            details={
-              <>
-                Achieved 10× performance improvement by developing SIMD-accelerated simulation engine in C++17. Demonstrated expertise in x86 AMD/Intel
-                microarchitecture by analyzing cache hierarchies and performance counters. Reduced cache miss rates from 25% to 5% with a custom bump
-                allocator, and increased IPC by 3× through memory alignment optimization. Implemented CI/CD with GitHub Actions and CMake build system.
-              </>
-            }
-          />
+          <Experiences companyName={<AwesomeLink text="Monte Carlo Benchmarking Engine" link="https://github.com/yushasama/montecarlo-benchmarking-engine" />} startDate="5/2025" endDate="5/2025" details={
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed">
+              <li>Engineered a C++17 performance engine with AVX2 SIMD, multithreading, thread-local state, and preallocated memory.</li>
+              <li>Increased throughput 11x, processing 100M trials in 106 ms versus 1.19 seconds sequentially.</li>
+              <li>Profiled CPU performance with Linux perf, tracking IPC, cache misses, branch misses, and cycles per trial.</li>
+            </ul>
+          } />
 
           <Experiences
             companyName={<AwesomeLink text="Tsundebugger" link="https://github.com/yushasama/tsundebugger" />}

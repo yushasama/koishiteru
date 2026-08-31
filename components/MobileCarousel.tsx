@@ -8,6 +8,7 @@ interface PanelData {
   subtitle: string;
   image: string;
   link: string;
+  unoptimized?: boolean;
 }
 
 interface MobileCarouselProps {
@@ -34,6 +35,7 @@ export default function MobileCarousel({ panels }: MobileCarouselProps) {
           <div key={i} className="mb-0.5 last:mb-0">
             <Panel
               image={panel.image}
+              unoptimized={panel.unoptimized}
               title={panel.title}
               subtitle={panel.subtitle}
               delay={i * 0.8}

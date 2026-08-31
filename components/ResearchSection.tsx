@@ -9,13 +9,13 @@ interface ResearchSectionProps {
   items: ResearchItem[];
 }
 
-export default function ResearchSection({ items }: ResearchSectionProps) {
+export default function ResearchSection({ items }: ResearchSectionProps): React.JSX.Element {
   return (
-    <section className="mb-16 rounded-xl border border-violet-300/10 bg-white/[0.015] p-5 sm:p-6 lg:p-8">
-      <h2 className="text-base sm:text-lg font-semibold text-violet-300 mb-5">
-        Research
+    <section aria-labelledby="exploring-heading" className="space-y-8">
+      <h2 id="exploring-heading" className="text-2xl font-medium text-gray-100">
+        Exploring
       </h2>
-      <ul className="space-y-6">
+      <ul className="space-y-6 rounded-xl border border-violet-200/15 bg-black/35 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl sm:p-6 lg:p-8">
         {items.map((item, i) => (
           <li
             key={i}
@@ -27,7 +27,7 @@ export default function ResearchSection({ items }: ResearchSectionProps) {
             <div className="text-base sm:text-lg font-medium text-gray-100 mb-1">
               {item.title}
             </div>
-            <div className="text-sm italic text-gray-500 leading-snug">
+            <div className="text-sm italic text-gray-300 leading-snug">
               {item.subtitle}
             </div>
           </li>

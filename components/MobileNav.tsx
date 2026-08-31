@@ -61,7 +61,7 @@ const MobileNav = () => {
     { href: '/about', label: 'About' },
     { href: '/competitive', label: 'Competitive' },
     { href: '/blog', label: 'Blog' },
-    { href: '/research', label: 'Research' },
+    { href: '/research', label: 'Rabbitholes' },
     { href: '/life', label: 'Life' },
     { href: '/contact', label: 'Contact' },
   ]

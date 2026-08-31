@@ -2,6 +2,7 @@
 import React from 'react'
 import Carousel from '../components/Carousel'
 import MobileCarousel from '../components/MobileCarousel'
+import researchBackground from '../public/wallpapers/research.jpg'
 
 const panels = [
   {
@@ -23,9 +24,10 @@ const panels = [
     link: "/blog",
   },
   {
-    title: "Personal Research",
-    subtitle: "Reading List & Applied Thought ",
-    image: "home/panels/research.jpg",
+    title: "Rabbitholes",
+    subtitle: "Experiments & Reading",
+    image: researchBackground.src.slice(1),
+    unoptimized: true,
     link: "/research",
   },
   {

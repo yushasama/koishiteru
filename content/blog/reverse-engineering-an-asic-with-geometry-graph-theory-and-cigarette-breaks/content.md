@@ -408,14 +408,14 @@ Overall this was really fun and I got to learn some pretty cool stuff.
 
 I hope you guys got to learn a thing or two too.
 
-Have a good day XO.
-
 ### Final Note
 
-Here's the puzzle's GDS layout:
+Here's an animation showing the actual puzzle's GDS layout:
 
 <!-- visual:showcase-video -->
 <!-- /visual -->
+
+Have a good day XO - Leon.
 
 ## 12. Relevant Links
 

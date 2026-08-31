@@ -3,8 +3,8 @@ import React from 'react';
 interface ExperienceProps {
   companyName: string | React.ReactNode;
   role?: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   details: string | React.ReactNode;
 }
 
@@ -18,7 +18,7 @@ export const Experiences: React.FC<ExperienceProps> = ({companyName, role, start
       {!role &&
         <div>{companyName}</div>
       }
-      <div>{`${startDate} - ${endDate}`}</div>
+      {(startDate || endDate) && <div>{[startDate, endDate].filter(Boolean).join(' - ')}</div>}
     </div>
     <div className='font-light text-xs md:text-sm'>
       <div>{details}</div>

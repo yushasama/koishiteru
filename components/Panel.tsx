@@ -10,6 +10,7 @@ interface PanelProps {
   href?: string;
   isMobile?: boolean;
   priority?: boolean;
+  unoptimized?: boolean;
 }
 
 const Panel: React.FC<PanelProps> = ({
@@ -20,6 +21,7 @@ const Panel: React.FC<PanelProps> = ({
   href,
   isMobile = false,
   priority = false,
+  unoptimized = false,
 }) => {
   const content = (
     <div
@@ -46,6 +48,7 @@ const Panel: React.FC<PanelProps> = ({
           alt={title}
           fill
           priority={priority}
+          unoptimized={unoptimized}
           quality={75}
           sizes={isMobile ? "100vw" : "20vw"}
           className="

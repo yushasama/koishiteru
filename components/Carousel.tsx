@@ -8,6 +8,7 @@ interface PanelData {
   subtitle: string;
   image: string;
   link: string;
+  unoptimized?: boolean;
 }
 
 interface CarouselProps {
@@ -71,6 +72,7 @@ export default function Carousel({ panels }: CarouselProps) {
           <Panel
             key={i}
             image={panel.image}
+            unoptimized={panel.unoptimized}
             title={panel.title}
             subtitle={panel.subtitle}
             delay={i * 0.8}

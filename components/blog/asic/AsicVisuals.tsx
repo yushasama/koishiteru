@@ -474,7 +474,7 @@ function ShowcaseVideo(): JSX.Element {
     return () => observer.disconnect();
   }, [reduceMotion]);
 
-  return <figure className={styles.showcaseVideo}><video ref={videoRef} src="/blog/asic-reverse-engineering/jsc-asic-showcase-1080p.mp4" controls loop playsInline preload="metadata" aria-label="Real ASIC layer stack assembling, exploding, orbiting, and collapsing" /><figcaption><span>Final layer playback</span><div className={styles.showcaseCaptionCopy}><strong>Recovered puzzle geometry</strong><small>The grid lines were added as a visual aid to make the separation between layers easier to see.</small></div></figcaption></figure>;
+  return <figure className={styles.showcaseVideo}><video ref={videoRef} src="/blog/asic-reverse-engineering/jsc-asic-showcase-1080p.mp4" controls loop playsInline preload="metadata" aria-label="Real ASIC layer stack assembling, exploding, orbiting, and collapsing" /><figcaption><div className={styles.showcaseCaptionCopy}><small>The grid lines were added as a visual aid to make the separation between layers easier to see.</small></div></figcaption></figure>;
 }
 
 function VisualForKey({ visualKey, progress }: { visualKey: AsicVisualKey; progress: number }): JSX.Element {
