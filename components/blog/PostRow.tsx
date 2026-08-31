@@ -7,7 +7,6 @@ import React, { type KeyboardEvent, type MouseEvent } from 'react';
 import type { BlogPost } from '../../lib/blog/posts';
 import { requestBlogArticleNavigation } from './blogNavigation';
 import styles from './blog.module.css';
-import SystemsThumbnail from './systems/SystemsThumbnail';
 
 interface PostRowProps {
   post: BlogPost;
@@ -20,6 +19,7 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
   const reduceMotion = useReducedMotion();
   const href = `/blog/${post.slug}`;
   const isAsic = post.visualStory === 'asic-reverse-engineering';
+  const isSystems = post.visualStory === 'systems-optimization';
 
   const navigateToArticle = (): void => {
     requestBlogArticleNavigation({ href, title: post.title, category: post.category, thumbnail: post.thumbnail });
@@ -42,10 +42,8 @@ export default function PostRow({ post, receded, onFocus, onHover }: PostRowProp
   return (
     <motion.div animate={{ opacity: receded ? 0.58 : 1 }} transition={{ duration: reduceMotion ? 0 : 0.28 }} className={styles.postRowWrap}>
       <Link href={href} prefetch={!post.requiresAccess} className={styles.postRow} onClick={handleClick} onKeyDown={handleKeyDown} onFocus={onFocus} onMouseEnter={onHover}>
-        <div className={`${styles.thumbnail} ${isAsic ? styles.asicThumbnail : ''}`}>
-          {post.visualStory === 'systems-optimization'
-            ? <SystemsThumbnail />
-            : <Image src={post.thumbnail} alt={post.thumbnailAlt} fill quality={95} unoptimized={isAsic} sizes="(max-width: 767px) calc(100vw - 40px), 160px" className={isAsic ? styles.asicThumbnailImage : undefined} />}
+        <div className={`${styles.thumbnail} ${isAsic ? styles.asicThumbnail : isSystems ? styles.systemsThumbnail : ''}`}>
+          <Image src={post.thumbnail} alt={post.thumbnailAlt} fill quality={95} unoptimized={isAsic} sizes="(max-width: 767px) calc(100vw - 40px), 160px" className={isAsic ? styles.asicThumbnailImage : isSystems ? styles.systemsThumbnailImage : undefined} />
         </div>
         <div className={styles.postMain}>
           <span className={styles.postCategory}>{post.category}</span>

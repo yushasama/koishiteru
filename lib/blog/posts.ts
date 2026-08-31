@@ -14,6 +14,7 @@ export interface BlogPost {
   readingMinutes: number;
   thumbnail: string;
   thumbnailAlt: string;
+  heroImage?: string;
   visualStory?: 'asic-reverse-engineering' | 'systems-optimization';
   requiresAccess?: boolean;
   sections: readonly BlogSection[];
@@ -62,8 +63,9 @@ export const blogPosts: readonly BlogPost[] = [
     publishedAt: '2025-06-20T04:49:21.000Z',
     displayDate: 'Jun 20, 2025',
     readingMinutes: BLOG_READING_MINUTES.systemsOptimization,
-    thumbnail: '/blog/from-homework-assignment/cache-observation-thumbnail.svg',
-    thumbnailAlt: 'Cache observation map showing L1 cache sets, the pooled hits counter, and uncollected L2 and L3 levels',
+    thumbnail: '/blog/from-homework-assignment/systems-cover.png',
+    thumbnailAlt: 'Glowing cyan and pink SIMD lanes, a particle field, and an arena memory slab with a bright allocation boundary',
+    heroImage: '/blog/from-homework-assignment/systems-cover.png',
     visualStory: 'systems-optimization',
     sections: [
       { id: 'debriefing-intro-optimization', title: 'Debriefing + Intro Optimization' },

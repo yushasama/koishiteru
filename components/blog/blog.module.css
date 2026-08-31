@@ -356,6 +356,17 @@
   transform: none;
 }
 
+.thumbnail img.systemsThumbnailImage {
+  object-fit: cover;
+  object-position: 75% center;
+  filter: none;
+  transform: none;
+}
+
+.systemsThumbnail {
+  background: #070707;
+}
+
 .asicThumbnail {
   display: flex;
   align-items: center;
@@ -457,11 +468,25 @@
   pointer-events: none;
 }
 
+.articleHeroSystems {
+  background: #070707;
+}
+
+.articleHeroSystemsArtwork {
+  position: absolute;
+  inset: 0;
+}
+
+.articleHeroSystemsImage {
+  object-fit: cover;
+  object-position: right bottom;
+}
+
 .articleHeroSystems::before {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(90deg, #070707 0%, rgba(7, 7, 7, 0.97) 39%, rgba(7, 7, 7, 0.5) 72%, rgba(7, 7, 7, 0.2) 100%);
+  background: linear-gradient(90deg, rgba(7, 7, 7, 0.9) 0%, rgba(7, 7, 7, 0.68) 44%, rgba(7, 7, 7, 0.26) 72%, rgba(7, 7, 7, 0.06) 100%);
   content: '';
   pointer-events: none;
 }
@@ -929,6 +954,11 @@
     transform: scale(1.025);
   }
 
+  .postRow:hover .thumbnail img.systemsThumbnailImage {
+    filter: none;
+    transform: scale(1.025);
+  }
+
   .postRow:hover .thumbnail [data-systems-thumbnail] {
     filter: grayscale(0) brightness(1);
   }
@@ -984,7 +1014,11 @@
   }
 
   .articleHeroSystems::before {
-    background: linear-gradient(0deg, #070707 0%, rgba(7, 7, 7, 0.82) 56%, rgba(7, 7, 7, 0.25) 100%);
+    background: linear-gradient(0deg, rgba(7, 7, 7, 0.94) 0%, rgba(7, 7, 7, 0.78) 54%, rgba(7, 7, 7, 0.34) 100%);
+  }
+
+  .articleHeroSystemsImage {
+    object-position: 72% bottom;
   }
 
   .hero {
@@ -1117,6 +1151,10 @@
 
   .thumbnail {
     height: 155px;
+  }
+
+  .systemsThumbnail {
+    height: 180px;
   }
 
   .articleHero h1 {

@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
+import Image from 'next/image';
 import type { BlogPost } from '../../lib/blog/posts';
 import ReadingProgress from './ReadingProgress';
-import SystemsHeroScene from './systems/SystemsHeroScene';
 import styles from './blog.module.css';
 
 interface ArticleShellProps {
@@ -15,7 +15,7 @@ export default function ArticleShell({ post, children }: ArticleShellProps): JSX
   return (
     <main className={styles.articlePage}>
       <header className={`${styles.articleHero} ${heroVisualClass}`}>
-        {post.visualStory === 'systems-optimization' && <SystemsHeroScene />}
+        {post.visualStory === 'systems-optimization' && <div className={styles.articleHeroSystemsArtwork}><Image src={post.heroImage ?? post.thumbnail} alt="" fill priority quality={95} sizes="100vw" className={styles.articleHeroSystemsImage} /></div>}
         <div className={styles.articleHeroInner}>
           <p className={styles.articleCategory}>{post.category}</p>
           <h1>{post.title}</h1>
