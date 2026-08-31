@@ -165,5 +165,5 @@ function MobileConstruction({ progress }: ScrollDiagramProps): JSX.Element {
 }
 
 export function RTreeInsertionSequenceDiagram({ progress }: ScrollDiagramProps): JSX.Element {
-  return <DiagramFrame label="R-tree construction" status={`${ENTRY_COUNT} real LI1 rectangles`}><div className={styles.stage}><DesktopConstruction progress={progress} /><MobileConstruction progress={progress} /></div></DiagramFrame>;
+  return <DiagramFrame label="R-tree construction" status=""><div className={styles.stage}><DesktopConstruction progress={progress} /><MobileConstruction progress={progress} /></div></DiagramFrame>;
 }

@@ -5,6 +5,7 @@ import ArticleBody from '../../../components/blog/ArticleBody';
 import ArticleShell from '../../../components/blog/ArticleShell';
 import { ASIC_ARTICLE_SLUG } from '../../../lib/asic-access/config';
 import { readBlogPostMarkdown } from '../../../lib/blog/content';
+import { createBlogImageMetadata } from '../../../lib/blog/metadata';
 import { blogPosts, getBlogPost } from '../../../lib/blog/posts';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: BlogArticlePageProps): Promis
   const { slug } = await params;
   const post = getBlogPost(slug);
   if (!post) return {};
-  return { title: `${post.title} | 恋してる`, description: post.excerpt };
+  return { title: `${post.title} | 恋してる`, description: post.excerpt, ...createBlogImageMetadata(post.thumbnail) };
 }
 
 export default async function BlogArticlePage({ params }: BlogArticlePageProps): Promise<JSX.Element> {

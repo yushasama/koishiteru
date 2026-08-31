@@ -3,7 +3,7 @@ This is the codebase for my developer portfolio. Built with NextJS, TailwindCSS,
 
 ## Private ASIC article
 
-The ASIC article, its route bundle, image-optimized variants, and its files under `public/blog/asic-reverse-engineering` are protected by server middleware. Generate the deployment values without storing the plaintext password:
+The ASIC article, its route bundle, image-optimized variants, and its files under `public/blog/asic-reverse-engineering` are protected by server middleware, except for the public `thumbnail-microscope.webp` cover. The password page includes Open Graph and Twitter image tags for that public cover so shared links can display its thumbnail. Its public text remains the existing password-page notice, and no crawler receives special article access. Generate the deployment values without storing the plaintext password:
 
 ```bash
 npm run asic:secrets

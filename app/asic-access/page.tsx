@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { ASIC_ACCESS_ENDPOINT } from '../../lib/asic-access/config';
+import { ASIC_PUBLIC_THUMBNAIL_PATH } from '../../lib/asic-access/routes';
+import { createBlogImageMetadata } from '../../lib/blog/metadata';
 import styles from './access.module.css';
 import PasswordInput from './PasswordInput';
 
 export const metadata: Metadata = {
+  ...createBlogImageMetadata(ASIC_PUBLIC_THUMBNAIL_PATH),
   title: 'Password protected blog | 恋してる',
   description: 'This blog will be publicly released after September 4.',
   robots: { follow: false, index: false, noarchive: true, nocache: true, nosnippet: true },

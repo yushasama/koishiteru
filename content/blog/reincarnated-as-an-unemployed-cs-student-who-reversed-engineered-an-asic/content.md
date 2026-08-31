@@ -392,7 +392,7 @@ Then I transformed the raw output bits into something readable. Voilà, we have 
 <!-- visual:result-decode -->
 <!-- /visual -->
 
-An OCaml-style comment saying **TWO STARS**. A pretty fitting little Easter egg from Jane Street given their heavy use of OCaml.
+An OCaml-style comment saying **TWO STARS**. Pretty fitting answer for a Jane Street puzzle given their heavy use of OCaml lul.
 
 ---
 
@@ -406,14 +406,14 @@ Overall this was really fun and I got to learn some pretty cool stuff.
 
 I hope you guys got to learn a thing or two too.
 
-Have a good day XO.
-
 ### Final Note
 
-Here's the puzzle's GDS layout:
+Here's the puzzle's GDS layout but animated:
 
 <!-- visual:showcase-video -->
 <!-- /visual -->
+
+Have a good day XO.
 
 ## 12. Relevant Links
 
