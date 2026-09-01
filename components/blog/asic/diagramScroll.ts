@@ -30,6 +30,8 @@ const MAX_FRAME_DELTA = 120;
 const entries = new Set<DiagramScrollEntry>();
 let teardown: (() => void) | undefined;
 
+const isNativeScrollLayout = (): boolean => window.matchMedia('(max-width: 720px)').matches;
+
 // Consume the arrival gesture separately so a fast fling cannot skip the first frame.
 export function getDiagramScrollCapture(stops: readonly DiagramScrollStop[], scrollY: number, delta: number): DiagramScrollCapture | null {
   if (!delta || !Number.isFinite(delta)) return null;
@@ -52,6 +54,10 @@ export function getDiagramPositionProgress(current: number, anchorOffset: number
   return current;
 }
 
+export function getDiagramNativeScrollProgress(anchorOffset: number, distance: number): number {
+  return Math.max(0, Math.min(1, anchorOffset / Math.max(1, distance)));
+}
+
 function setProgress(entry: DiagramScrollEntry, progress: number): void {
   if (entry.progress === progress) return;
   entry.progress = progress;
@@ -64,12 +70,15 @@ function measure(entry: DiagramScrollEntry): void {
   const top = Number.parseFloat(getComputedStyle(entry.visual).top) || 0;
   const padding = Number.parseFloat(getComputedStyle(entry.element).paddingTop) || 0;
   entry.anchor = Math.max(0, window.scrollY + section.top + padding - top);
-  entry.visible = visual.height > 0 && top >= 0 && top + visual.height <= window.innerHeight + ANCHOR_TOLERANCE;
-  entry.distance = (entry.element.dataset.visual === 'rtree' ? 3520 : Math.max(600, window.innerHeight * 1.2)) / Math.max(0.1, 1 - entry.startDelay);
+  const nativeScroll = isNativeScrollLayout();
+  entry.visible = visual.height > 0 && top >= 0 && (nativeScroll || top + visual.height <= window.innerHeight + ANCHOR_TOLERANCE);
+  const trackHeight = nativeScroll ? Number.parseFloat(getComputedStyle(entry.element, '::after').height) : 0;
+  entry.distance = trackHeight > 0 ? trackHeight : (entry.element.dataset.visual === 'rtree' ? 3520 : Math.max(600, window.innerHeight * 1.2)) / Math.max(0.1, 1 - entry.startDelay);
   const anchorOffset = window.scrollY - entry.anchor;
   if (anchorOffset > ANCHOR_TOLERANCE) entry.skipped = false;
   if (!entry.visible || entry.skipped) setProgress(entry, 1);
-  else setProgress(entry, getDiagramPositionProgress(entry.progress, anchorOffset, window.innerHeight, window.matchMedia('(pointer: coarse), (max-width: 720px)').matches));
+  else if (nativeScroll) setProgress(entry, getDiagramNativeScrollProgress(anchorOffset, entry.distance));
+  else setProgress(entry, getDiagramPositionProgress(entry.progress, anchorOffset, window.innerHeight, false));
 }
 
 function hasNestedScroll(target: EventTarget | null): boolean {
@@ -92,7 +101,7 @@ function listen(): () => void {
     if (!frame) frame = requestAnimationFrame(update);
   };
   const consume = (event: Event, delta: number): boolean => {
-    if (event.defaultPrevented || !event.cancelable || hasNestedScroll(event.target)) return false;
+    if (isNativeScrollLayout() || event.defaultPrevented || !event.cancelable || hasNestedScroll(event.target)) return false;
     entries.forEach(measure);
     const available = Array.from(entries).filter((entry) => entry.visible && !entry.skipped);
     const capture = getDiagramScrollCapture(available, window.scrollY, delta);
@@ -120,7 +129,7 @@ function listen(): () => void {
     if (delta) consume(event, delta);
   };
   const touchstart = (event: TouchEvent): void => {
-    if (event.touches.length !== 1 || hasNestedScroll(event.target)) {
+    if (isNativeScrollLayout() || event.touches.length !== 1 || hasNestedScroll(event.target)) {
       touch = null;
       return;
     }
@@ -192,5 +201,6 @@ export function completeDiagramScroll(element: HTMLElement | null): void {
     if (entry.element !== element) return;
     entry.skipped = true;
     setProgress(entry, 1);
+    if (isNativeScrollLayout()) window.scrollTo({ top: entry.anchor + entry.distance, behavior: 'instant' });
   });
 }

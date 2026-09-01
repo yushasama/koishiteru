@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { getDiagramPositionProgress, getDiagramScrollCapture, isDiagramTouchCaptureNear } from '../components/blog/asic/diagramScroll.ts';
+import { getDiagramNativeScrollProgress, getDiagramPositionProgress, getDiagramScrollCapture, isDiagramTouchCaptureNear } from '../components/blog/asic/diagramScroll.ts';
 
 const stop = { anchor: 500, progress: 0, distance: 1200 };
 
@@ -58,4 +58,12 @@ test('a small mobile overshoot does not complete the animation', () => {
   assert.equal(getDiagramPositionProgress(0, 668, 667, true), 1);
   assert.equal(getDiagramPositionProgress(0, 40, 667, false), 1);
   assert.equal(getDiagramPositionProgress(1, -40, 667, true), 0);
+});
+
+test('native mobile scrolling maps the reserved track to animation progress', () => {
+  assert.equal(getDiagramNativeScrollProgress(-40, 800), 0);
+  assert.equal(getDiagramNativeScrollProgress(0, 800), 0);
+  assert.equal(getDiagramNativeScrollProgress(220, 800), 0.275);
+  assert.equal(getDiagramNativeScrollProgress(800, 800), 1);
+  assert.equal(getDiagramNativeScrollProgress(1200, 800), 1);
 });

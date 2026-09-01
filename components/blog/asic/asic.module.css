@@ -1257,11 +1257,35 @@
 
 @media (max-width: 720px) {
   .stickyStory {
-    grid-template-areas: 'visual' 'copy';
+    --diagram-scroll-distance: max(600px, 120svh);
+
+    grid-template-areas: 'visual' 'track' 'copy';
     grid-template-columns: minmax(0, 1fr);
     gap: 30px;
     margin: 44px 0 62px;
     padding-top: 0;
+  }
+
+  .stickyStory::after,
+  .inlineAnimatedVisual::after {
+    content: '';
+    display: block;
+    grid-area: track;
+    height: var(--diagram-scroll-distance);
+    pointer-events: none;
+  }
+
+  .stickyStory[data-visual='rtree'],
+  .inlineAnimatedVisual[data-visual='rtree'] {
+    --diagram-scroll-distance: 3520px;
+  }
+
+  .inlineAnimatedVisual {
+    --diagram-scroll-distance: max(600px, 130svh);
+
+    display: grid;
+    grid-template-areas: 'visual' 'track';
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .stickyStory[data-visual='layer-stack'] .stickyCopy {
@@ -1278,6 +1302,7 @@
   .inlineAnimatedFrame {
     position: sticky;
     top: 14px;
+    grid-area: visual;
     height: min(76svh, 720px, calc(100svh - 28px));
     min-height: min(420px, calc(100svh - 28px));
   }
