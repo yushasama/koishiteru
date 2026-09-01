@@ -19,6 +19,12 @@ interface DiagramScrollCapture {
   scrollY: number;
 }
 
+interface DiagramTouchState {
+  x: number;
+  y: number;
+  managed: boolean;
+}
+
 const ANCHOR_TOLERANCE = 2;
 const MAX_FRAME_DELTA = 120;
 const entries = new Set<DiagramScrollEntry>();
@@ -34,6 +40,10 @@ export function getDiagramScrollCapture(stops: readonly DiagramScrollStop[], scr
   const { stop, index, offset } = candidate;
   const progress = offset > ANCHOR_TOLERANCE ? (direction > 0 ? 0 : 1) : Math.max(0, Math.min(1, stop.progress + direction * Math.min(Math.abs(delta), MAX_FRAME_DELTA) / Math.max(1, stop.distance)));
   return { index, progress, scrollY: stop.anchor };
+}
+
+export function isDiagramTouchCaptureNear(stops: readonly DiagramScrollStop[], scrollY: number, viewportHeight: number): boolean {
+  return stops.some((stop) => Math.abs(stop.anchor - scrollY) <= Math.max(1, viewportHeight));
 }
 
 function setProgress(entry: DiagramScrollEntry, progress: number): void {
@@ -66,7 +76,7 @@ function hasNestedScroll(target: EventTarget | null): boolean {
 
 function listen(): () => void {
   let frame = 0;
-  let touch: { x: number; y: number; captured: boolean } | null = null;
+  let touch: DiagramTouchState | null = null;
   const update = (): void => {
     frame = 0;
     entries.forEach(measure);
@@ -103,7 +113,13 @@ function listen(): () => void {
     if (delta) consume(event, delta);
   };
   const touchstart = (event: TouchEvent): void => {
-    touch = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY, captured: false } : null;
+    if (event.touches.length !== 1 || hasNestedScroll(event.target)) {
+      touch = null;
+      return;
+    }
+    entries.forEach(measure);
+    const available = Array.from(entries).filter((entry) => entry.visible && !entry.skipped);
+    touch = { x: event.touches[0].clientX, y: event.touches[0].clientY, managed: isDiagramTouchCaptureNear(available, window.scrollY, window.innerHeight) };
   };
   const touchmove = (event: TouchEvent): void => {
     if (!touch || event.touches.length !== 1) return;
@@ -113,9 +129,10 @@ function listen(): () => void {
     touch.x = point.clientX;
     touch.y = point.clientY;
     if (horizontal || hasNestedScroll(event.target)) return;
-    if (consume(event, delta)) touch.captured = true;
-    else if (touch.captured && event.cancelable && !event.defaultPrevented) {
-      // A canceled touch gesture will not resume native panning until touchend.
+    if (consume(event, delta)) {
+      touch.managed = true;
+    } else if (touch.managed && event.cancelable && !event.defaultPrevented) {
+      // Once the gesture is ours, keep native panning disabled until touchend.
       event.preventDefault();
       window.scrollBy({ top: delta, behavior: 'instant' });
     }

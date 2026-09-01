@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { getDiagramScrollCapture } from '../components/blog/asic/diagramScroll.ts';
+import { getDiagramScrollCapture, isDiagramTouchCaptureNear } from '../components/blog/asic/diagramScroll.ts';
 
 const stop = { anchor: 500, progress: 0, distance: 1200 };
 
@@ -42,4 +42,12 @@ test('native jumps and unrelated input do not trap page navigation', () => {
   assert.equal(getDiagramScrollCapture([stop], 450, -80), null);
   for (const delta of [0, NaN, Infinity, -Infinity]) assert.equal(getDiagramScrollCapture([stop], 500, delta), null);
   assert.equal(getDiagramScrollCapture([], 500, 80), null);
+});
+
+test('touch capture starts before a nearby diagram can enter native panning', () => {
+  assert.equal(isDiagramTouchCaptureNear([stop], 0, 600), true);
+  assert.equal(isDiagramTouchCaptureNear([stop], 1100, 600), true);
+  assert.equal(isDiagramTouchCaptureNear([stop], -101, 600), false);
+  assert.equal(isDiagramTouchCaptureNear([stop], 1101, 600), false);
+  assert.equal(isDiagramTouchCaptureNear([], 500, 600), false);
 });
