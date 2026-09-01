@@ -24,6 +24,16 @@
   overflow-wrap: anywhere;
 }
 
+.desktopScrollDiagram {
+  grid-area: visual;
+  min-width: 0;
+  align-self: start;
+}
+
+.mobileScrollDiagram {
+  display: none;
+}
+
 .stickyStory[data-visual='layer-stack'] .stickyCopy {
   position: sticky;
   top: 94px;
@@ -239,6 +249,10 @@
 
 .inlineAnimatedVisual {
   height: auto;
+}
+
+.mobileAnimatedDiagram {
+  display: none;
 }
 
 .diagramScrollSkip {
@@ -1257,17 +1271,34 @@
 
 @media (max-width: 720px) {
   .stickyStory {
-    --diagram-scroll-distance: max(600px, 120svh);
-
-    grid-template-areas: 'visual' 'track' 'copy';
+    grid-template-areas: 'mobile' 'copy';
     grid-template-columns: minmax(0, 1fr);
-    gap: 30px;
+    gap: 14px;
     margin: 44px 0 62px;
     padding-top: 0;
   }
 
-  .stickyStory::after,
-  .inlineAnimatedVisual::after {
+  .desktopScrollDiagram,
+  .desktopAnimatedDiagram {
+    display: none;
+  }
+
+  .mobileScrollDiagram,
+  .mobileAnimatedDiagram {
+    --diagram-scroll-distance: max(600px, 120svh);
+
+    display: grid;
+    grid-template-areas: 'visual' 'track';
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .mobileScrollDiagram {
+    grid-area: mobile;
+  }
+
+  .mobileScrollDiagram::after,
+  .mobileAnimatedDiagram::after {
     content: '';
     display: block;
     grid-area: track;
@@ -1275,17 +1306,13 @@
     pointer-events: none;
   }
 
-  .stickyStory[data-visual='rtree'],
-  .inlineAnimatedVisual[data-visual='rtree'] {
+  .mobileScrollDiagram[data-visual='rtree'],
+  .mobileAnimatedDiagram[data-visual='rtree'] {
     --diagram-scroll-distance: 3520px;
   }
 
-  .inlineAnimatedVisual {
+  .mobileAnimatedDiagram {
     --diagram-scroll-distance: max(600px, 130svh);
-
-    display: grid;
-    grid-template-areas: 'visual' 'track';
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .stickyStory[data-visual='layer-stack'] .stickyCopy {

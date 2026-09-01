@@ -8,10 +8,13 @@ interface DiagramScrollEntry extends DiagramScrollStop {
   element: HTMLElement;
   visual: HTMLElement;
   publish: (progress: number) => void;
+  mode: DiagramScrollMode;
   startDelay: number;
   visible: boolean;
   skipped: boolean;
 }
+
+export type DiagramScrollMode = 'desktop' | 'mobile';
 
 interface DiagramScrollCapture {
   index: number;
@@ -29,8 +32,6 @@ const ANCHOR_TOLERANCE = 2;
 const MAX_FRAME_DELTA = 120;
 const entries = new Set<DiagramScrollEntry>();
 let teardown: (() => void) | undefined;
-
-const isNativeScrollLayout = (): boolean => window.matchMedia('(max-width: 720px)').matches;
 
 // Consume the arrival gesture separately so a fast fling cannot skip the first frame.
 export function getDiagramScrollCapture(stops: readonly DiagramScrollStop[], scrollY: number, delta: number): DiagramScrollCapture | null {
@@ -70,7 +71,7 @@ function measure(entry: DiagramScrollEntry): void {
   const top = Number.parseFloat(getComputedStyle(entry.visual).top) || 0;
   const padding = Number.parseFloat(getComputedStyle(entry.element).paddingTop) || 0;
   entry.anchor = Math.max(0, window.scrollY + section.top + padding - top);
-  const nativeScroll = isNativeScrollLayout();
+  const nativeScroll = entry.mode === 'mobile';
   entry.visible = visual.height > 0 && top >= 0 && (nativeScroll || top + visual.height <= window.innerHeight + ANCHOR_TOLERANCE);
   const trackHeight = nativeScroll ? Number.parseFloat(getComputedStyle(entry.element, '::after').height) : 0;
   entry.distance = trackHeight > 0 ? trackHeight : (entry.element.dataset.visual === 'rtree' ? 3520 : Math.max(600, window.innerHeight * 1.2)) / Math.max(0.1, 1 - entry.startDelay);
@@ -101,9 +102,9 @@ function listen(): () => void {
     if (!frame) frame = requestAnimationFrame(update);
   };
   const consume = (event: Event, delta: number): boolean => {
-    if (isNativeScrollLayout() || event.defaultPrevented || !event.cancelable || hasNestedScroll(event.target)) return false;
+    if (event.defaultPrevented || !event.cancelable || hasNestedScroll(event.target)) return false;
     entries.forEach(measure);
-    const available = Array.from(entries).filter((entry) => entry.visible && !entry.skipped);
+    const available = Array.from(entries).filter((entry) => entry.mode === 'desktop' && entry.visible && !entry.skipped);
     const capture = getDiagramScrollCapture(available, window.scrollY, delta);
     if (!capture) return false;
     event.preventDefault();
@@ -129,12 +130,12 @@ function listen(): () => void {
     if (delta) consume(event, delta);
   };
   const touchstart = (event: TouchEvent): void => {
-    if (isNativeScrollLayout() || event.touches.length !== 1 || hasNestedScroll(event.target)) {
+    if (event.touches.length !== 1 || hasNestedScroll(event.target)) {
       touch = null;
       return;
     }
     entries.forEach(measure);
-    const available = Array.from(entries).filter((entry) => entry.visible && !entry.skipped);
+    const available = Array.from(entries).filter((entry) => entry.mode === 'desktop' && entry.visible && !entry.skipped);
     const managed = isDiagramTouchCaptureNear(available, window.scrollY, window.innerHeight);
     const overshot = managed ? available.filter((entry) => entry.progress < 1 && window.scrollY > entry.anchor + ANCHOR_TOLERANCE).sort((a, b) => b.anchor - a.anchor)[0] : undefined;
     if (overshot) window.scrollTo({ top: overshot.anchor, behavior: 'instant' });
@@ -181,10 +182,10 @@ function listen(): () => void {
   };
 }
 
-export function registerDiagramScroll(element: HTMLElement, publish: (progress: number) => void, startDelay: number): () => void {
-  const visual = element.querySelector<HTMLElement>('[data-sticky-visual]');
+export function registerDiagramScroll(element: HTMLElement, publish: (progress: number) => void, startDelay: number, mode: DiagramScrollMode): () => void {
+  const visual = element.querySelector<HTMLElement>(`[data-sticky-visual][data-diagram-mode="${mode}"]`);
   if (!visual) return () => {};
-  const entry: DiagramScrollEntry = { element, visual, publish, startDelay, anchor: 0, progress: 0, distance: 1, visible: false, skipped: false };
+  const entry: DiagramScrollEntry = { element, visual, publish, mode, startDelay, anchor: 0, progress: 0, distance: 1, visible: false, skipped: false };
   entries.add(entry);
   measure(entry);
   if (!teardown) teardown = listen();
@@ -201,6 +202,6 @@ export function completeDiagramScroll(element: HTMLElement | null): void {
     if (entry.element !== element) return;
     entry.skipped = true;
     setProgress(entry, 1);
-    if (isNativeScrollLayout()) window.scrollTo({ top: entry.anchor + entry.distance, behavior: 'instant' });
+    if (entry.mode === 'mobile') window.scrollTo({ top: entry.anchor + entry.distance, behavior: 'instant' });
   });
 }

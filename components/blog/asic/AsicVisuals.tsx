@@ -494,9 +494,18 @@ function VisualForKey({ visualKey, progress }: { visualKey: AsicVisualKey; progr
   return <ShowcaseVideo />;
 }
 
+function DesktopStickyDiagram({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
+  const { ref, scrollState, skip } = useScrollDiagramState(0, 'desktop');
+  return <div ref={ref} className={styles.desktopScrollDiagram} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.stickyVisual} data-sticky-visual data-diagram-mode="desktop"><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></div>;
+}
+
+function MobileStickyDiagram({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
+  const { ref, scrollState, skip } = useScrollDiagramState(0, 'mobile');
+  return <div ref={ref} className={styles.mobileScrollDiagram} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.stickyVisual} data-sticky-visual data-diagram-mode="mobile"><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></div>;
+}
+
 export function AsicStickyStory({ visualKey, children }: AsicStickyStoryProps): JSX.Element {
-  const { ref, scrollState, skip } = useScrollDiagramState();
-  return <section ref={ref} className={styles.stickyStory} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.stickyCopy}>{children}</div><div className={styles.stickyVisual} data-sticky-visual><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
+  return <section className={styles.stickyStory} data-visual={visualKey}><div className={styles.stickyCopy}>{children}</div><DesktopStickyDiagram visualKey={visualKey} /><MobileStickyDiagram visualKey={visualKey} /></section>;
 }
 
 export function AsicInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
@@ -505,6 +514,15 @@ export function AsicInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): J
 }
 
 function AsicAnimatedInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
-  const { ref, scrollState, skip } = useScrollDiagramState(visualKey === 'sat-basics' ? 0.08 : 0);
-  return <section ref={ref} className={`${styles.inlineVisual} ${styles.inlineAnimatedVisual}`} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.inlineAnimatedFrame} data-sticky-visual><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
+  return <><DesktopAnimatedInlineVisual visualKey={visualKey} /><MobileAnimatedInlineVisual visualKey={visualKey} /></>;
+}
+
+function DesktopAnimatedInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
+  const { ref, scrollState, skip } = useScrollDiagramState(visualKey === 'sat-basics' ? 0.08 : 0, 'desktop');
+  return <section ref={ref} className={`${styles.inlineVisual} ${styles.inlineAnimatedVisual} ${styles.desktopAnimatedDiagram}`} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.inlineAnimatedFrame} data-sticky-visual data-diagram-mode="desktop"><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
+}
+
+function MobileAnimatedInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
+  const { ref, scrollState, skip } = useScrollDiagramState(visualKey === 'sat-basics' ? 0.08 : 0, 'mobile');
+  return <section ref={ref} className={`${styles.inlineVisual} ${styles.inlineAnimatedVisual} ${styles.mobileAnimatedDiagram}`} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.inlineAnimatedFrame} data-sticky-visual data-diagram-mode="mobile"><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
 }
