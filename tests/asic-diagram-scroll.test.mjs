@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { getDiagramScrollCapture, isDiagramTouchCaptureNear } from '../components/blog/asic/diagramScroll.ts';
+import { getDiagramPositionProgress, getDiagramScrollCapture, isDiagramTouchCaptureNear } from '../components/blog/asic/diagramScroll.ts';
 
 const stop = { anchor: 500, progress: 0, distance: 1200 };
 
@@ -50,4 +50,12 @@ test('touch capture starts before a nearby diagram can enter native panning', ()
   assert.equal(isDiagramTouchCaptureNear([stop], -101, 600), false);
   assert.equal(isDiagramTouchCaptureNear([stop], 1101, 600), false);
   assert.equal(isDiagramTouchCaptureNear([], 500, 600), false);
+});
+
+test('a small mobile overshoot does not complete the animation', () => {
+  assert.equal(getDiagramPositionProgress(0, 40, 667, true), 0);
+  assert.equal(getDiagramPositionProgress(0.35, 40, 667, true), 0.35);
+  assert.equal(getDiagramPositionProgress(0, 668, 667, true), 1);
+  assert.equal(getDiagramPositionProgress(0, 40, 667, false), 1);
+  assert.equal(getDiagramPositionProgress(1, -40, 667, true), 0);
 });

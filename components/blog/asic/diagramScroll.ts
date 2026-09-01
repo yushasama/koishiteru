@@ -46,6 +46,12 @@ export function isDiagramTouchCaptureNear(stops: readonly DiagramScrollStop[], s
   return stops.some((stop) => Math.abs(stop.anchor - scrollY) <= Math.max(1, viewportHeight));
 }
 
+export function getDiagramPositionProgress(current: number, anchorOffset: number, viewportHeight: number, touchLayout: boolean): number {
+  if (anchorOffset < -ANCHOR_TOLERANCE) return 0;
+  if (anchorOffset > ANCHOR_TOLERANCE && (!touchLayout || anchorOffset > viewportHeight)) return 1;
+  return current;
+}
+
 function setProgress(entry: DiagramScrollEntry, progress: number): void {
   if (entry.progress === progress) return;
   entry.progress = progress;
@@ -60,9 +66,10 @@ function measure(entry: DiagramScrollEntry): void {
   entry.anchor = Math.max(0, window.scrollY + section.top + padding - top);
   entry.visible = visual.height > 0 && top >= 0 && top + visual.height <= window.innerHeight + ANCHOR_TOLERANCE;
   entry.distance = (entry.element.dataset.visual === 'rtree' ? 3520 : Math.max(600, window.innerHeight * 1.2)) / Math.max(0.1, 1 - entry.startDelay);
-  if (window.scrollY > entry.anchor + ANCHOR_TOLERANCE) entry.skipped = false;
-  if (!entry.visible || entry.skipped || window.scrollY > entry.anchor + ANCHOR_TOLERANCE) setProgress(entry, 1);
-  else if (window.scrollY < entry.anchor - ANCHOR_TOLERANCE) setProgress(entry, 0);
+  const anchorOffset = window.scrollY - entry.anchor;
+  if (anchorOffset > ANCHOR_TOLERANCE) entry.skipped = false;
+  if (!entry.visible || entry.skipped) setProgress(entry, 1);
+  else setProgress(entry, getDiagramPositionProgress(entry.progress, anchorOffset, window.innerHeight, window.matchMedia('(pointer: coarse), (max-width: 720px)').matches));
 }
 
 function hasNestedScroll(target: EventTarget | null): boolean {
@@ -119,7 +126,10 @@ function listen(): () => void {
     }
     entries.forEach(measure);
     const available = Array.from(entries).filter((entry) => entry.visible && !entry.skipped);
-    touch = { x: event.touches[0].clientX, y: event.touches[0].clientY, managed: isDiagramTouchCaptureNear(available, window.scrollY, window.innerHeight) };
+    const managed = isDiagramTouchCaptureNear(available, window.scrollY, window.innerHeight);
+    const overshot = managed ? available.filter((entry) => entry.progress < 1 && window.scrollY > entry.anchor + ANCHOR_TOLERANCE).sort((a, b) => b.anchor - a.anchor)[0] : undefined;
+    if (overshot) window.scrollTo({ top: overshot.anchor, behavior: 'instant' });
+    touch = { x: event.touches[0].clientX, y: event.touches[0].clientY, managed };
   };
   const touchmove = (event: TouchEvent): void => {
     if (!touch || event.touches.length !== 1) return;
