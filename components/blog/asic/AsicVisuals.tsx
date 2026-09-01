@@ -3,7 +3,7 @@
 import { useReducedMotion } from 'framer-motion';
 import React, { type ReactNode, useEffect, useRef, useState } from 'react';
 import { AsicAnatomyDiagram } from './AsicAnatomyDiagram';
-import { DiagramFrame, DiagramProgress, DiagramSvg, type ScrollDiagramProps, useScrollDiagramState } from './DiagramPrimitives';
+import { DiagramFrame, DiagramProgress, DiagramScrollSkip, DiagramSvg, type ScrollDiagramProps, useScrollDiagramState } from './DiagramPrimitives';
 import { LayoutToNetsDiagram } from './LayoutToNetsDiagram';
 import { IShapePolygonDiagram } from './IShapePolygonDiagram';
 import { RTreeInsertionSequenceDiagram } from './RTreeInsertionSequenceDiagram';
@@ -495,8 +495,8 @@ function VisualForKey({ visualKey, progress }: { visualKey: AsicVisualKey; progr
 }
 
 export function AsicStickyStory({ visualKey, children }: AsicStickyStoryProps): JSX.Element {
-  const { ref, scrollState } = useScrollDiagramState();
-  return <section ref={ref} className={styles.stickyStory} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.stickyCopy}>{children}</div><div className={styles.stickyVisual} data-sticky-visual><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
+  const { ref, scrollState, skip } = useScrollDiagramState();
+  return <section ref={ref} className={styles.stickyStory} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.stickyCopy}>{children}</div><div className={styles.stickyVisual} data-sticky-visual><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
 }
 
 export function AsicInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
@@ -505,6 +505,6 @@ export function AsicInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): J
 }
 
 function AsicAnimatedInlineVisual({ visualKey }: { visualKey: AsicVisualKey }): JSX.Element {
-  const { ref, scrollState } = useScrollDiagramState(visualKey === 'sat-basics' ? 0.08 : 0);
-  return <section ref={ref} className={`${styles.inlineVisual} ${styles.inlineAnimatedVisual}`} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.inlineAnimatedFrame} data-sticky-visual><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
+  const { ref, scrollState, skip } = useScrollDiagramState(visualKey === 'sat-basics' ? 0.08 : 0);
+  return <section ref={ref} className={`${styles.inlineVisual} ${styles.inlineAnimatedVisual}`} data-visual={visualKey} data-scroll-progress={scrollState.progress.toFixed(3)} data-scroll-start={scrollState.atStart} data-scroll-end={scrollState.atEnd}><div className={styles.inlineAnimatedFrame} data-sticky-visual><DiagramScrollSkip onSkip={skip} /><VisualForKey visualKey={visualKey} progress={scrollState.progress} /></div></section>;
 }

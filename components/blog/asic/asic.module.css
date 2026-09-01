@@ -101,18 +101,9 @@
   white-space: nowrap;
 }
 
-.stickyStory[data-visual='layer-stack'] {
-  min-height: min(132vh, 1040px);
-}
-
 .stickyStory[data-visual='rtree'] {
-  min-height: min(260vh, 2100px);
   grid-template-columns: minmax(250px, 0.5fr) minmax(680px, 1.5fr);
   gap: clamp(22px, 2.4vw, 32px);
-}
-
-.stickyStory[data-visual='polygon-decomposition'] {
-  min-height: min(165vh, 1320px);
 }
 
 .diagramFrame > figcaption[data-heading-layout='stacked'] {
@@ -247,11 +238,28 @@
 }
 
 .inlineAnimatedVisual {
-  height: min(160vh, 1280px);
+  height: auto;
 }
 
-.inlineAnimatedVisual[data-visual='rtree'] {
-  height: calc(3520px + min(76vh, 720px));
+.diagramScrollSkip {
+  position: absolute;
+  z-index: 5;
+  top: 8px;
+  right: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--asic-accent);
+  background: #090909;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.diagramScrollSkip:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 
 .inlineAnimatedFrame {
@@ -1260,23 +1268,11 @@
     position: static;
   }
 
-  .stickyStory[data-visual] {
-    min-height: 180svh;
-  }
-
   .stickyVisual {
     position: sticky;
     top: 14px;
     height: min(90vw, 720px, calc(100svh - 28px));
     min-height: min(520px, calc(100svh - 28px));
-  }
-
-  .inlineAnimatedVisual {
-    height: min(180svh, 1440px);
-  }
-
-  .inlineAnimatedVisual[data-visual='rtree'] {
-    height: calc(3520px + min(76svh, 720px, calc(100svh - 28px)));
   }
 
   .inlineAnimatedFrame {
