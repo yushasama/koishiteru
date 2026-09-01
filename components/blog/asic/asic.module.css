@@ -36,7 +36,7 @@
   grid-area: visual;
   align-self: start;
   height: min(76vh, 720px);
-  min-height: 560px;
+  min-height: min(560px, calc(100svh - 110px));
 }
 
 .diagramFrame {
@@ -1251,7 +1251,7 @@
   .stickyVisual {
     top: 82px;
     height: min(72vh, 640px);
-    min-height: 460px;
+    min-height: min(460px, calc(100svh - 98px));
   }
 }
 
