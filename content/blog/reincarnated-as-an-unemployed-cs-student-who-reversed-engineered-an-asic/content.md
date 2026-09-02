@@ -10,9 +10,9 @@ I answered the question in my head immediately: no.
 
 That was present me though. Go ask future me a few days later.
 
-Those few days somehow turned into two weeks. The first disappeared into other projects and my first venture outside in a month, while the second became back-to-back trips to Catalina Island with friends and my Calculus II professor, followed immediately by Niagara Falls in Canada.
+Those few days somehow turned into two weeks. The first disappeared into other projects and my first venture outside in a month, while the second became back-to-back trips to Catalina Island with friends and my Calculus II professor, followed immediately by Niagara Falls in Canada. I was itching the whole time to work on the challenge.
 
-I did spend a little time on Catalina Island studying what an ASIC even was and reviewing enough hardware concepts so my head doesn't explode from being exposed to the challenge.
+I did spend time on Catalina Island studying what an ASIC even was and reviewing enough hardware concepts so my head wouldn't explode from being exposed to the challenge.
 
 So after getting home, I finally approached the challenge, which was relatively straightforward to explain. Jane Street gave us the final physical layout of an ASIC, `puzzle.gds`, along with some sample inputs & outputs.
 
@@ -48,6 +48,10 @@ At the bottom of the diagram are placed standard cells, reusable blocks that con
 ---
 
 ## 3. SKY130, Not Skynet
+
+I kept calling SKY130 skynet for the first evening I was working on this problem. I realized my miustake when Google started showing me the Terminator.
+
+Now, what is SKY130?
 
 SKY130 is an open-source Process Design Kit made available through work involving Google and SkyWater Technology. It contains chip-design rules, documentation, and libraries. So it is a pretty awesome resource for anyone curious about semiconductor design.
 
@@ -219,7 +223,20 @@ The warm-up was basically a simple circuit built around an 8-bit adder, two shif
 
 The real circuit was much larger and also contained **state**, meaning parts of the chip could remember values between clock cycles.
 
-Most of that state lived in **flip-flops**, which are basically tiny circuits that hold a bit from one clock cycle to the next.
+The circuit has 
+
+```
+738 logic instances
+2,777 signal cell pins
+21 unattached pins
+0 multi-net pins
+718 signal nets
+92 flip flops
+```
+
+> All 21 unattached pins are unused outputs. Zero of them were inputs, which is what I was worried about, as unattached inputs would indicate my extracted circuit missed a connection somewhere.
+
+Most of that state lived in those 92 **flip-flops**, which are basically tiny circuits that hold a bit from one clock cycle to the next.
 
 <!-- /sticky -->
 
@@ -315,10 +332,16 @@ $$
 
 Translation from Martian to English: Find an input sequence that makes $ success $ flip to $ 1 $ within the next $ k $ clock cycles.
 
+I initially set $ k = 64 $ but Z3 gave me UNSAT. I knew that my circuit was correct, so I suspected that $ 64 $ was too little. Thus I bumped it up to $ 312 $ clock cycles. 
+
+Then I got a hit. I then ran binary search on an interval of $ [64, 312] $ clock cycles to find the minimum value of $ k $.
+
+I eventually reached 122 cycles. The last cycle is used for submission while the first 121 clock cycles are bit placements.
+
 <!-- sticky:sat-timeline -->
 
 
-From Jane Street's sample input waveform, it showed 121 binary bits as the input. Meaning each attempt at finding the right input is also a 121 bit sequence.
+From Jane Street's sample input waveform, it showed 121 binary bits as the input. Meaning each attempt at finding the right input is also a 121 bit sequence. This lined up with the previous result of obtaining $ success = 1 $ within $ 122 $ clock cycles.
 
 Brute forcing that means staring at:
 
