@@ -1,7 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { ASIC_ACCESS_COOKIE, ASIC_ACCESS_PATH, ASIC_ACCESS_SESSION_SECONDS, ASIC_ARTICLE_PATH, loadAsicAccessConfig } from '../../../lib/asic-access/config';
+import { ASIC_ACCESS_COOKIE, ASIC_ACCESS_PATH, ASIC_ACCESS_SESSION_SECONDS, ASIC_ARTICLE_PATH, ASIC_ARTICLE_SLUG, loadAsicAccessConfig } from '../../../lib/asic-access/config';
 import { createSessionToken, verifyPassword } from '../../../lib/asic-access/crypto';
+import { blogPostRequiresAccess } from '../../../lib/blog/posts';
 
 function redirectToAccess(request: NextRequest, error: string): NextResponse {
   const destination = new URL(ASIC_ACCESS_PATH, request.url);
@@ -12,6 +13,8 @@ function redirectToAccess(request: NextRequest, error: string): NextResponse {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  if (!blogPostRequiresAccess(ASIC_ARTICLE_SLUG)) return NextResponse.redirect(new URL(ASIC_ARTICLE_PATH, request.url), 303);
+
   let form: FormData;
   try {
     form = await request.formData();

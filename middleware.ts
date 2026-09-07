@@ -1,8 +1,9 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { ASIC_ACCESS_COOKIE, ASIC_ACCESS_PATH, ASIC_ACCESS_SESSION_SECONDS, ASIC_ARTICLE_PATH, type AsicAccessConfig, loadAsicAccessConfig } from './lib/asic-access/config';
+import { ASIC_ACCESS_COOKIE, ASIC_ACCESS_PATH, ASIC_ACCESS_SESSION_SECONDS, ASIC_ARTICLE_PATH, ASIC_ARTICLE_SLUG, type AsicAccessConfig, loadAsicAccessConfig } from './lib/asic-access/config';
 import { createSessionToken, verifyPassword, verifySessionToken } from './lib/asic-access/crypto';
 import { protectedRequestKind } from './lib/asic-access/routes';
+import { blogPostRequiresAccess } from './lib/blog/posts';
 
 const SHARED_PASSWORD_QUERY = 'p';
 
@@ -47,7 +48,9 @@ async function sharedAccessResponse(request: NextRequest, config: AsicAccessConf
 }
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const publicized = !blogPostRequiresAccess(ASIC_ARTICLE_SLUG);
   if (request.nextUrl.pathname === ASIC_ACCESS_PATH) {
+    if (publicized) return NextResponse.redirect(new URL(ASIC_ARTICLE_PATH, request.url), 307);
     if (!request.nextUrl.searchParams.has(SHARED_PASSWORD_QUERY)) return withPrivateHeaders(NextResponse.next());
     try {
       return await sharedAccessResponse(request, loadAsicAccessConfig()) ?? withPrivateHeaders(NextResponse.next());
@@ -59,6 +62,10 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
   const kind = protectedRequestKind(request.nextUrl);
   if (!kind) return NextResponse.next();
+  if (publicized) {
+    if (kind === 'document' && request.nextUrl.searchParams.has(SHARED_PASSWORD_QUERY)) return NextResponse.redirect(cleanSharedLinkDestination(request), 303);
+    return NextResponse.next();
+  }
 
   try {
     const config = loadAsicAccessConfig();

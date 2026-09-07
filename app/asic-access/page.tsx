@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import React from 'react';
-import { ASIC_ACCESS_ENDPOINT } from '../../lib/asic-access/config';
+import { ASIC_ACCESS_ENDPOINT, ASIC_ARTICLE_PATH, ASIC_ARTICLE_SLUG } from '../../lib/asic-access/config';
 import { ASIC_PUBLIC_THUMBNAIL_PATH } from '../../lib/asic-access/routes';
 import { createBlogImageMetadata } from '../../lib/blog/metadata';
+import { blogPostRequiresAccess } from '../../lib/blog/posts';
 import styles from './access.module.css';
 import PasswordInput from './PasswordInput';
 
 export const metadata: Metadata = {
   ...createBlogImageMetadata(ASIC_PUBLIC_THUMBNAIL_PATH),
   title: 'Password protected blog | 恋してる',
-  description: 'This blog will be publicly released after September 4.',
+  description: 'This blog will be publicly released on September 5.',
   robots: { follow: false, index: false, noarchive: true, nocache: true, nosnippet: true },
 };
 
@@ -23,6 +25,7 @@ const ERROR_MESSAGES: Readonly<Record<string, string>> = {
 };
 
 export default async function AsicAccessPage({ searchParams }: AsicAccessPageProps): Promise<JSX.Element> {
+  if (!blogPostRequiresAccess(ASIC_ARTICLE_SLUG)) redirect(ASIC_ARTICLE_PATH);
   const { error } = searchParams ? await searchParams : {};
   const errorMessage = error ? ERROR_MESSAGES[error] : undefined;
 
@@ -31,7 +34,7 @@ export default async function AsicAccessPage({ searchParams }: AsicAccessPagePro
       <section className={styles.panel} aria-labelledby="access-title">
         <div className={styles.copy}>
           <h1 id="access-title">This blog is password protected.</h1>
-          <p>It will be publicly released after September 4.</p>
+          <p>It will be publicly released on September 5.</p>
         </div>
         <form className={styles.form} action={ASIC_ACCESS_ENDPOINT} method="post">
           <label htmlFor="asic-password">Password</label>

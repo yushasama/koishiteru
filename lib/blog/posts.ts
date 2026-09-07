@@ -17,6 +17,7 @@ export interface BlogPost {
   heroImage?: string;
   visualStory?: 'asic-reverse-engineering' | 'systems-optimization';
   requiresAccess?: boolean;
+  publicizeAt?: string;
   sections: readonly BlogSection[];
 }
 
@@ -24,6 +25,8 @@ const BLOG_READING_MINUTES = {
   asicReverseEngineering: 19,
   systemsOptimization: 18,
 } as const;
+
+export const ASIC_PUBLICIZE_AT = '2026-09-05T00:00:00-07:00';
 
 export const blogPosts: readonly BlogPost[] = [
   {
@@ -39,6 +42,7 @@ export const blogPosts: readonly BlogPost[] = [
     thumbnailAlt: 'Recovered ASIC die viewed under a wafer-inspection microscope',
     visualStory: 'asic-reverse-engineering',
     requiresAccess: true,
+    publicizeAt: ASIC_PUBLICIZE_AT,
     sections: [
       { id: 'le-challenge', title: 'Le Challenge' },
       { id: 'what-is-an-asic', title: 'What is an ASIC and Can I Eat It?' },
@@ -78,8 +82,25 @@ export const blogPosts: readonly BlogPost[] = [
   },
 ];
 
-export function getBlogPost(slug: string): BlogPost | undefined {
-  return blogPosts.find((post) => post.slug === slug);
+function resolveBlogPostAccess(post: BlogPost, now: number | Date): BlogPost {
+  if (!post.requiresAccess || !post.publicizeAt) return post;
+  const timestamp = now instanceof Date ? now.getTime() : now;
+  const publicizeAt = Date.parse(post.publicizeAt);
+  if (!Number.isFinite(timestamp) || !Number.isFinite(publicizeAt) || timestamp < publicizeAt) return post;
+  return { ...post, requiresAccess: false };
+}
+
+export function getBlogPosts(now: number | Date = Date.now()): readonly BlogPost[] {
+  return blogPosts.map((post) => resolveBlogPostAccess(post, now));
+}
+
+export function getBlogPost(slug: string, now: number | Date = Date.now()): BlogPost | undefined {
+  const post = blogPosts.find((candidate) => candidate.slug === slug);
+  return post ? resolveBlogPostAccess(post, now) : undefined;
+}
+
+export function blogPostRequiresAccess(slug: string, now: number | Date = Date.now()): boolean {
+  return getBlogPost(slug, now)?.requiresAccess ?? true;
 }
 
 export function getBlogPostContentPath(post: Pick<BlogPost, 'contentFile' | 'slug'>): string {
