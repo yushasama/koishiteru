@@ -13,27 +13,32 @@ import { Socials } from '@/components/Socials'
 import { Experiences } from '@/components/Experience'
 import { AwesomeLink, Link } from '@/components/Link'
 
-export default function About() {
-  const [currentSong, setCurrentSong] = useState({ title: '', artist: '' })
+interface PlaybackStatus {
+  title: string
+  artist: string
+  isPlaying: boolean
+}
 
-  const fetchCurrentSong = async () => {
-    try {
-      const res = await fetch('/api/spotify')
-      if (res.ok) {
-        const data = await res.json()
-        setCurrentSong(data)
-      } else {
-        console.error('Failed to fetch current song')
-      }
-    } catch (error) {
-      console.error('Error fetching current song', error)
-    }
-  }
+function isPlaybackStatus(value: unknown): value is PlaybackStatus {
+  if (!value || typeof value !== 'object') return false
+  const status = value as Partial<PlaybackStatus>
+  return typeof status.title === 'string' && typeof status.artist === 'string' && typeof status.isPlaying === 'boolean'
+}
+
+export default function About() {
+  const [currentSong, setCurrentSong] = useState<PlaybackStatus>({ title: '', artist: '', isPlaying: false })
 
   useEffect(() => {
-    fetchCurrentSong()
-    const interval = setInterval(() => fetchCurrentSong(), 5000)
-    return () => clearInterval(interval)
+    const events = new EventSource('/api/spotify/events')
+    events.onmessage = (event: MessageEvent<string>) => {
+      try {
+        const status: unknown = JSON.parse(event.data)
+        if (isPlaybackStatus(status)) setCurrentSong(status)
+      } catch (error) {
+        console.error('Spotify playback event was invalid', error)
+      }
+    }
+    return () => events.close()
   }, [])
 
   const interestsData = [
@@ -76,7 +81,7 @@ export default function About() {
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
             <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-heebo">Leon Do</div>
 
-            {currentSong?.title ? (
+            {currentSong.isPlaying && currentSong.title ? (
               <div className="text-sm sm:text-base xl:text-lg 2xl:text-xl text-viral pt-1 font-light font-gothic break-words">
                 ・Currently listening to {currentSong.title} - {currentSong.artist}
               </div>

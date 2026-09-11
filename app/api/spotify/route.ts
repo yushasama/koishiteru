@@ -1,25 +1,14 @@
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
+import { getCurrentPlayback } from './playback'
+
 export const dynamic = 'force-dynamic'
-import axios from 'axios'
 
-const apiKey = process.env.NEXT_PUBLIC_API_KEY
-const userName = process.env.NEXT_PUBLIC_USER_NAME
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function GET(){
+export async function GET(): Promise<NextResponse> {
   try {
-    const response = await axios.get(
-      `https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${userName}&api_key=${apiKey}&limit=1&nowplaying=true&format=json`
-    );
-
-    const mostRecentSong = {
-      'title': response.data.recenttracks.track[0].name,
-      'artist': response.data.recenttracks.track[0].artist['#text']
-    }
-    return NextResponse.json(mostRecentSong)
+    return NextResponse.json(await getCurrentPlayback(), { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({ title: '', artist: '' }, { status: 500 })
+    console.error('Spotify playback request failed', error instanceof Error ? error.message : error)
+    return NextResponse.json({ title: '', artist: '', isPlaying: false, spotifyUrl: null, durationMs: null, progressMs: null }, { status: 503 })
   }
 }

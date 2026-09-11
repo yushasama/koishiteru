@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "asic:secrets": "node scripts/generate-asic-access-secrets.mjs",
+    "spotify:authorize": "node scripts/authorize-spotify.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
   },
   "dependencies": {
-    "axios": "^1.6.0",
     "framer-motion": "^12.23.24",
     "katex": "^0.16.25",
     "lucide-react": "^0.546.0",
