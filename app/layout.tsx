@@ -4,6 +4,7 @@ import './globals.css'
 import FloatingNav from '../components/FloatingNav'
 import { NavHighlightProvider } from '../contexts/NavHighlightContext'
 import MobileNav from '../components/MobileNav'
+import { Analytics } from '@vercel/analytics/next'
 
 
 export const metadata:Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
               <MobileNav />
               {children}
             </NavHighlightProvider>
+            <Analytics />
           </body>
         </html>
   )
