@@ -444,7 +444,7 @@ function ResultDecode({ progress }: ScrollDiagramProps): JSX.Element {
     <DiagramFrame label="SOLUTION" status="">
       <section className={`${styles.resultFigure} ${surfaceStyles.coolVerificationSurface}`} aria-label="The verified 121-bit witness is revealed one 11-bit block at a time before producing the OCaml comment two stars">
         <div className={styles.resultBits}>{ASIC_WITNESS_BLOCKS.map((block, index) => <span key={`${block}-${index}`} style={resultBlockStyle(progress, index)}>{block}</span>)}</div>
-        <div className={styles.resultText} role="img" aria-label="(* TWO STARS *)" data-revealed={reduceMotion || revealed} data-reduced-motion={Boolean(reduceMotion)}>
+        <div className={styles.resultText} role="img" aria-label="(* TWO STARS *)" data-revealed={revealed} data-reduced-motion={Boolean(reduceMotion)}>
           <span className={styles.resultBracket} aria-hidden="true">(*</span>
           <strong className={styles.resultWord} aria-hidden="true">
             <span className={styles.resultWordBase} onAnimationEnd={() => setPayoffComplete(true)}>TWO STARS</span>
@@ -453,7 +453,7 @@ function ResultDecode({ progress }: ScrollDiagramProps): JSX.Element {
           </strong>
           <span className={styles.resultBracket} aria-hidden="true">*)</span>
         </div>
-        <DiagramProgress progress={reduceMotion || (revealed && payoffComplete && progress >= RESULT_REVEAL_AT) ? 1 : Math.min(progress, RESULT_REVEAL_AT)} />
+        <DiagramProgress progress={revealed && (reduceMotion || payoffComplete) && progress >= RESULT_REVEAL_AT ? 1 : Math.min(progress, RESULT_REVEAL_AT)} />
       </section>
     </DiagramFrame>
   );

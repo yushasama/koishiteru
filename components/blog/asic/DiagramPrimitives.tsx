@@ -1,6 +1,5 @@
 'use client';
 
-import { useReducedMotion } from 'framer-motion';
 import React from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -52,19 +51,16 @@ const clamp = (value: number): number => Math.min(1, Math.max(0, value));
 
 export function useScrollDiagramState(startDelay: number = 0, mode: DiagramScrollMode = 'desktop'): { ref: React.RefObject<HTMLDivElement>; scrollState: ScrollDiagramState; skip: () => void } {
   const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
-  const [progress, setProgress] = useState(reduceMotion ? 1 : 0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const element = ref.current;
-    if (!element || reduceMotion) {
-      setProgress(1);
-      return;
-    }
+    if (!element) return;
 
+    // Reader-controlled scrolling still reveals each step under reduced motion.
     setProgress(0);
     return registerDiagramScroll(element, setProgress, startDelay, mode);
-  }, [mode, reduceMotion, startDelay]);
+  }, [mode, startDelay]);
 
   return { ref, scrollState: { progress, atStart: progress <= 0.001, atEnd: progress >= 0.999 }, skip: () => completeDiagramScroll(ref.current) };
 }

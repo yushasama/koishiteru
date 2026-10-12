@@ -1050,17 +1050,13 @@
 .resultText[data-reduced-motion='true'] .resultShine { display: none; animation: none; }
 
 .resultText[data-reduced-motion='true'] .resultWordBase,
-.resultText[data-reduced-motion='true'] .resultBracket { opacity: 1; transform: none; animation: none; }
+.resultText[data-reduced-motion='true'] .resultBracket { transform: none; animation: none; }
+
+.resultText[data-reduced-motion='true'][data-revealed='true'] .resultWordBase,
+.resultText[data-reduced-motion='true'][data-revealed='true'] .resultBracket { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .satBitShimmer { display: none; transition: none; }
-
-  .resultText[data-revealed]::before,
-  .resultText[data-revealed] .resultSlice,
-  .resultText[data-revealed] .resultShine { display: none; animation: none; }
-
-  .resultText[data-revealed] .resultWordBase,
-  .resultText[data-revealed] .resultBracket { opacity: 1; transform: none; animation: none; }
 }
 
 .showcaseVideo {
